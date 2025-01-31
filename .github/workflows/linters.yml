@@ -3,18 +3,16 @@ name: "P4CP lint checks"
 on:
   push:
     branches:
+      - ffoulkes
       - main
-      - ipdk_v*
-      - mev-ts*
   pull_request:
     branches:
+      - ffoulkes
       - main
-      - ipdk_v*
-      - mev-ts*
 
 concurrency:
   # If workflow is currently running, stop it and start a new one.
-  group: lint-${{ github.ref }}
+  group: linters-${{ github.ref }}
   cancel-in-progress: true
 
 permissions: read-all
