@@ -1,4 +1,5 @@
 // Copyright 2024 Intel Corporation
+// Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
 #ifndef OVSP4RT_JOURNAL_H_
@@ -45,9 +46,14 @@ class Journal {
 
   void saveEntry() {}
 
+ protected:
+  void journalInput(nlohmann::json& json);
+
+  void journalAction(nlohmann::json& json);
+
  private:
   nlohmann::json input_;
-  std::vector<nlohmann::json> output_;
+  std::vector<nlohmann::json> actions_;
 };
 
 }  // namespace ovsp4rt

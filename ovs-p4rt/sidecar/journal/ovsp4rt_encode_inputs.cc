@@ -1,7 +1,8 @@
 // Copyright 2024 Intel Corporation.
+// Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-#include "ovsp4rt_encode.h"
+#include "ovsp4rt_encode_inputs.h"
 
 #include <stdbool.h>
 #include <stdint.h>
