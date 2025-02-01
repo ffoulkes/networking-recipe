@@ -1,4 +1,4 @@
-// Copyright 2025 Intel Corporation
+// Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
 #ifndef OVSP4RT_ENCODE_ACTIONS_H
