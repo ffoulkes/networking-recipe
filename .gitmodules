@@ -18,3 +18,7 @@
 	path = ovs/ovs
 	url = https://github.com/ipdk-io/ovs.git
 	branch = ipdk-latest
+[submodule "stratum/stratum"]
+	path = stratum/stratum
+	url = https://github.com/ffoulkes/stratum.git
+	branch = ffoulkes
