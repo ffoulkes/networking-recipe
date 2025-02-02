@@ -10,10 +10,6 @@
 [submodule "krnlmon/SAI"]
 	path = krnlmon/SAI
 	url = https://github.com/opencomputeproject/SAI.git
-[submodule "stratum/stratum"]
-	path = stratum/stratum
-	url = https://github.com/ipdk-io/stratum-dev.git/
-	branch = split-arch
 [submodule "krnlmon/krnlmon"]
 	path = krnlmon/krnlmon
 	url = https://github.com/ipdk-io/krnlmon.git
