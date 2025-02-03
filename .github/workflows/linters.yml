@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - ffoulkes
-      - main
   pull_request:
     branches:
       - ffoulkes
-      - main
 
 concurrency:
   # If workflow is currently running, stop it and start a new one.
