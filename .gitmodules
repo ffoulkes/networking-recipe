@@ -18,3 +18,6 @@
 	path = stratum/stratum
 	url = https://github.com/ffoulkes/stratum.git
 	branch = ffoulkes
+[submodule "krnlmon/krnlmon"]
+	path = krnlmon/krnlmon
+	url = https://github.com/ffoulkes/krnlmon.git
