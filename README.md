@@ -10,9 +10,16 @@ branch back to their `mev-ts-1.9` release (Sep 30, 2024), effectively
 discarding the work I had done since then. This fork allows me to keep
 tinkering without stepping on their toes.
 
-The main branch of the fork is `ffoulkes`, to provide a clear indication
-of the point where it deviates from the IPDK `main` branch. The branch
-point corresponds to [P4CP Release v3.3.0.0](https://github.com/ipdk-io/networking-recipe/releases/tag/v3.3.0.0).
+## Repositories
 
-Note that the submodules in this repository still reference repositories
-on ipdk-io. They will be updated to local forks as time allows.
+`networking-recipe` is a fork of `ipdk-io/networking-recipe`.
+Its baseline is
+[P4CP v3.3.0.0](https://github.com/ipdk-io/networking-recipe/releases/tag/v3.3.0.0).
+
+`krnlmon/krnlmon` is a fork of `ipdk-io/krnlmon`. Its baseline is
+[Krnlmon v3.2.0.0](https://github.com/ipdk-io/krnlmon/releases/tag/v3.2.0.0).
+
+`stratum/stratum` is a fork of `stratum/stratum`, with the addition of
+a `ffoulkes` branch imported from `ipdk-io/stratum-dev`.
+Its baseline is
+[IPDK Stratum v3.3.0.0](https://github.com/ipdk-io/stratum-dev/releases/tag/v3.3.0.0).
