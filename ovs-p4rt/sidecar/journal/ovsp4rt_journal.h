@@ -1,4 +1,5 @@
 // Copyright 2024 Intel Corporation
+// Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
 #ifndef OVSP4RT_JOURNAL_H_
@@ -20,19 +21,19 @@ class Journal {
  public:
   ~Journal() { saveEntry(); }
 
-  void recordInput(const char* func_name, const struct mac_learning_info& info,
-                   bool insert_entry);
+  void recordInputs(const char* func_name, const struct mac_learning_info& info,
+                    bool insert_entry);
 
-  void recordInput(const char* func_name, const ip_mac_map_info& info,
-                   bool insert_entry);
+  void recordInputs(const char* func_name, const ip_mac_map_info& info,
+                    bool insert_entry);
 
-  void recordInput(const char* func_name, const tunnel_info& info,
-                   bool insert_entry);
+  void recordInputs(const char* func_name, const tunnel_info& info,
+                    bool insert_entry);
 
-  void recordInput(const char* func_name, const src_port_info info,
-                   bool insert_entry);
+  void recordInputs(const char* func_name, const src_port_info info,
+                    bool insert_entry);
 
-  void recordInput(const char* func_name, uint16_t vlan_id, bool insert_entry);
+  void recordInputs(const char* func_name, uint16_t vlan_id, bool insert_entry);
 
   void recordReadRequest(const ::p4::v1::ReadRequest& request);
 
@@ -45,9 +46,14 @@ class Journal {
 
   void saveEntry() {}
 
+ protected:
+  void journalInputs(nlohmann::json& json);
+
+  void journalAction(nlohmann::json& json);
+
  private:
   nlohmann::json input_;
-  std::vector<nlohmann::json> output_;
+  std::vector<nlohmann::json> actions_;
 };
 
 }  // namespace ovsp4rt

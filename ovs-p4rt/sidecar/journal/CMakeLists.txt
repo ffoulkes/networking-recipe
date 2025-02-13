@@ -1,6 +1,7 @@
 # CMake build file for ovs-p4rt/sidecar/journal
 #
 # Copyright 2024 Intel Corporation
+# Copyright 2025 Derek Foster
 # SPDX-License-Identifier: Apache 2.0
 #
 
@@ -13,8 +14,10 @@ set_property(DIRECTORY PROPERTY LABELS ovsp4rt)
 # ovsp4rt_journal_o
 #-----------------------------------------------------------------------
 add_library(ovsp4rt_journal_o OBJECT
-  ovsp4rt_encode.cc
-  ovsp4rt_encode.h
+  ovsp4rt_encode_actions.cc
+  ovsp4rt_encode_actions.h
+  ovsp4rt_encode_inputs.cc
+  ovsp4rt_encode_inputs.h
   ovsp4rt_journal.cc
   ovsp4rt_journal.h
 )
@@ -36,8 +39,8 @@ if(BUILD_TESTING)
 add_executable(encode_addr_test
   encode_addr_test.cc
   encode_base_test.h
-  ovsp4rt_encode.cc
-  ovsp4rt_encode.h
+  ovsp4rt_encode_inputs.cc
+  ovsp4rt_encode_inputs.h
   test_main.cc
 )
 

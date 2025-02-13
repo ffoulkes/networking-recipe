@@ -1,8 +1,9 @@
 // Copyright 2024 Intel Corporation
+// Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-#ifndef OVSP4RT_ENCODE_H
-#define OVSP4RT_ENCODE_H
+#ifndef OVSP4RT_ENCODE_INPUTS_H
+#define OVSP4RT_ENCODE_INPUTS_H
 
 #include <stdbool.h>
 
@@ -69,4 +70,4 @@ extern nlohmann::json EncodeVlanId(const char* func_name, uint16_t vlan_id,
 
 }  // namespace ovsp4rt
 
-#endif  // OVSP4RT_ENCODE_H
+#endif  // OVSP4RT_ENCODE_INPUTS_H
