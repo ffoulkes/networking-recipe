@@ -16,7 +16,7 @@ void ovsp4rt_config_fdb_entry(struct mac_learning_info learn_info,
   using namespace ovsp4rt;
 
   JournalClient client;
-  client.journal().recordInput(__func__, learn_info, insert_entry);
+  client.journal().recordInputs(__func__, learn_info, insert_entry);
 
   (void)DoConfigFdbEntry(client, learn_info, insert_entry, grpc_addr);
 }
@@ -29,7 +29,7 @@ void ovsp4rt_config_tunnel_entry(struct tunnel_info tunnel_info,
   using namespace ovsp4rt;
 
   JournalClient client;
-  client.journal().recordInput(__func__, tunnel_info, insert_entry);
+  client.journal().recordInputs(__func__, tunnel_info, insert_entry);
 
   (void)DoConfigTunnelEntry(client, tunnel_info, insert_entry, grpc_addr);
 }
@@ -67,7 +67,7 @@ void ovsp4rt_config_ip_mac_map_entry(struct ip_mac_map_info ip_info,
   using namespace ovsp4rt;
 
   JournalClient client;
-  client.journal().recordInput(__func__, ip_info, insert_entry);
+  client.journal().recordInputs(__func__, ip_info, insert_entry);
 
   (void)DoConfigIpMacMapEntry(client, ip_info, insert_entry, grpc_addr);
 }
@@ -81,7 +81,7 @@ void ovsp4rt_config_rx_tunnel_src_entry(struct tunnel_info tunnel_info,
   using namespace ovsp4rt;
 
   JournalClient client;
-  client.journal().recordInput(__func__, tunnel_info, insert_entry);
+  client.journal().recordInputs(__func__, tunnel_info, insert_entry);
 
   (void)DoConfigRxTunnelSrcEntry(client, tunnel_info, insert_entry, grpc_addr);
 }
@@ -94,7 +94,7 @@ void ovsp4rt_config_src_port_entry(struct src_port_info vsi_sp,
   using namespace ovsp4rt;
 
   JournalClient client;
-  client.journal().recordInput(__func__, vsi_sp, insert_entry);
+  client.journal().recordInputs(__func__, vsi_sp, insert_entry);
 
   (void)DoConfigSrcPortEntry(client, vsi_sp, insert_entry, grpc_addr);
 }
@@ -108,7 +108,7 @@ void ovsp4rt_config_tunnel_src_port_entry(struct src_port_info tnl_sp,
   using namespace ovsp4rt;
 
   JournalClient client;
-  client.journal().recordInput(__func__, tnl_sp, insert_entry);
+  client.journal().recordInputs(__func__, tnl_sp, insert_entry);
 
   (void)DoConfigTunnelSrcPortEntry(client, tnl_sp, insert_entry, grpc_addr);
 }
@@ -121,7 +121,7 @@ void ovsp4rt_config_vlan_entry(uint16_t vlan_id, bool insert_entry,
   using namespace ovsp4rt;
 
   JournalClient client;
-  client.journal().recordInput(__func__, vlan_id, insert_entry);
+  client.journal().recordInputs(__func__, vlan_id, insert_entry);
 
   (void)DoConfigVlanEntry(client, vlan_id, insert_entry, grpc_addr);
 }
