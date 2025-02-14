@@ -1,11 +1,12 @@
-// Copyright 2022-2025 Intel Corporation
+// Copyright 2022-2024 Intel Corporation
+// Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Defines the interface to the C++ functions that implement
-// the core logic of the ovsp4rt C API.
+// Defines the internal interface to the C++ DoConfigEntry functions,
+// which are invoked by the C API wrappers.
 
-#ifndef OVSP4RT_INTERNAL_API_H_
-#define OVSP4RT_INTERNAL_API_H_
+#ifndef OVSP4RT_DOCONFIG_API_H_
+#define OVSP4RT_DOCONFIG_API_H_
 
 #include "absl/status/status.h"
 #include "client/ovsp4rt_client_interface.h"
@@ -49,4 +50,4 @@ extern absl::Status DoConfigVlanEntry(ClientInterface& client, uint16_t vlan_id,
 
 }  // namespace ovsp4rt
 
-#endif  // OVSP4RT_INTERNAL_API_H_
+#endif  // OVSP4RT_DOCONFIG_API_H_

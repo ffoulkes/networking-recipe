@@ -7,7 +7,7 @@
 
 #include "client/ovsp4rt_client.h"
 #include "ovsp4rt/ovs-p4rt.h"
-#include "ovsp4rt_internal_api.h"
+#include "ovsp4rt_doconfig_int.h"
 
 //----------------------------------------------------------------------
 // ovsp4rt_config_fdb_entry (DPDK, ES2K)
