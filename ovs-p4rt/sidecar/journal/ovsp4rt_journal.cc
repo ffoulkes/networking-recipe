@@ -4,10 +4,16 @@
 
 #include "ovsp4rt_journal.h"
 
+#include <iostream>
+
 #include "ovsp4rt_encode_actions.h"
 #include "ovsp4rt_encode_inputs.h"
 
 namespace ovsp4rt {
+
+//----------------------------------------------------------------------
+// Record API interactions
+//----------------------------------------------------------------------
 
 // mac_learning_info
 void Journal::recordInputs(const char* func_name,
@@ -45,6 +51,10 @@ void Journal::recordInputs(const char* func_name, uint16_t vlan_id,
   journalInputs(inputs);
 }
 
+//----------------------------------------------------------------------
+// Record P4Runtime interactions
+//----------------------------------------------------------------------
+
 void Journal::recordReadRequest(const ::p4::v1::ReadRequest& request) {
   // TODO(derek): Add func_name parameter?
   auto action = EncodeReadRequest(request);
@@ -70,12 +80,16 @@ void Journal::recordWriteStatus(const absl::Status& status) {
   journalAction(action);
 }
 
+//----------------------------------------------------------------------
+// Record interactions in journal
+//----------------------------------------------------------------------
+
 void Journal::journalInputs(nlohmann::json& json) {
-  // TODO(derek): to be implemented.
+  std::cout << "inputs: " << json.dump(4) << std::endl;
 }
 
 void Journal::journalAction(nlohmann::json& json) {
-  // TODO(derek): to be implemented.
+  std::cout << "actions: " << json.dump(4) << std::endl;
 }
 
 }  // namespace ovsp4rt
