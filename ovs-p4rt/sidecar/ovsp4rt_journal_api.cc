@@ -1,4 +1,5 @@
-// Copyright 2022-2025 Intel Corporation
+// Copyright 2022-2024 Intel Corporation
+// Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
 // Journaling implementation of the ovsp4rt C API.
@@ -18,7 +19,7 @@ void ovsp4rt_config_fdb_entry(struct mac_learning_info learn_info,
   JournalClient client;
   client.journal().recordInputs(__func__, learn_info, insert_entry);
 
-  (void)DoConfigFdbEntry(client, learn_info, insert_entry, grpc_addr);
+  DoConfigFdbEntry(client, learn_info, insert_entry, grpc_addr).IgnoreError();
 }
 
 //----------------------------------------------------------------------
@@ -31,7 +32,8 @@ void ovsp4rt_config_tunnel_entry(struct tunnel_info tunnel_info,
   JournalClient client;
   client.journal().recordInputs(__func__, tunnel_info, insert_entry);
 
-  (void)DoConfigTunnelEntry(client, tunnel_info, insert_entry, grpc_addr);
+  DoConfigTunnelEntry(client, tunnel_info, insert_entry, grpc_addr)
+      .IgnoreError();
 }
 
 #if defined(DPDK_TARGET)
@@ -69,7 +71,7 @@ void ovsp4rt_config_ip_mac_map_entry(struct ip_mac_map_info ip_info,
   JournalClient client;
   client.journal().recordInputs(__func__, ip_info, insert_entry);
 
-  (void)DoConfigIpMacMapEntry(client, ip_info, insert_entry, grpc_addr);
+  DoConfigIpMacMapEntry(client, ip_info, insert_entry, grpc_addr).IgnoreError();
 }
 
 //----------------------------------------------------------------------
@@ -83,7 +85,8 @@ void ovsp4rt_config_rx_tunnel_src_entry(struct tunnel_info tunnel_info,
   JournalClient client;
   client.journal().recordInputs(__func__, tunnel_info, insert_entry);
 
-  (void)DoConfigRxTunnelSrcEntry(client, tunnel_info, insert_entry, grpc_addr);
+  DoConfigRxTunnelSrcEntry(client, tunnel_info, insert_entry, grpc_addr)
+      .IgnoreError();
 }
 
 //----------------------------------------------------------------------
@@ -96,7 +99,7 @@ void ovsp4rt_config_src_port_entry(struct src_port_info vsi_sp,
   JournalClient client;
   client.journal().recordInputs(__func__, vsi_sp, insert_entry);
 
-  (void)DoConfigSrcPortEntry(client, vsi_sp, insert_entry, grpc_addr);
+  DoConfigSrcPortEntry(client, vsi_sp, insert_entry, grpc_addr).IgnoreError();
 }
 
 //----------------------------------------------------------------------
@@ -110,7 +113,8 @@ void ovsp4rt_config_tunnel_src_port_entry(struct src_port_info tnl_sp,
   JournalClient client;
   client.journal().recordInputs(__func__, tnl_sp, insert_entry);
 
-  (void)DoConfigTunnelSrcPortEntry(client, tnl_sp, insert_entry, grpc_addr);
+  DoConfigTunnelSrcPortEntry(client, tnl_sp, insert_entry, grpc_addr)
+      .IgnoreError();
 }
 
 //----------------------------------------------------------------------
@@ -123,7 +127,7 @@ void ovsp4rt_config_vlan_entry(uint16_t vlan_id, bool insert_entry,
   JournalClient client;
   client.journal().recordInputs(__func__, vlan_id, insert_entry);
 
-  (void)DoConfigVlanEntry(client, vlan_id, insert_entry, grpc_addr);
+  DoConfigVlanEntry(client, vlan_id, insert_entry, grpc_addr).IgnoreError();
 }
 
 #endif  // ES2K_TARGET
