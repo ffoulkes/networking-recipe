@@ -24,7 +24,6 @@
 #include "logging/ovsp4rt_logging.h"
 #include "logging/ovsp4rt_logutils.h"
 #include "ovsp4rt/ovs-p4rt.h"
-#include "ovsp4rt_config_int.h"
 #include "ovsp4rt_doconfig_int.h"
 #include "ovsp4rt_private.h"
 
