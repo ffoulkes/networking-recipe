@@ -1,6 +1,7 @@
 # CMake build file for superproject.
 #
 # Copyright 2022-2024 Intel Corporation
+# Copyright 2025 Derek Foster
 # SPDX-License-Identifier: Apache 2.0
 #
 
@@ -29,6 +30,9 @@ set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
 #cmake_print_variables(CMAKE_STAGING_PREFIX)
 cmake_print_variables(CMAKE_SYSROOT)
 cmake_print_variables(CMAKE_TOOLCHAIN_FILE)
+
+# Defined by StratumDeps.
+mark_as_advanced(utf8_range_DIR)
 
 #############################
 # Symbolic path definitions #
