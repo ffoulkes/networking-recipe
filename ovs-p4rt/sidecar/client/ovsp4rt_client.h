@@ -20,38 +20,42 @@ class Client : public ClientInterface {
   virtual ~Client() = default;
 
   // Connects to the P4Runtime server.
-  virtual absl::Status connect(const char* grpc_addr);
+  virtual absl::Status connect(const char* grpc_addr) override;
 
   // Gets the pipeline configuration from the P4Runtime server.
-  virtual absl::Status getPipelineConfig(::p4::config::v1::P4Info* p4info);
+  virtual absl::Status getPipelineConfig(
+      ::p4::config::v1::P4Info* p4info) override;
 
   //--------------------------------------------------------------------
 
   // Initializes a Read Table Entry request message.
-  virtual ::p4::v1::TableEntry* initReadRequest(::p4::v1::ReadRequest* request);
+  virtual ::p4::v1::TableEntry* initReadRequest(
+      ::p4::v1::ReadRequest* request) override;
 
   // Sends a Read Table Entry request to the P4Runtime server.
   virtual absl::StatusOr<p4::v1::ReadResponse> sendReadRequest(
-      const p4::v1::ReadRequest& request);
+      const p4::v1::ReadRequest& request) override {
+    return DoSendReadRequest(request);
+  }
 
   //--------------------------------------------------------------------
 
   // Initializes an Insert Table Entry request message.
   virtual ::p4::v1::TableEntry* initInsertRequest(
-      ::p4::v1::WriteRequest* request);
+      ::p4::v1::WriteRequest* request) override;
 
   // Initializes a Modify Table Entry request message.
   virtual ::p4::v1::TableEntry* initModifyRequest(
-      ::p4::v1::WriteRequest* request);
+      ::p4::v1::WriteRequest* request) override;
 
   // Initializes a Delete Table Entry request message.
   virtual ::p4::v1::TableEntry* initDeleteRequest(
-      ::p4::v1::WriteRequest* request);
+      ::p4::v1::WriteRequest* request) override;
 
   // Initializes an Insert Table Entry or Delete Table Entry request
   // message, depending on the value of the `insert_entry` parameter.
   virtual ::p4::v1::TableEntry* initWriteRequest(
-      ::p4::v1::WriteRequest* request, bool insert_entry) {
+      ::p4::v1::WriteRequest* request, bool insert_entry) override {
     if (insert_entry) {
       return initInsertRequest(request);
     } else {
@@ -60,7 +64,20 @@ class Client : public ClientInterface {
   }
 
   // Sends a Write Table Entry request to the P4Runtime server.
-  virtual absl::Status sendWriteRequest(const p4::v1::WriteRequest& request);
+  virtual absl::Status sendWriteRequest(
+      const p4::v1::WriteRequest& request) override {
+    return DoSendWriteRequest(request);
+  }
+
+  //--------------------------------------------------------------------
+
+ protected:
+  // TODO(derek): make this virtual?
+  absl::StatusOr<p4::v1::ReadResponse> DoSendReadRequest(
+      const p4::v1::ReadRequest& request);
+
+  // TODO(derek): make this virtual?
+  absl::Status DoSendWriteRequest(const p4::v1::WriteRequest& request);
 
  private:
   // Pointer to a P4Runtime session object.

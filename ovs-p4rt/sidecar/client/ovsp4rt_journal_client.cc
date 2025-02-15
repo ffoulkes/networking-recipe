@@ -9,7 +9,7 @@ namespace ovsp4rt {
 absl::StatusOr<::p4::v1::ReadResponse> JournalClient::sendReadRequest(
     const p4::v1::ReadRequest& request) {
   journal_.recordReadRequest(request);
-  auto response = Client::sendReadRequest(request);
+  auto response = DoSendReadRequest(request);
   journal_.recordReadResponse(response);
   return response;
 }
@@ -18,7 +18,7 @@ absl::StatusOr<::p4::v1::ReadResponse> JournalClient::sendReadRequest(
 absl::Status JournalClient::sendWriteRequest(
     const p4::v1::WriteRequest& request) {
   journal_.recordWriteRequest(request);
-  auto status = Client::sendWriteRequest(request);
+  auto status = DoSendWriteRequest(request);
   journal_.recordWriteStatus(status);
   return status;
 }

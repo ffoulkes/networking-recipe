@@ -39,11 +39,6 @@ absl::Status Client::getPipelineConfig(::p4::config::v1::P4Info* p4info) {
   return SetupTableEntryToRead(session_.get(), request);
 }
 
-absl::StatusOr<::p4::v1::ReadResponse> Client::sendReadRequest(
-    const p4::v1::ReadRequest& request) {
-  return SendReadRequest(session_.get(), request);
-}
-
 ::p4::v1::TableEntry* Client::initInsertRequest(
     ::p4::v1::WriteRequest* request) {
   return SetupTableEntryToInsert(session_.get(), request);
@@ -59,7 +54,12 @@ absl::StatusOr<::p4::v1::ReadResponse> Client::sendReadRequest(
   return SetupTableEntryToDelete(session_.get(), request);
 }
 
-absl::Status Client::sendWriteRequest(const p4::v1::WriteRequest& request) {
+absl::StatusOr<::p4::v1::ReadResponse> Client::DoSendReadRequest(
+    const p4::v1::ReadRequest& request) {
+  return SendReadRequest(session_.get(), request);
+}
+
+absl::Status Client::DoSendWriteRequest(const p4::v1::WriteRequest& request) {
   return SendWriteRequest(session_.get(), request);
 }
 
