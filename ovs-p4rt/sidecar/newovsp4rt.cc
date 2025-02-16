@@ -153,10 +153,10 @@ void PrepareFdbSmacTableEntry(p4::v1::TableEntry* table_entry,
   }
   {
     // match bridge id
-    auto match1 = table_entry->add_match();
-    match1->set_field_id(GetMatchFieldId(p4info, L2_FWD_SMAC_TABLE,
-                                         L2_FWD_SMAC_TABLE_KEY_BRIDGE_ID));
-    match1->mutable_exact()->set_value(EncodeByteValue(1, learn_info.bridge_id));
+    auto match = table_entry->add_match();
+    match->set_field_id(GetMatchFieldId(p4info, L2_FWD_SMAC_TABLE,
+                                        L2_FWD_SMAC_TABLE_KEY_BRIDGE_ID));
+    match->mutable_exact()->set_value(EncodeByteValue(1, learn_info.bridge_id));
   }
 
   if (insert_entry) {
@@ -186,10 +186,10 @@ void PrepareFdbTxVlanTableEntry(p4::v1::TableEntry* table_entry,
 #if defined(ES2K_TARGET)
   {
     // match bridge id
-    auto match1 = table_entry->add_match();
-    match1->set_field_id(
-        GetMatchFieldId(p4info, L2_FWD_TX_TABLE, L2_FWD_TX_TABLE_KEY_BRIDGE_ID));
-    match1->mutable_exact()->set_value(EncodeByteValue(1, learn_info.bridge_id));
+    auto match = table_entry->add_match();
+    match->set_field_id(GetMatchFieldId(p4info, L2_FWD_TX_TABLE,
+                                        L2_FWD_TX_TABLE_KEY_BRIDGE_ID));
+    match->mutable_exact()->set_value(EncodeByteValue(1, learn_info.bridge_id));
   }
 #endif
 
@@ -276,10 +276,10 @@ void PrepareFdbRxVlanTableEntry(p4::v1::TableEntry* table_entry,
   }
   {
     // match bridge id
-    auto match1 = table_entry->add_match();
-    match1->set_field_id(
-        GetMatchFieldId(p4info, L2_FWD_RX_TABLE, L2_FWD_RX_TABLE_KEY_BRIDGE_ID));
-    match1->mutable_exact()->set_value(EncodeByteValue(1, learn_info.bridge_id));
+    auto match = table_entry->add_match();
+    match->set_field_id(GetMatchFieldId(p4info, L2_FWD_RX_TABLE,
+                                        L2_FWD_RX_TABLE_KEY_BRIDGE_ID));
+    match->mutable_exact()->set_value(EncodeByteValue(1, learn_info.bridge_id));
   }
 
   if (insert_entry) {
@@ -356,10 +356,10 @@ void PrepareFdbTableEntryforV4VxlanTunnel(
 #if defined(ES2K_TARGET)
   {
     // match bridge id
-    auto match1 = table_entry->add_match();
-    match1->set_field_id(
-        GetMatchFieldId(p4info, L2_FWD_TX_TABLE, L2_FWD_TX_TABLE_KEY_BRIDGE_ID));
-    match1->mutable_exact()->set_value(EncodeByteValue(1, learn_info.bridge_id));
+    auto match = table_entry->add_match();
+    match->set_field_id(GetMatchFieldId(p4info, L2_FWD_TX_TABLE,
+                                        L2_FWD_TX_TABLE_KEY_BRIDGE_ID));
+    match->mutable_exact()->set_value(EncodeByteValue(1, learn_info.bridge_id));
   }
 #endif
 
@@ -467,10 +467,10 @@ void PrepareFdbTableEntryforV4GeneveTunnel(
 #if defined(ES2K_TARGET)
   {
     // match bridge id
-    auto match1 = table_entry->add_match();
-    match1->set_field_id(
-        GetMatchFieldId(p4info, L2_FWD_TX_TABLE, L2_FWD_TX_TABLE_KEY_BRIDGE_ID));
-    match1->mutable_exact()->set_value(EncodeByteValue(1, learn_info.bridge_id));
+    auto match = table_entry->add_match();
+    match->set_field_id(GetMatchFieldId(p4info, L2_FWD_TX_TABLE,
+                                        L2_FWD_TX_TABLE_KEY_BRIDGE_ID));
+    match->mutable_exact()->set_value(EncodeByteValue(1, learn_info.bridge_id));
   }
 #endif
 
@@ -620,7 +620,7 @@ void PrepareL2ToTunnelV6(p4::v1::TableEntry* table_entry,
   }
 }
 
-// called by: DoConfigFdbEntry
+// called-by: DoConfigFdbEntry
 absl::Status ConfigFdbSmacTableEntry(ClientInterface& client,
                                      const struct mac_learning_info& learn_info,
                                      const ::p4::config::v1::P4Info& p4info,
@@ -642,7 +642,7 @@ absl::Status ConfigFdbSmacTableEntry(ClientInterface& client,
   return status;
 }
 
-// called by: DoConfigFdbEntry
+// called-by: DoConfigFdbEntry
 absl::Status ConfigL2TunnelTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
@@ -669,7 +669,7 @@ absl::Status ConfigL2TunnelTableEntry(
 
 #endif  // ES2K_TARGET
 
-// called by: DoConfigFdbEntry
+// called-by: DoConfigFdbEntry
 absl::Status ConfigFdbTxVlanTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
@@ -690,7 +690,7 @@ absl::Status ConfigFdbTxVlanTableEntry(
   return status;
 }
 
-// called by: DoConfigFdbEntry
+// called-by: DoConfigFdbEntry
 absl::Status ConfigFdbRxVlanTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
@@ -711,7 +711,7 @@ absl::Status ConfigFdbRxVlanTableEntry(
   return status;
 }
 
-// called by: DoConfigFdbEntry
+// called-by: DoConfigFdbEntry
 absl::Status ConfigFdbTunnelTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
@@ -1356,11 +1356,11 @@ void PrepareRxTunnelTableEntry(p4::v1::TableEntry* table_entry,
   }
   {
     // match remote ipv4 addr
-    auto match1 = table_entry->add_match();
-    match1->set_field_id(
+    auto match = table_entry->add_match();
+    match->set_field_id(
         GetMatchFieldId(p4info, RX_IPV4_TUNNEL_SOURCE_PORT_TABLE,
                         RX_IPV4_TUNNEL_SOURCE_PORT_TABLE_KEY_IPV4_SRC));
-    match1->mutable_exact()->set_value(
+    match->mutable_exact()->set_value(
         CanonicalizeIp(tunnel_info.remote_ip.ip.v4addr.s_addr));
   }
 
@@ -1397,11 +1397,11 @@ void PrepareV6RxTunnelTableEntry(p4::v1::TableEntry* table_entry,
   }
   {
     // match remote ipv6 addr
-    auto match1 = table_entry->add_match();
-    match1->set_field_id(
+    auto match = table_entry->add_match();
+    match->set_field_id(
         GetMatchFieldId(p4info, RX_IPV6_TUNNEL_SOURCE_PORT_TABLE,
                         RX_IPV6_TUNNEL_SOURCE_PORT_TABLE_KEY_IPV6_SRC));
-    match1->mutable_exact()->set_value(
+    match->mutable_exact()->set_value(
         CanonicalizeIpv6(tunnel_info.remote_ip.ip.v6addr));
   }
 
@@ -1429,10 +1429,10 @@ void PrepareTunnelTermTableEntry(p4::v1::TableEntry* table_entry,
                                  bool insert_entry) {
   {
     // match remote ipv4 addr
-    auto match1 = table_entry->add_match();
-    match1->set_field_id(GetMatchFieldId(p4info, IPV4_TUNNEL_TERM_TABLE,
+    auto match = table_entry->add_match();
+    match->set_field_id(GetMatchFieldId(p4info, IPV4_TUNNEL_TERM_TABLE,
                                         IPV4_TUNNEL_TERM_TABLE_KEY_IPV4_SRC));
-    match1->mutable_exact()->set_value(
+    match->mutable_exact()->set_value(
         CanonicalizeIp(tunnel_info.remote_ip.ip.v4addr.s_addr));
   }
 
@@ -1440,20 +1440,21 @@ void PrepareTunnelTermTableEntry(p4::v1::TableEntry* table_entry,
   table_entry->set_table_id(GetTableId(p4info, IPV4_TUNNEL_TERM_TABLE));
 
   {
+    // match bridge id
     // TODO(derek): table does not have a bridge_id match field. [es2k]
     // See https://github.com/ipdk-io/networking-recipe/issues/617 for details.
     auto match = table_entry->add_match();
     match->set_field_id(GetMatchFieldId(p4info, IPV4_TUNNEL_TERM_TABLE,
                                         IPV4_TUNNEL_TERM_TABLE_KEY_BRIDGE_ID));
-    match->mutable_exact()->set_value(EncodeByteValue(1, tunnel_info.bridge_id));
+    match->mutable_exact()->set_value(
+        EncodeByteValue(1, tunnel_info.bridge_id));
   }
-
   {
     // match vni
-    auto match2 = table_entry->add_match();
-    match2->set_field_id(GetMatchFieldId(p4info, IPV4_TUNNEL_TERM_TABLE,
+    auto match = table_entry->add_match();
+    match->set_field_id(GetMatchFieldId(p4info, IPV4_TUNNEL_TERM_TABLE,
                                         IPV4_TUNNEL_TERM_TABLE_KEY_VNI));
-    match2->mutable_exact()->set_value(EncodeVniValue(tunnel_info.vni));
+    match->mutable_exact()->set_value(EncodeVniValue(tunnel_info.vni));
   }
 #elif defined(DPDK_TARGET)
   table_entry->set_table_id(GetTableId(p4info, IPV4_TUNNEL_TERM_TABLE));
@@ -1461,16 +1462,17 @@ void PrepareTunnelTermTableEntry(p4::v1::TableEntry* table_entry,
   {
     // match vxlan tunnel type
     auto match = table_entry->add_match();
-    match->set_field_id(GetMatchFieldId(p4info, IPV4_TUNNEL_TERM_TABLE,
+    match->set_field_id(
+        GetMatchFieldId(p4info, IPV4_TUNNEL_TERM_TABLE,
                         IPV4_TUNNEL_TERM_TABLE_KEY_TUNNEL_TYPE));
     match->mutable_exact()->set_value(EncodeByteValue(1, TUNNEL_TYPE_VXLAN));
   }
   {
     // match local ipv4 addr
-    auto match2 = table_entry->add_match();
-    match2->set_field_id(GetMatchFieldId(p4info, IPV4_TUNNEL_TERM_TABLE,
-                                         IPV4_TUNNEL_TERM_TABLE_KEY_IPV4_DST));
-    match2->mutable_exact()->set_value(
+    auto match = table_entry->add_match();
+    match->set_field_id(GetMatchFieldId(p4info, IPV4_TUNNEL_TERM_TABLE,
+                                        IPV4_TUNNEL_TERM_TABLE_KEY_IPV4_DST));
+    match->mutable_exact()->set_value(
         CanonicalizeIp(tunnel_info.local_ip.ip.v4addr.s_addr));
   }
 #else
@@ -1558,22 +1560,23 @@ void PrepareV6TunnelTermTableEntry(p4::v1::TableEntry* table_entry,
     auto match = table_entry->add_match();
     match->set_field_id(GetMatchFieldId(p4info, IPV6_TUNNEL_TERM_TABLE,
                                         IPV6_TUNNEL_TERM_TABLE_KEY_BRIDGE_ID));
-    match->mutable_exact()->set_value(EncodeByteValue(1, tunnel_info.bridge_id));
+    match->mutable_exact()->set_value(
+        EncodeByteValue(1, tunnel_info.bridge_id));
   }
   {
     // match remote ipv6 addr
-    auto match1 = table_entry->add_match();
-    match1->set_field_id(GetMatchFieldId(p4info, IPV6_TUNNEL_TERM_TABLE,
+    auto match = table_entry->add_match();
+    match->set_field_id(GetMatchFieldId(p4info, IPV6_TUNNEL_TERM_TABLE,
                                         IPV6_TUNNEL_TERM_TABLE_KEY_IPV6_SRC));
-    match1->mutable_exact()->set_value(
+    match->mutable_exact()->set_value(
         CanonicalizeIpv6(tunnel_info.remote_ip.ip.v6addr));
   }
   {
     // match vni
-    auto match2 = table_entry->add_match();
-    match2->set_field_id(GetMatchFieldId(p4info, IPV6_TUNNEL_TERM_TABLE,
+    auto match = table_entry->add_match();
+    match->set_field_id(GetMatchFieldId(p4info, IPV6_TUNNEL_TERM_TABLE,
                                         IPV6_TUNNEL_TERM_TABLE_KEY_VNI));
-    match2->mutable_exact()->set_value(EncodeVniValue(tunnel_info.vni));
+    match->mutable_exact()->set_value(EncodeVniValue(tunnel_info.vni));
   }
 
   if (insert_entry) {
@@ -1626,7 +1629,7 @@ void PrepareV6TunnelTermTableEntry(p4::v1::TableEntry* table_entry,
 }
 #endif  // ES2K_TARGET
 
-// called by: DoConfigTunnelEntry
+// called-by: DoConfigTunnelEntry
 absl::Status ConfigEncapTableEntry(ClientInterface& client,
                                    const struct tunnel_info& tunnel_info,
                                    const ::p4::config::v1::P4Info& p4info,
@@ -1675,8 +1678,8 @@ void PrepareVxlanDecapModTableEntry(p4::v1::TableEntry* table_entry,
   {
     // match vni
     auto match = table_entry->add_match();
-    match->set_field_id(GetMatchFieldId(p4info, VXLAN_DECAP_MOD_TABLE,
-                                        VXLAN_DECAP_MOD_TABLE_KEY_MOD_BLOB_PTR));
+    match->set_field_id(GetMatchFieldId(
+        p4info, VXLAN_DECAP_MOD_TABLE, VXLAN_DECAP_MOD_TABLE_KEY_MOD_BLOB_PTR));
     match->mutable_exact()->set_value(EncodeVniValue(tunnel_info.vni));
   }
 
@@ -1698,7 +1701,8 @@ void PrepareGeneveDecapModTableEntry(p4::v1::TableEntry* table_entry,
   {
     // match vni
     auto match = table_entry->add_match();
-    match->set_field_id(GetMatchFieldId(p4info, GENEVE_DECAP_MOD_TABLE,
+    match->set_field_id(
+        GetMatchFieldId(p4info, GENEVE_DECAP_MOD_TABLE,
                         GENEVE_DECAP_MOD_TABLE_KEY_MOD_BLOB_PTR));
     match->mutable_exact()->set_value(EncodeVniValue(tunnel_info.vni));
   }
@@ -1837,7 +1841,7 @@ void PrepareDecapModAndVlanPushTableEntry(
   }
 }
 
-// called by: DoConfigTunnelEntry
+// called-by: DoConfigTunnelEntry
 absl::Status ConfigDecapTableEntry(ClientInterface& client,
                                    const struct tunnel_info& tunnel_info,
                                    const ::p4::config::v1::P4Info& p4info,
@@ -1868,7 +1872,8 @@ void PrepareVlanPushTableEntry(p4::v1::TableEntry* table_entry,
     auto match = table_entry->add_match();
     match->set_field_id(GetMatchFieldId(p4info, VLAN_PUSH_MOD_TABLE,
                                         VLAN_PUSH_MOD_KEY_MOD_BLOB_PTR));
-    // note: mod_blob_ptr is bit<24>, vlan_id is bit<12>, encoded value is bit<8>.
+    // note: mod_blob_ptr is bit<24>, vlan_id is bit<12>, encoded value is
+    // bit<8>.
     match->mutable_exact()->set_value(EncodeByteValue(1, vlan_id));
   }
 
@@ -1925,7 +1930,7 @@ void PrepareVlanPopTableEntry(p4::v1::TableEntry* table_entry,
   }
 }
 
-// called by: DoConfigVlanEntry
+// called-by: DoConfigVlanEntry
 absl::Status ConfigVlanPushTableEntry(ClientInterface& client,
                                       const uint16_t vlan_id,
                                       const ::p4::config::v1::P4Info& p4info,
@@ -1940,7 +1945,7 @@ absl::Status ConfigVlanPushTableEntry(ClientInterface& client,
   return client.sendWriteRequest(write_request);
 }
 
-// called by: DoConfigVlanEntry
+// called-by: DoConfigVlanEntry
 absl::Status ConfigVlanPopTableEntry(ClientInterface& client,
                                      const uint16_t vlan_id,
                                      const ::p4::config::v1::P4Info& p4info,
@@ -1955,7 +1960,7 @@ absl::Status ConfigVlanPopTableEntry(ClientInterface& client,
   return client.sendWriteRequest(write_request);
 }
 
-// called by: DoConfigTunnelSrcPortEntry
+// called-by: DoConfigTunnelSrcPortEntry
 void PrepareSrcPortTableEntry(p4::v1::TableEntry* table_entry,
                               const struct src_port_info& sp,
                               const ::p4::config::v1::P4Info& p4info,
@@ -1974,14 +1979,14 @@ void PrepareSrcPortTableEntry(p4::v1::TableEntry* table_entry,
     match->mutable_ternary()->set_mask(EncodeByteValue(2, 0xff, 0xff));
   }
   {
-    auto match1 = table_entry->add_match();
-    match1->set_field_id(
+    auto match = table_entry->add_match();
+    match->set_field_id(
         GetMatchFieldId(p4info, SOURCE_PORT_TO_BRIDGE_MAP_TABLE,
                         SOURCE_PORT_TO_BRIDGE_MAP_TABLE_KEY_VID));
-    match1->mutable_ternary()->set_value(
+    match->mutable_ternary()->set_value(
         EncodeByteValue(2, ((sp.vlan_id >> 8) & 0x0f), (sp.vlan_id & 0xff)));
-    match1->mutable_ternary()->set_mask(EncodeByteValue(2, 0x0f, 0xff));
-    // match1->mutable_ternary()->set_mask(EncodeByteValue(1, 0xff));
+    match->mutable_ternary()->set_mask(EncodeByteValue(2, 0x0f, 0xff));
+    // match->mutable_ternary()->set_mask(EncodeByteValue(1, 0xff));
   }
 
   if (insert_entry) {
@@ -2121,8 +2126,8 @@ void PrepareTxAccVsiTableEntry(p4::v1::TableEntry* table_entry, uint32_t sp,
 #if 0
   {
     /* unused match key of 0, code is added for reference */
-    auto match1 = table_entry->add_match();
-    match1->set_field_id(
+    auto match = table_entry->add_match();
+    match->set_field_id(
         GetMatchFieldId(p4info, TX_ACC_VSI_TABLE,
                         TX_ACC_VSI_TABLE_KEY_ZERO_PADDING));
     match->mutable_exact()->set_value(EncodeByteValue(1, 0));
@@ -2130,7 +2135,7 @@ void PrepareTxAccVsiTableEntry(p4::v1::TableEntry* table_entry, uint32_t sp,
 #endif
 }
 
-// called by: DoConfigFdbEntry
+// called-by: DoConfigFdbEntry
 absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV4TableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info) {
@@ -2145,7 +2150,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV4TableEntry(
   return client.sendReadRequest(read_request);
 }
 
-// called by: DoConfigFdbEntry
+// called-by: DoConfigFdbEntry
 absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV6TableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info) {
@@ -2160,7 +2165,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV6TableEntry(
   return client.sendReadRequest(read_request);
 }
 
-// called by: DoConfigFdbEntry
+// called-by: DoConfigFdbEntry
 absl::StatusOr<::p4::v1::ReadResponse> GetFdbTunnelTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool adding = false) {
@@ -2191,7 +2196,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetFdbTunnelTableEntry(
   return client.sendReadRequest(read_request);
 }
 
-// called by: DoConfigFdbEntry
+// called-by: DoConfigFdbEntry
 absl::StatusOr<::p4::v1::ReadResponse> GetFdbVlanTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool adding = false) {
@@ -2206,7 +2211,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetFdbVlanTableEntry(
   return client.sendReadRequest(read_request);
 }
 
-// called by: DoConfigIpMacMapEntry
+// called-by: DoConfigIpMacMapEntry
 absl::StatusOr<::p4::v1::ReadResponse> GetVmSrcTableEntry(
     ClientInterface& client, struct ip_mac_map_info ip_info,
     const ::p4::config::v1::P4Info& p4info) {
@@ -2221,7 +2226,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetVmSrcTableEntry(
   return client.sendReadRequest(read_request);
 }
 
-// called by: ConfigSrcIpMacMapTableEntry
+// called-by: ConfigSrcIpMacMapTableEntry
 absl::StatusOr<::p4::v1::ReadResponse> GetVmDstTableEntry(
     ClientInterface& client, const struct ip_mac_map_info& ip_info,
     const ::p4::config::v1::P4Info& p4info) {
@@ -2236,7 +2241,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetVmDstTableEntry(
   return client.sendReadRequest(read_request);
 }
 
-// called by: DoConfigSrcPortEntry, DoConfigFdbEntry
+// called-by: DoConfigSrcPortEntry, DoConfigFdbEntry
 absl::StatusOr<::p4::v1::ReadResponse> GetTxAccVsiTableEntry(
     ClientInterface& client, uint32_t sp,
     const ::p4::config::v1::P4Info& p4info) {
@@ -2250,7 +2255,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetTxAccVsiTableEntry(
   return client.sendReadRequest(read_request);
 }
 
-// called by: DoConfigSrcPortEntry
+// called-by: DoConfigSrcPortEntry
 absl::Status ConfigureVsiSrcPortTableEntry(
     ClientInterface& client, const struct src_port_info& sp,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
@@ -2264,7 +2269,7 @@ absl::Status ConfigureVsiSrcPortTableEntry(
   return client.sendWriteRequest(write_request);
 }
 
-// called by: DoConfigRxTunnelSrcEntry
+// called-by: DoConfigRxTunnelSrcEntry
 absl::Status ConfigRxTunnelSrcPortTableEntry(
     ClientInterface& client, const struct tunnel_info& tunnel_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
@@ -2286,7 +2291,7 @@ absl::Status ConfigRxTunnelSrcPortTableEntry(
 
 #endif  // ES2K_TARGET
 
-// called by: DoConfigTunnelEntry
+// called-by: DoConfigTunnelEntry
 absl::Status ConfigTunnelTermTableEntry(ClientInterface& client,
                                         const struct tunnel_info& tunnel_info,
                                         const ::p4::config::v1::P4Info& p4info,
@@ -2316,7 +2321,7 @@ absl::Status ConfigTunnelTermTableEntry(ClientInterface& client,
 
 #if defined(ES2K_TARGET)
 
-// called by: DoConfigIpMacMapEntry
+// called-by: DoConfigIpMacMapEntry
 absl::Status ConfigDstIpMacMapTableEntry(ClientInterface& client,
                                          const struct ip_mac_map_info& ip_info,
                                          const ::p4::config::v1::P4Info& p4info,
@@ -2337,7 +2342,7 @@ absl::Status ConfigDstIpMacMapTableEntry(ClientInterface& client,
   return status;
 }
 
-// called by: DoConfigIpMacMapEntry
+// called-by: DoConfigIpMacMapEntry
 absl::Status ConfigSrcIpMacMapTableEntry(ClientInterface& client,
                                          const struct ip_mac_map_info& ip_info,
                                          const ::p4::config::v1::P4Info& p4info,
