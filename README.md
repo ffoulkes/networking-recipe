@@ -1,25 +1,34 @@
 <!-- markdownlint-disable MD041 -->
 [![P4CP build checks](https://github.com/ipdk-io/networking-recipe/actions/workflows/pipeline.yml/badge.svg)](https://github.com/ipdk-io/networking-recipe/actions/workflows/pipeline.yml)
+[![P4CP lint checks](https://github.com/ffoulkes/networking-recipe/actions/workflows/linters.yml/badge.svg)](https://github.com/ffoulkes/networking-recipe/actions/workflows/linters.yml)
 <!-- markdownlint-enable MD041 -->
-# Networking-Recipe (P4 Control Plane)
+# networking-recipe (P4 Control Plane)
 
 This repository is a fork of <https://github.com/ipdk-io/networking-recipe>.
-
-In January 2025, Intel decided to roll the IPDK networking-recipe `main`
-branch back to their `mev-ts-1.9` release (Sep 30, 2024), effectively
-discarding the work I had done since then. This fork allows me to keep
-tinkering without stepping on their toes.
-
-## Repositories
-
-`networking-recipe` is a fork of `ipdk-io/networking-recipe`.
 Its baseline is
 [P4CP v3.3.0.0](https://github.com/ipdk-io/networking-recipe/releases/tag/v3.3.0.0).
 
-`krnlmon/krnlmon` is a fork of `ipdk-io/krnlmon`. Its baseline is
-[Krnlmon v3.2.0.0](https://github.com/ipdk-io/krnlmon/releases/tag/v3.2.0.0).
+The trunk branch is `ffoulkes`.
 
-`stratum/stratum` is a fork of `stratum/stratum`, with the addition of
-a `ffoulkes` branch imported from `ipdk-io/stratum-dev`.
-Its baseline is
-[IPDK Stratum v3.3.0.0](https://github.com/ipdk-io/stratum-dev/releases/tag/v3.3.0.0).
+## Background
+
+In January 2025, Intel decided to roll the IPDK networking-recipe `main`
+branch back to their `mev-ts-1.9` release (Sep 30, 2024), effectively
+discarding the work I had done since then.
+
+This fork allows me to tinker without stepping on their toes.
+
+## Submodules
+
+- [`krnlmon/krnlmon`](https://github.com/ffoulkes/krnlmon)
+is a fork of <https://github.com/ipdk-io/krnlmon>.
+
+- [`stratum/stratum`](https://github.com/ffoulkes/stratum) is a fork of
+<https://github.com/stratum/stratum> (the mothership).</br>
+The `ffoulkes` branch was imported from <https://ipdk-io/stratum-dev>.
+
+## Tags
+
+- `mev-ts-1.9` (point at which the `ffoulkes` branch diverges from the ipdk-io `main` branch)
+- [`v3.2.0.0`](https://github.com/ipdk-io/networking-recipe/releases/tag/v3.2.0.0)
+- [`v3.3.0.0`](https://github.com/ipdk-io/networking-recipe/releases/tag/v3.3.0.0)
