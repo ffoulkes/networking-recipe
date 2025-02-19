@@ -1,6 +1,7 @@
-# CMake build file for ovs-p4rt/sidecar/tests/es2k
+# CMake build file for ovs-p4rt/sidecar/tests/dpdk
 #
 # Copyright 2024 Intel Corporation
+# Copyright 2025 Derek Foster
 # SPDX-License-Identifier: Apache-2.0
 #
 
@@ -45,6 +46,7 @@ endmacro(define_dpdk_test)
 #-----------------------------------------------------------------------
 # DPDK unit tests
 #-----------------------------------------------------------------------
+# PrepareTableEntry tests
 define_dpdk_test(dpdk_fdb_rx_vlan_test)
 define_dpdk_test(dpdk_fdb_tx_vlan_test)
 define_dpdk_test(dpdk_fdb_tx_vxlan_test)
@@ -52,6 +54,11 @@ define_dpdk_test(dpdk_fdb_tx_vxlan_test)
 define_dpdk_test(dpdk_tunnel_term_test)
 
 define_dpdk_test(dpdk_vxlan_encap_test)
+
+if(BUILD_CLIENT)
+  # ConfigTableEntry tests
+  define_dpdk_test(dpdk_config_fdb_entry_test)
+endif()
 
 # Export list of unit tests.
 set(UNIT_TEST_NAMES "${UNIT_TEST_NAMES}" PARENT_SCOPE)
