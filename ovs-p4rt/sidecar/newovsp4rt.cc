@@ -1,4 +1,5 @@
-// Copyright 2022-2025 Intel Corporation
+// Copyright 2022-2024 Intel Corporation
+// Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
 // Revision of ovsp4rt.cc to improve testability.
@@ -1070,6 +1071,17 @@ void PrepareGeneveEncapAndVlanPopTableEntry(
   if (insert_entry) {
     auto table_action = table_entry->mutable_action();
     auto action = table_action->mutable_action();
+    //
+    // TODO(derek): We could simplify the configuration process (here and
+    // elsewhere) by fetching a reference to the action node and using that
+    // to access the remaining information:
+    //
+    //   auto node = GetActionNode(p4info, ACTION_GENEVE_ENCAP_VLAN_POP);
+    //   action->set_action_id(node.actionId());
+    //   ..
+    //   param->set_param_id(
+    //     node.paramId(ACTION_GENEVE_ENCAP_VLAN_POP_PARAM_SRC_ADDR));
+    //
     action->set_action_id(GetActionId(p4info, ACTION_GENEVE_ENCAP_VLAN_POP));
     {
       auto param = action->add_params();
