@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 # Copyright 2024 Intel Corporation
+# Copyright 2025 Derek Foster
 # SPDX-License-Identifier: Apache-2.0
 #
 # Reports unit test code coverage for OVSP4RT on ES2K.
@@ -38,7 +39,10 @@ rm -fr ${OUTPUT_DIR:?}/*
 lcov --capture \
      --directory ${INPUT_DIR} \
      --output-file ${OUTPUT_DIR}/coverage.info \
+     --exclude "$PWD/build/*" \
+     --exclude "$PWD/stratum/*" \
      --exclude '/opt/deps/*' \
+     --exclude '/opt/p4dev/*' \
      --exclude '/usr/include/*'
 
 # Generate html coverage report.
