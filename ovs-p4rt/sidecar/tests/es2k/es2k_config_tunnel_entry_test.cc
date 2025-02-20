@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for DPDK version of DoConfigTunnelEntry().
+// Unit test for ES2K version of DoConfigTunnelEntry().
 
 #include <absl/status/status.h>
 #include <arpa/inet.h>
@@ -25,10 +25,10 @@ namespace ovsp4rt {
 constexpr bool INSERT_ENTRY = true;
 constexpr char GRPC_ADDR[] = "1.2.3.4:5678";
 
-class DpdkConfigTunnelEntryTest : public ::testing::Test {
+class Es2kConfigTunnelEntryTest : public ::testing::Test {
  protected:
-  DpdkConfigTunnelEntryTest() {}
-  ~DpdkConfigTunnelEntryTest() = default;
+  Es2kConfigTunnelEntryTest() {}
+  ~Es2kConfigTunnelEntryTest() = default;
 
   void InitTunnelInfo(struct tunnel_info& tunnel_info, uint8_t tunnel_type) {
     constexpr char IPV4_SRC_ADDR[] = "10.20.30.40";
@@ -73,7 +73,7 @@ class DpdkConfigTunnelEntryTest : public ::testing::Test {
 /**
  * Exercises client.connect() error path.
  */
-TEST_F(DpdkConfigTunnelEntryTest, connectFailure) {
+TEST_F(Es2kConfigTunnelEntryTest, connectFailure) {
   struct tunnel_info tunnel_info = {0};
 
   TestClientMock client;
@@ -90,7 +90,7 @@ TEST_F(DpdkConfigTunnelEntryTest, connectFailure) {
 /**
  * Exercises config.getPipelineConfig() error path.
  */
-TEST_F(DpdkConfigTunnelEntryTest, getPipelineConfigFailure) {
+TEST_F(Es2kConfigTunnelEntryTest, getPipelineConfigFailure) {
   struct tunnel_info tunnel_info = {0};
 
   TestClientMock client;
@@ -109,7 +109,8 @@ TEST_F(DpdkConfigTunnelEntryTest, getPipelineConfigFailure) {
 /**
  * Exercises ConfigEncapTableEntry() error path.
  */
-TEST_F(DpdkConfigTunnelEntryTest, encapTableWriteFailure) {
+TEST_F(Es2kConfigTunnelEntryTest, encapTableWriteFailure) {
+  constexpr char ERROR_MESSAGE[] = "ConfigEncapTableEntry";
   struct tunnel_info tunnel_info = {0};
   InitTunnelInfo(tunnel_info, OVS_TUNNEL_VXLAN);
 
@@ -122,21 +123,23 @@ TEST_F(DpdkConfigTunnelEntryTest, encapTableWriteFailure) {
       .WillRepeatedly(
           DoAll(SetArgPointee<0>(expected_p4info), Return(absl::OkStatus())));
   EXPECT_CALL(client, sendWriteRequest)
-      .WillOnce(Return(absl::InternalError("sendWriteRequest")));
+      .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
   auto status =
       DoConfigTunnelEntry(client, tunnel_info, INSERT_ENTRY, GRPC_ADDR);
 
   ASSERT_FALSE(status.ok());
-  ASSERT_TRUE(IsInternal(status) && status.message() == "sendWriteRequest")
+  ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
       << status.message();
 }
 
 /**
  * Exercises ConfigEncapTableEntry() happy path and
- * ConfigTunnelTermTableEntry() error path.
+ * ConfigDecapTableEntry() error path.
  */
-TEST_F(DpdkConfigTunnelEntryTest, configTunnelTermTableWriteFailure) {
+TEST_F(Es2kConfigTunnelEntryTest, decapTableWriteFailure) {
+  constexpr char ERROR_MESSAGE[] = "ConfigDecapTableEntry";
+
   struct tunnel_info tunnel_info = {0};
   InitTunnelInfo(tunnel_info, OVS_TUNNEL_VXLAN);
 
@@ -149,21 +152,52 @@ TEST_F(DpdkConfigTunnelEntryTest, configTunnelTermTableWriteFailure) {
       .WillRepeatedly(
           DoAll(SetArgPointee<0>(expected_p4info), Return(absl::OkStatus())));
   EXPECT_CALL(client, sendWriteRequest)
-      .WillOnce(Return(absl::OkStatus()))
-      .WillOnce(Return(absl::InternalError("sendWriteRequest")));
+      .WillOnce(Return(absl::OkStatus()))  // ConfigEncapTableEntry
+      .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
   auto status =
       DoConfigTunnelEntry(client, tunnel_info, INSERT_ENTRY, GRPC_ADDR);
 
   ASSERT_FALSE(status.ok());
-  ASSERT_TRUE(IsInternal(status) && status.message() == "sendWriteRequest")
+  ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
+      << status.message();
+}
+
+/**
+ * Exercises ConfigDecapTableEntry() happy path and
+ * ConfigTunnelTermTableEntry() error path.
+ */
+TEST_F(Es2kConfigTunnelEntryTest, tunnelTermTableWriteFailure) {
+  constexpr char ERROR_MESSAGE[] = "ConfigTunnelTermTableEntry";
+
+  struct tunnel_info tunnel_info = {0};
+  InitTunnelInfo(tunnel_info, OVS_TUNNEL_VXLAN);
+
+  ::p4::config::v1::P4Info expected_p4info;
+  InitP4Info(&expected_p4info);
+
+  TestClientMock client;
+  EXPECT_CALL(client, connect).WillRepeatedly(Return(absl::OkStatus()));
+  EXPECT_CALL(client, getPipelineConfig)
+      .WillRepeatedly(
+          DoAll(SetArgPointee<0>(expected_p4info), Return(absl::OkStatus())));
+  EXPECT_CALL(client, sendWriteRequest)
+      .WillOnce(Return(absl::OkStatus()))  // ConfigEncapTableEntry
+      .WillOnce(Return(absl::OkStatus()))  // ConfigDecapTableEntry
+      .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
+
+  auto status =
+      DoConfigTunnelEntry(client, tunnel_info, INSERT_ENTRY, GRPC_ADDR);
+
+  ASSERT_FALSE(status.ok());
+  ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
       << status.message();
 }
 
 /**
  * Exercises ConfigTunnelTermTableEntry() happy path.
  */
-TEST_F(DpdkConfigTunnelEntryTest, tunnelTermTableWriteSuccess) {
+TEST_F(Es2kConfigTunnelEntryTest, tunnelTermTableWriteSuccess) {
   struct tunnel_info tunnel_info = {0};
   InitTunnelInfo(tunnel_info, OVS_TUNNEL_VXLAN);
 
