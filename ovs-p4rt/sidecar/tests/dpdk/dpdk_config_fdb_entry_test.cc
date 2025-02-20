@@ -7,7 +7,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "client/ovsp4rt_client_mock.h"
+#include "client/ovsp4rt_test_client_mock.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_doconfig_int.h"
 #include "p4/config/v1/p4info.pb.h"
@@ -32,17 +32,19 @@ class DpdkConfigFdbEntryTest : public ::testing::Test {
 };
 
 TEST_F(DpdkConfigFdbEntryTest, connectFailure) {
-  ClientMock client;
+  TestClientMock client;
 
   EXPECT_CALL(client, connect).WillOnce(Return(absl::InternalError("connect")));
 
   auto status = DoConfigFdbEntry(client, learn_info_, INSERT_ENTRY, GRPC_ADDR);
 
   ASSERT_FALSE(status.ok());
+  ASSERT_TRUE(IsInternal(status) && status.message() == "connect")
+      << status.message();
 }
 
 TEST_F(DpdkConfigFdbEntryTest, getPipelineConfigFailure) {
-  ClientMock client;
+  TestClientMock client;
 
   EXPECT_CALL(client, connect).WillOnce(Return(absl::OkStatus()));
   EXPECT_CALL(client, getPipelineConfig)
@@ -51,12 +53,12 @@ TEST_F(DpdkConfigFdbEntryTest, getPipelineConfigFailure) {
   auto status = DoConfigFdbEntry(client, learn_info_, INSERT_ENTRY, GRPC_ADDR);
 
   ASSERT_FALSE(status.ok());
+  ASSERT_TRUE(IsInternal(status) && status.message() == "getPipelineConfig")
+      << status.message();
 }
 
-#if false
-
-TEST_F(DpdkConfigFdbEntryTest, configTunnelEntryFailure) {
-  ClientMock client;
+TEST_F(DpdkConfigFdbEntryTest, configTunnelEntryWriteFailure) {
+  TestClientMock client_mock;
   ::p4::config::v1::P4Info expected_p4info;
 
   {
@@ -66,52 +68,59 @@ TEST_F(DpdkConfigFdbEntryTest, configTunnelEntryFailure) {
         << "Error parsing P4INFO_TEXT: " << status.error_message();
   }
 
-  EXPECT_CALL(client, connect).WillOnce(Return(absl::OkStatus()));
-  EXPECT_CALL(client, getPipelineConfig)
+  // TODO(derek): initialize learn_info_
+
+  EXPECT_CALL(client_mock, connect).WillOnce(Return(absl::OkStatus()));
+  EXPECT_CALL(client_mock, getPipelineConfig)
       .WillOnce(
           DoAll(SetArgPointee<0>(expected_p4info), Return(absl::OkStatus())));
-  EXPECT_CALL(client, sendWriteRequest)
+  EXPECT_CALL(client_mock, sendWriteRequest)
       .WillOnce(Return(absl::InternalError("sendWriteRequest")));
 
-  auto status = DoConfigFdbEntry(client, learn_info_, INSERT_ENTRY, GRPC_ADDR);
+  auto status =
+      DoConfigFdbEntry(client_mock, learn_info_, INSERT_ENTRY, GRPC_ADDR);
 
   ASSERT_FALSE(status.ok());
+  ASSERT_TRUE(IsInternal(status) && status.message() == "sendWriteRequest")
+      << status.message();
 }
 
-TEST_F(DpdkConfigFdbEntryTest, configTunnelEntrySuccess) {
-  ClientMock client;
+#if false
+
+TEST_F(DpdkConfigFdbEntryTest, configTunnelEntryWriteSuccess) {
+  TestClientMock client;
 
   EXPECT_CALL(client, connect).WillByDefault(Return(absl::OkStatus()));
 
   auto status = DoConfigFdbEntry(client, learn_info_, INSERT_ENTRY, GRPC_ADDR);
 }
 
-TEST_F(DpdkConfigFdbEntryTest, configVlanTxEntryFailure) {
-  ClientMock client;
+TEST_F(DpdkConfigFdbEntryTest, configVlanTxEntryWriteFailure) {
+  TestClientMock client;
 
   EXPECT_CALL(client, connect).WillByDefault(Return(absl::OkStatus()));
 
   auto status = DoConfigFdbEntry(client, learn_info_, INSERT_ENTRY, GRPC_ADDR);
 }
 
-TEST_F(DpdkConfigFdbEntryTest, configVlanTxEntrySuccess) {
-  ClientMock client;
+TEST_F(DpdkConfigFdbEntryTest, configVlanTxEntryWriteSuccess) {
+  TestClientMock client;
 
   EXPECT_CALL(client, connect).WillByDefault(Return(absl::OkStatus()));
 
   auto status = DoConfigFdbEntry(client, learn_info_, INSERT_ENTRY, GRPC_ADDR);
 }
 
-TEST_F(DpdkConfigFdbEntryTest, configVlanRxEntryFailure) {
-  ClientMock client;
+TEST_F(DpdkConfigFdbEntryTest, configVlanRxEntryWriteFailure) {
+  TestClientMock client;
 
   EXPECT_CALL(client, connect).WillByDefault(Return(absl::OkStatus()));
 
   auto status = DoConfigFdbEntry(client, learn_info_, INSERT_ENTRY, GRPC_ADDR);
 }
 
-TEST_F(DpdkConfigFdbEntryTest, configVlanRxEntrySuccess) {
-  ClientMock client;
+TEST_F(DpdkConfigFdbEntryTest, configVlanRxEntryWriteSuccess) {
+  TestClientMock client;
   auto status = DoConfigFdbEntry(client, learn_info_, INSERT_ENTRY, GRPC_ADDR);
 }
 

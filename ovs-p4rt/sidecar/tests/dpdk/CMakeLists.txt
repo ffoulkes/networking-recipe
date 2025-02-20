@@ -44,9 +44,8 @@ macro(define_dpdk_test TARGET)
 endmacro(define_dpdk_test)
 
 #-----------------------------------------------------------------------
-# DPDK unit tests
+# DPDK PrepareTableEntry unit tests
 #-----------------------------------------------------------------------
-# PrepareTableEntry tests
 define_dpdk_test(dpdk_fdb_rx_vlan_test)
 define_dpdk_test(dpdk_fdb_tx_vlan_test)
 define_dpdk_test(dpdk_fdb_tx_vxlan_test)
@@ -55,9 +54,32 @@ define_dpdk_test(dpdk_tunnel_term_test)
 
 define_dpdk_test(dpdk_vxlan_encap_test)
 
+#-----------------------------------------------------------------------
+# define_dpdk_config_test()
+#-----------------------------------------------------------------------
+macro(define_dpdk_config_test TARGET)
+  add_executable(${TARGET}
+    ${TARGET}.cc
+    test_main.cc
+    $<TARGET_OBJECTS:ovsp4rt_test_client_o>
+  )
+
+  set_test_properties(${TARGET})
+
+  target_link_libraries(${TARGET} PUBLIC
+    absl::flags_parse
+    p4runtime_proto
+    stratum_utils
+  )
+
+  list(APPEND UNIT_TEST_NAMES ${TARGET})
+endmacro(define_dpdk_config_test)
+
+#-----------------------------------------------------------------------
+# DPDK ConfigTableEntry unit tests
+#-----------------------------------------------------------------------
 if(BUILD_CLIENT)
-  # ConfigTableEntry tests
-  define_dpdk_test(dpdk_config_fdb_entry_test)
+  define_dpdk_config_test(dpdk_config_fdb_entry_test)
 endif()
 
 # Export list of unit tests.
