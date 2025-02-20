@@ -10,6 +10,8 @@
 add_library(ovsp4rt_client_o OBJECT
   ovsp4rt_client.cc
   ovsp4rt_client.h
+  ovsp4rt_client_flags.cc
+  ovsp4rt_client_flags.h
   ovsp4rt_client_interface.h
 )
 
@@ -49,4 +51,33 @@ add_library(ovsp4rt_client_so SHARED EXCLUDE_FROM_ALL
 
 set_target_properties(ovsp4rt_client_so PROPERTIES
   OUTPUT_NAME ovsp4rt_client
+)
+
+#-----------------------------------------------------------------------
+# ovsp4rt_test_client_o
+#-----------------------------------------------------------------------
+add_library(ovsp4rt_test_client_o OBJECT
+  ovsp4rt_client_flags.h
+  ovsp4rt_client_interface.h
+  ovsp4rt_test_client.cc
+  ovsp4rt_test_client.h
+)
+
+target_include_directories(ovsp4rt_test_client_o PUBLIC
+  ${OVSP4RT_INCLUDE_DIR}
+  ${SIDECAR_SOURCE_DIR}
+  ${STRATUM_SOURCE_DIR}
+)
+
+target_link_libraries(ovsp4rt_test_client_o PUBLIC
+  p4_role_config_proto
+  p4runtime_proto
+  stratum_utils
+)
+
+#-----------------------------------------------------------------------
+# libovsp4rt_test_client.a
+#-----------------------------------------------------------------------
+add_library(ovsp4rt_test_client STATIC
+  $<TARGET_OBJECTS:ovsp4rt_test_client_o>
 )

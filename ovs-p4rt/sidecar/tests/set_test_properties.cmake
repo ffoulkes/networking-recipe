@@ -1,5 +1,6 @@
 #
 # Copyright 2024 Intel Corporation
+# Copyright 2025 Derek Foster
 # SPDX-License-Identifier: Apache-2.0
 #
 
@@ -17,6 +18,7 @@ function(set_test_properties TARGET)
 
   target_link_libraries(${TARGET} PUBLIC
     GTest::gtest
+    GTest::gmock
     ovsp4rt_test
     p4runtime_proto
     stratum_utils

@@ -1,6 +1,7 @@
-# CMake build file for ovs-p4rt/sidecar/tests/es2k
+# CMake build file for ovs-p4rt/sidecar/tests/dpdk
 #
 # Copyright 2024 Intel Corporation
+# Copyright 2025 Derek Foster
 # SPDX-License-Identifier: Apache-2.0
 #
 
@@ -43,7 +44,7 @@ macro(define_dpdk_test TARGET)
 endmacro(define_dpdk_test)
 
 #-----------------------------------------------------------------------
-# DPDK unit tests
+# DPDK PrepareTableEntry unit tests
 #-----------------------------------------------------------------------
 define_dpdk_test(dpdk_fdb_rx_vlan_test)
 define_dpdk_test(dpdk_fdb_tx_vlan_test)
@@ -52,6 +53,34 @@ define_dpdk_test(dpdk_fdb_tx_vxlan_test)
 define_dpdk_test(dpdk_tunnel_term_test)
 
 define_dpdk_test(dpdk_vxlan_encap_test)
+
+#-----------------------------------------------------------------------
+# define_dpdk_config_test()
+#-----------------------------------------------------------------------
+macro(define_dpdk_config_test TARGET)
+  add_executable(${TARGET}
+    ${TARGET}.cc
+    test_main.cc
+    $<TARGET_OBJECTS:ovsp4rt_test_client_o>
+  )
+
+  set_test_properties(${TARGET})
+
+  target_link_libraries(${TARGET} PUBLIC
+    absl::flags_parse
+    p4runtime_proto
+    stratum_utils
+  )
+
+  list(APPEND UNIT_TEST_NAMES ${TARGET})
+endmacro(define_dpdk_config_test)
+
+#-----------------------------------------------------------------------
+# DPDK ConfigTableEntry unit tests
+#-----------------------------------------------------------------------
+if(BUILD_CLIENT)
+  define_dpdk_config_test(dpdk_config_fdb_entry_test)
+endif()
 
 # Export list of unit tests.
 set(UNIT_TEST_NAMES "${UNIT_TEST_NAMES}" PARENT_SCOPE)

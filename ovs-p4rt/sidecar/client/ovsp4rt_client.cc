@@ -6,14 +6,9 @@
 #include "absl/flags/flag.h"
 #include "absl/status/status.h"
 #include "absl/status/statusor.h"
+#include "ovsp4rt_client_flags.h"
 #include "session/ovsp4rt_credentials.h"
 #include "session/ovsp4rt_session.h"
-
-#define DEFAULT_ROLE_NAME "ovs-p4rt"
-
-ABSL_FLAG(uint64_t, device_id, 1, "P4Runtime device ID.");
-
-ABSL_FLAG(std::string, role_name, DEFAULT_ROLE_NAME, "P4 config role name.");
 
 namespace ovsp4rt {
 
