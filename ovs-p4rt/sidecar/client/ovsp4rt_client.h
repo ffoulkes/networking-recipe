@@ -33,7 +33,7 @@ class Client : public ClientInterface {
       ::p4::v1::ReadRequest* request) override;
 
   // Sends a Read Table Entry request to the P4Runtime server.
-  virtual absl::StatusOr<p4::v1::ReadResponse> sendReadRequest(
+  virtual absl::StatusOr<::p4::v1::ReadResponse> sendReadRequest(
       const p4::v1::ReadRequest& request) override {
     return DoSendReadRequest(request);
   }

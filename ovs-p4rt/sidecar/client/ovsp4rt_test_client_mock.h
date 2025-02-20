@@ -16,12 +16,15 @@ class TestClientMock : public TestClient {
 
   MOCK_METHOD(absl::Status, getPipelineConfig, (::p4::config::v1::P4Info*));
 
-  MOCK_METHOD(::p4::v1::TableEntry*, initReadRequest, (::p4::v1::ReadRequest*));
-
   MOCK_METHOD(absl::StatusOr<p4::v1::ReadResponse>, sendReadRequest,
               (const p4::v1::ReadRequest&));
 
+  MOCK_METHOD(absl::Status, sendWriteRequest,
+              (const p4::v1::WriteRequest& request));
+
 #if false
+  MOCK_METHOD(::p4::v1::TableEntry*, initReadRequest, (::p4::v1::ReadRequest*));
+
   MOCK_METHOD(::p4::v1::TableEntry*, initInsertRequest,
               (::p4::v1::WriteRequest*));
 
@@ -34,9 +37,6 @@ class TestClientMock : public TestClient {
   MOCK_METHOD(::p4::v1::TableEntry*, initWriteRequest,
               (::p4::v1::WriteRequest*, bool));
 #endif
-
-  MOCK_METHOD(absl::Status, sendWriteRequest,
-              (const p4::v1::WriteRequest& request));
 };
 
 }  // namespace ovsp4rt
