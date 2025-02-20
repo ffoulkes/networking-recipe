@@ -80,6 +80,7 @@ endmacro(define_dpdk_config_test)
 #-----------------------------------------------------------------------
 if(BUILD_CLIENT)
   define_dpdk_config_test(dpdk_config_fdb_entry_test)
+  define_dpdk_config_test(dpdk_config_tunnel_entry_test)
 endif()
 
 # Export list of unit tests.
