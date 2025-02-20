@@ -46,6 +46,10 @@ class DpdkConfigFdbEntryTest : public ::testing::Test {
   }
 };
 
+//----------------------------------------------------------------------
+// Setup test cases
+//----------------------------------------------------------------------
+
 /**
  * Exercises client.connect() error path.
  */
@@ -79,6 +83,10 @@ TEST_F(DpdkConfigFdbEntryTest, getPipelineConfigFailure) {
   ASSERT_TRUE(IsInternal(status) && status.message() == "getPipelineConfig")
       << status.message();
 }
+
+//----------------------------------------------------------------------
+// Tunnel test cases
+//----------------------------------------------------------------------
 
 /**
  * Exercises ConfigFdbTunnelTableEntry() error path.
@@ -135,6 +143,10 @@ TEST_F(DpdkConfigFdbEntryTest, configFdbTunnelEntryWriteSuccess) {
 
   ASSERT_TRUE(status.ok()) << status.message();
 }
+
+//----------------------------------------------------------------------
+// Vlan test cases
+//----------------------------------------------------------------------
 
 /**
  * Exercises ConfigFdbTxVlanTableEntry() failure path.
