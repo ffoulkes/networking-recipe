@@ -74,6 +74,7 @@ std::string CanonicalizeIp(const uint32_t ipv4addr) {
                          ((ipv4addr >> 16) & 0xff), ((ipv4addr >> 24) & 0xff));
 }
 
+#if !defined(DPDK_TARGET)
 std::string CanonicalizeIpv6(const struct in6_addr ipv6addr) {
   return EncodeByteValue(
       16, ipv6addr.__in6_u.__u6_addr8[0], ipv6addr.__in6_u.__u6_addr8[1],
@@ -85,6 +86,7 @@ std::string CanonicalizeIpv6(const struct in6_addr ipv6addr) {
       ipv6addr.__in6_u.__u6_addr8[12], ipv6addr.__in6_u.__u6_addr8[13],
       ipv6addr.__in6_u.__u6_addr8[14], ipv6addr.__in6_u.__u6_addr8[15]);
 }
+#endif
 
 std::string CanonicalizeMac(const uint8_t mac[6]) {
   return EncodeByteValue(6, (mac[0] & 0xff), (mac[1] & 0xff), (mac[2] & 0xff),

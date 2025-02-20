@@ -17,7 +17,7 @@ TestClient::TestClient()
       role_name_(absl::GetFlag(FLAGS_role_name)) {}
 
 absl::Status TestClient::connect(const char* grpc_addr) {
-  return absl::OkStatus();
+  return absl::UnimplementedError("connect");
 }
 
 absl::Status TestClient::getPipelineConfig(::p4::config::v1::P4Info* p4info) {

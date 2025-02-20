@@ -44,6 +44,12 @@ class DpdkConfigFdbEntryTest : public ::testing::Test {
     learn_info.vln_info.vlan_id = VLAN_ID;
     learn_info.is_vlan = true;
   }
+
+  void InitP4Info(::p4::config::v1::P4Info* p4info) {
+    auto status = stratum::ParseProtoFromString(P4INFO_TEXT, p4info);
+    EXPECT_TRUE(status.ok())
+        << "ParseProtoFromString: " << status.error_message();
+  }
 };
 
 //----------------------------------------------------------------------
@@ -96,12 +102,7 @@ TEST_F(DpdkConfigFdbEntryTest, configFdbTunnelEntryWriteFailure) {
   InitFdbTunnelInfo(learn_info);
 
   ::p4::config::v1::P4Info expected_p4info;
-  {
-    // Note: return value is stratum::Status, not absl::Status.
-    auto status = stratum::ParseProtoFromString(P4INFO_TEXT, &expected_p4info);
-    ASSERT_TRUE(status.ok())
-        << "Error parsing P4INFO_TEXT: " << status.error_message();
-  }
+  InitP4Info(&expected_p4info);
 
   TestClientMock client;
   EXPECT_CALL(client, connect).WillOnce(Return(absl::OkStatus()));
@@ -124,13 +125,9 @@ TEST_F(DpdkConfigFdbEntryTest, configFdbTunnelEntryWriteFailure) {
 TEST_F(DpdkConfigFdbEntryTest, configFdbTunnelEntryWriteSuccess) {
   struct mac_learning_info learn_info = {0};
   InitFdbTunnelInfo(learn_info);
+
   ::p4::config::v1::P4Info expected_p4info;
-  {
-    // Note: return value is stratum::Status, not absl::Status.
-    auto status = stratum::ParseProtoFromString(P4INFO_TEXT, &expected_p4info);
-    ASSERT_TRUE(status.ok())
-        << "Error parsing P4INFO_TEXT: " << status.error_message();
-  }
+  InitP4Info(&expected_p4info);
 
   TestClientMock client;
   EXPECT_CALL(client, connect).WillOnce(Return(absl::OkStatus()));
@@ -156,12 +153,7 @@ TEST_F(DpdkConfigFdbEntryTest, configVlanTxEntryWriteFailure) {
   InitFdbVlanInfo(learn_info);
 
   ::p4::config::v1::P4Info expected_p4info;
-  {
-    // Note: return value is stratum::Status, not absl::Status.
-    auto status = stratum::ParseProtoFromString(P4INFO_TEXT, &expected_p4info);
-    ASSERT_TRUE(status.ok())
-        << "Error parsing P4INFO_TEXT: " << status.error_message();
-  }
+  InitP4Info(&expected_p4info);
 
   TestClientMock client;
   EXPECT_CALL(client, connect).WillOnce(Return(absl::OkStatus()));
@@ -186,12 +178,7 @@ TEST_F(DpdkConfigFdbEntryTest, configFdbRxVlanRxEntryWriteFailure) {
   InitFdbVlanInfo(learn_info);
 
   ::p4::config::v1::P4Info expected_p4info;
-  {
-    // Note: return value is stratum::Status, not absl::Status.
-    auto status = stratum::ParseProtoFromString(P4INFO_TEXT, &expected_p4info);
-    ASSERT_TRUE(status.ok())
-        << "Error parsing P4INFO_TEXT: " << status.error_message();
-  }
+  InitP4Info(&expected_p4info);
 
   TestClientMock client;
   EXPECT_CALL(client, connect).WillOnce(Return(absl::OkStatus()));
@@ -219,12 +206,7 @@ TEST_F(DpdkConfigFdbEntryTest, configVlanRxEntryWriteSuccess) {
   InitFdbVlanInfo(learn_info);
 
   ::p4::config::v1::P4Info expected_p4info;
-  {
-    // Note: return value is stratum::Status, not absl::Status.
-    auto status = stratum::ParseProtoFromString(P4INFO_TEXT, &expected_p4info);
-    ASSERT_TRUE(status.ok())
-        << "Error parsing P4INFO_TEXT: " << status.error_message();
-  }
+  InitP4Info(&expected_p4info);
 
   TestClientMock client;
   EXPECT_CALL(client, connect).WillOnce(Return(absl::OkStatus()));
