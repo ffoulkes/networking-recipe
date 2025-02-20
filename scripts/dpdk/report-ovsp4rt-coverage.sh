@@ -39,6 +39,7 @@ lcov --capture \
      --directory ${INPUT_DIR} \
      --output-file ${OUTPUT_DIR}/coverage.info \
      --exclude '/opt/deps/*' \
+     --exclude '/opt/p4dev/*' \
      --exclude '/usr/include/*'
 
 # Generate html coverage report.

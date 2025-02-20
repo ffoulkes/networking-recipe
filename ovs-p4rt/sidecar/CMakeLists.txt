@@ -126,6 +126,8 @@ if(TEST_COVERAGE)
 #-----------------------------------------------------------------------
 add_library(ovsp4rt_static STATIC
     $<TARGET_OBJECTS:ovs_sidecar_o>
+    ${OVSP4RT_CLIENT_OBJECTS}
+    ${OVSP4RT_JOURNAL_OBJECTS}
     $<TARGET_OBJECTS:ovsp4rt_logging_o>
     $<TARGET_OBJECTS:ovsp4rt_session_o>
 )
