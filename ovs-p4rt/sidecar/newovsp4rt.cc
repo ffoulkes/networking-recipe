@@ -1550,6 +1550,7 @@ void PrepareV6TunnelTermTableEntry(p4::v1::TableEntry* table_entry,
 }
 #endif  // ES2K_TARGET
 
+// called-by: DoConfigTunnelEntry (common)
 absl::Status ConfigEncapTableEntry(ClientInterface& client,
                                    const struct tunnel_info& tunnel_info,
                                    const ::p4::config::v1::P4Info& p4info,
@@ -1744,6 +1745,7 @@ void PrepareDecapModAndVlanPushTableEntry(
   }
 }
 
+// called-by: DoConfigTunnelEntry (es2k)
 absl::Status ConfigDecapTableEntry(ClientInterface& client,
                                    const struct tunnel_info& tunnel_info,
                                    const ::p4::config::v1::P4Info& p4info,
@@ -1823,6 +1825,7 @@ void PrepareVlanPopTableEntry(p4::v1::TableEntry* table_entry,
   }
 }
 
+// called-by: DoConfigVlanEntry (es2k)
 absl::Status ConfigVlanPushTableEntry(ClientInterface& client,
                                       const uint16_t vlan_id,
                                       const ::p4::config::v1::P4Info& p4info,
@@ -1837,6 +1840,7 @@ absl::Status ConfigVlanPushTableEntry(ClientInterface& client,
   return client.sendWriteRequest(write_request);
 }
 
+// called-by: DoConfigVlanEntry (es2k)
 absl::Status ConfigVlanPopTableEntry(ClientInterface& client,
                                      const uint16_t vlan_id,
                                      const ::p4::config::v1::P4Info& p4info,
@@ -2083,6 +2087,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetFdbVlanTableEntry(
   return client.sendReadRequest(read_request);
 }
 
+// called-by: DoConfigIpMacMapEntry (es2k)
 absl::StatusOr<::p4::v1::ReadResponse> GetVmSrcTableEntry(
     ClientInterface& client, struct ip_mac_map_info ip_info,
     const ::p4::config::v1::P4Info& p4info) {
@@ -2097,6 +2102,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetVmSrcTableEntry(
   return client.sendReadRequest(read_request);
 }
 
+// called-by: DoConfigIpMacMapEntry (es2k)
 absl::StatusOr<::p4::v1::ReadResponse> GetVmDstTableEntry(
     ClientInterface& client, const struct ip_mac_map_info& ip_info,
     const ::p4::config::v1::P4Info& p4info) {
@@ -2158,6 +2164,7 @@ absl::Status ConfigRxTunnelSrcPortTableEntry(
 
 #endif  // ES2K_TARGET
 
+// called-by: DoConfigTunnelEntry (common)
 absl::Status ConfigTunnelTermTableEntry(ClientInterface& client,
                                         const struct tunnel_info& tunnel_info,
                                         const ::p4::config::v1::P4Info& p4info,
@@ -2187,6 +2194,7 @@ absl::Status ConfigTunnelTermTableEntry(ClientInterface& client,
 
 #if defined(ES2K_TARGET)
 
+// called-by: DoConfigIpMacMapEntry (es2k)
 absl::Status ConfigDstIpMacMapTableEntry(ClientInterface& client,
                                          const struct ip_mac_map_info& ip_info,
                                          const ::p4::config::v1::P4Info& p4info,
@@ -2207,6 +2215,7 @@ absl::Status ConfigDstIpMacMapTableEntry(ClientInterface& client,
   return status;
 }
 
+// called-by: DoConfigIpMacMapEntry (es2k)
 absl::Status ConfigSrcIpMacMapTableEntry(ClientInterface& client,
                                          const struct ip_mac_map_info& ip_info,
                                          const ::p4::config::v1::P4Info& p4info,
@@ -2225,6 +2234,129 @@ absl::Status ConfigSrcIpMacMapTableEntry(ClientInterface& client,
     LogFailure(insert_entry, detail.getLogTableName());
   }
   return status;
+}
+
+// Called when deleting an FDB entry because we don't know if it's
+// a Tunnel learn entry or a regular VSI learn entry. Find out and
+// update learn_info accordingly.
+//
+// called-by: DoConfigFdbEntry (es2k)
+void ConfigFdbUpdateTunnelInfo(ClientInterface& client,
+                               struct mac_learning_info& learn_info,
+                               const ::p4::config::v1::P4Info& p4info) {
+  // Matching entry in IPv4 tunnel table?
+  auto status_or_read_response =
+      GetL2ToTunnelV4TableEntry(client, learn_info, p4info);
+  if (status_or_read_response.ok()) {
+    // Yes, we're deleting an IPv4 tunnel.
+    learn_info.is_tunnel = true;
+  }
+
+  if (!learn_info.is_tunnel) {
+    // Matching entry in IPv6 tunnel table?
+    status_or_read_response =
+        GetL2ToTunnelV6TableEntry(client, learn_info, p4info);
+    if (status_or_read_response.ok()) {
+      // We're deleting an IPv6 tunnel.
+      learn_info.is_tunnel = true;
+      learn_info.tnl_info.local_ip.family = AF_INET6;
+      learn_info.tnl_info.remote_ip.family = AF_INET6;
+    }
+  }
+}
+
+// called-by: DoConfigFdbEntry (es2k)
+absl::Status ConfigFdbUpdateSrcPort(ClientInterface& client,
+                                    struct mac_learning_info& learn_info,
+                                    const ::p4::config::v1::P4Info& p4info) {
+  auto response_or_status =
+      GetTxAccVsiTableEntry(client, learn_info.src_port, p4info);
+  if (!response_or_status.ok()) {
+    return response_or_status.status();
+  }
+
+  ::p4::v1::ReadResponse read_response = std::move(response_or_status).value();
+
+  int param_id =
+      GetParamId(p4info, TX_ACC_VSI_TABLE_ACTION_L2_FWD_AND_BYPASS_BRIDGE,
+                 ACTION_L2_FWD_AND_BYPASS_BRIDGE_PARAM_PORT);
+
+  uint32_t host_sp = 0;
+  for (const auto& entity : read_response.entities()) {
+    p4::v1::TableEntry table_entry_1 = entity.table_entry();
+    auto* table_action = table_entry_1.mutable_action();
+    auto* action = table_action->mutable_action();
+    for (const auto& param : action->params()) {
+      if (param_id == param.param_id()) {
+        const std::string& s1 = param.value();
+        std::string s2 = s1;
+        for (int param_bytes = 0; param_bytes < 4; param_bytes++) {
+          host_sp = host_sp << 8 | int(s2[param_bytes]);
+        }
+        break;
+      }
+    }
+  }
+
+  learn_info.src_port = host_sp;
+  return absl::OkStatus();
+}
+
+// called-by: DoConfigFdbEntry (es2k)
+absl::Status ConfigFdbTunnelEntry(ClientInterface& client,
+                                  const struct mac_learning_info& learn_info,
+                                  bool insert_entry,
+                                  const ::p4::config::v1::P4Info& p4info) {
+  if (insert_entry) {
+    auto status_or_read_response =
+        GetFdbTunnelTableEntry(client, learn_info, p4info, true);
+    if (status_or_read_response.ok()) {
+      // Return if entry already exists.
+      return absl::OkStatus();
+    }
+  }
+
+  // Ignores status (why?)
+  (void)ConfigFdbTunnelTableEntry(client, learn_info, p4info, insert_entry);
+
+  // Ignores status (why?)
+  (void)ConfigL2TunnelTableEntry(client, learn_info, p4info, insert_entry);
+
+  // Ignores status (why?)
+  (void)ConfigFdbSmacTableEntry(client, learn_info, p4info, insert_entry);
+
+  return absl::OkStatus();
+}
+
+// called-by: DoConfigFdbEntry (es2k)
+absl::Status ConfigFdbVlanEntry(ClientInterface& client,
+                                struct mac_learning_info& learn_info,
+                                bool insert_entry,
+                                const ::p4::config::v1::P4Info& p4info) {
+  absl::Status status;
+
+  if (insert_entry) {
+    auto status_or_read_response =
+        GetFdbVlanTableEntry(client, learn_info, p4info, true);
+    if (status_or_read_response.ok()) {
+      // Return if entry already exists.
+      return absl::OkStatus();
+    }
+
+    // Ignores status (why?)
+    (void)ConfigFdbRxVlanTableEntry(client, learn_info, p4info, insert_entry);
+
+    status = ConfigFdbUpdateSrcPort(client, learn_info, p4info);
+    if (!status.ok()) return status;
+  }
+
+  // Ignores status (why?)
+  (void)ConfigFdbTxVlanTableEntry(client, learn_info, p4info, insert_entry);
+
+  // Ignores status (why?)
+  (void)ConfigFdbSmacTableEntry(client, learn_info, p4info, insert_entry);
+
+  return absl::OkStatus();
 }
 
 //----------------------------------------------------------------------
@@ -2251,111 +2383,15 @@ absl::Status DoConfigFdbEntry(ClientInterface& client,
   status = client.getPipelineConfig(&p4info);
   if (!status.ok()) return status;
 
-  /* In the delete case, we do not know whether this is a Tunnel learn
-   * entry or a regular VSI learn entry. Check for a match in one of
-   * the L2 Tunnel tables and set the appropriate properties in the
-   * learn_info structure.
-   */
   if (!insert_entry) {
-    auto status_or_read_response =
-        GetL2ToTunnelV4TableEntry(client, learn_info, p4info);
-    if (status_or_read_response.ok()) {
-      learn_info.is_tunnel = true;
-    }
-
-    /* If learn_info.is_tunnel is not true, then we need to check for v6 table
-     * entry as the entry can be either in V4 or V6 tunnel table.
-     */
-    if (!learn_info.is_tunnel) {
-      status_or_read_response =
-          GetL2ToTunnelV6TableEntry(client, learn_info, p4info);
-      if (status_or_read_response.ok()) {
-        learn_info.is_tunnel = true;
-        learn_info.tnl_info.local_ip.family = AF_INET6;
-        learn_info.tnl_info.remote_ip.family = AF_INET6;
-      }
-    }
+    ConfigFdbUpdateTunnelInfo(client, learn_info, p4info);
   }
 
   if (learn_info.is_tunnel) {
-    if (insert_entry) {
-      auto status_or_read_response =
-          GetFdbTunnelTableEntry(client, learn_info, p4info, true);
-      if (status_or_read_response.ok()) {
-        // Return if entry already exists.
-        return status_or_read_response.status();
-      }
-    }
-
-    // Ignore errors (why?)
-    (void)ConfigFdbTunnelTableEntry(client, learn_info, p4info, insert_entry);
-
-    // Ignore errors (why?)
-    (void)ConfigL2TunnelTableEntry(client, learn_info, p4info, insert_entry);
-
-    // Ignore errors (why?)
-    (void)ConfigFdbSmacTableEntry(client, learn_info, p4info, insert_entry);
+    return ConfigFdbTunnelEntry(client, learn_info, insert_entry, p4info);
   } else {
-    if (insert_entry) {
-      auto status_or_read_response =
-          GetFdbVlanTableEntry(client, learn_info, p4info, true);
-      if (status_or_read_response.ok()) {
-        // Return if entry already exists.
-        return absl::OkStatus();
-      }
-
-      // Ignore errors (why?)
-      (void)ConfigFdbRxVlanTableEntry(client, learn_info, p4info, insert_entry);
-
-      // TODO(derek): refactor (extract method)
-      //
-      // GetVsiSrcPort(ClientInterface& client, const P4Info& p4info,
-      //               uint32_t src_port, uint32_t& vsi_port);
-      auto response_or_status =
-          GetTxAccVsiTableEntry(client, learn_info.src_port, p4info);
-      if (!response_or_status.ok()) {
-        return response_or_status.status();
-      }
-
-      ::p4::v1::ReadResponse read_response =
-          std::move(response_or_status).value();
-      std::vector<::p4::v1::TableEntry> table_entries;
-
-      table_entries.reserve(read_response.entities().size());
-
-      int param_id =
-          GetParamId(p4info, TX_ACC_VSI_TABLE_ACTION_L2_FWD_AND_BYPASS_BRIDGE,
-                     ACTION_L2_FWD_AND_BYPASS_BRIDGE_PARAM_PORT);
-
-      uint32_t host_sp = 0;
-      for (const auto& entity : read_response.entities()) {
-        p4::v1::TableEntry table_entry_1 = entity.table_entry();
-        auto* table_action = table_entry_1.mutable_action();
-        auto* action = table_action->mutable_action();
-        for (const auto& param : action->params()) {
-          if (param_id == param.param_id()) {
-            const std::string& s1 = param.value();
-            std::string s2 = s1;
-            for (int param_bytes = 0; param_bytes < 4; param_bytes++) {
-              host_sp = host_sp << 8 | int(s2[param_bytes]);
-            }
-            break;
-          }
-        }
-      }
-
-      learn_info.src_port = host_sp;
-      // end of refactoring
-    }
-
-    // Ignore errors (why?)
-    (void)ConfigFdbTxVlanTableEntry(client, learn_info, p4info, insert_entry);
-
-    // Ignore errors (why?)
-    (void)ConfigFdbSmacTableEntry(client, learn_info, p4info, insert_entry);
+    return ConfigFdbVlanEntry(client, learn_info, insert_entry, p4info);
   }
-
-  return absl::OkStatus();
 }
 
 //----------------------------------------------------------------------
@@ -2580,7 +2616,7 @@ absl::Status DoConfigIpMacMapEntry(ClientInterface& client,
   }
 
   if (ValidIpAddr(ip_info.src_ip_addr.ip.v4addr.s_addr)) {
-    // Ignore errors (why?)
+    // Ignores errors (why?)
     (void)ConfigSrcIpMacMapTableEntry(client, ip_info, p4info, insert_entry);
   }
 
@@ -2593,7 +2629,7 @@ try_dstip:
   }
 
   if (ValidIpAddr(ip_info.src_ip_addr.ip.v4addr.s_addr)) {
-    // Ignore errors (why?)
+    // Ignores errors (why?)
     (void)ConfigDstIpMacMapTableEntry(client, ip_info, p4info, insert_entry);
   }
   return absl::OkStatus();
