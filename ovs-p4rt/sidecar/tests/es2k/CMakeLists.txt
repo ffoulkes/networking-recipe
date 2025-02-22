@@ -146,6 +146,7 @@ if(BUILD_CLIENT)
   define_es2k_config_test(es2k_config_fdb_entry_test)
   define_es2k_config_test(es2k_config_tunnel_entry_test)
   define_es2k_config_test(es2k_config_tunnel_src_port_test)
+  define_es2k_config_test(es2k_config_vlan_entry_test)
 endif()
 
 # Export list of unit tests.
