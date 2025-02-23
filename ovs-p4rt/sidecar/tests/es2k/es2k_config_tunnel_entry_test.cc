@@ -30,7 +30,8 @@ class Es2kConfigTunnelEntryTest : public ::testing::Test {
   Es2kConfigTunnelEntryTest() {}
   ~Es2kConfigTunnelEntryTest() = default;
 
-  void InitTunnelInfo(struct tunnel_info& tunnel_info, uint8_t tunnel_type) {
+  void InitIpv4TunnelInfo(struct tunnel_info& tunnel_info,
+                          uint8_t tunnel_type) {
     constexpr char IPV4_SRC_ADDR[] = "10.20.30.40";
     constexpr char IPV4_DST_ADDR[] = "192.168.17.5";
     constexpr int IPV4_PREFIX_LEN = 24;
@@ -112,7 +113,7 @@ TEST_F(Es2kConfigTunnelEntryTest, getPipelineConfigFailure) {
 TEST_F(Es2kConfigTunnelEntryTest, encapTableWriteFailure) {
   constexpr char ERROR_MESSAGE[] = "ConfigEncapTableEntry";
   struct tunnel_info tunnel_info = {0};
-  InitTunnelInfo(tunnel_info, OVS_TUNNEL_VXLAN);
+  InitIpv4TunnelInfo(tunnel_info, OVS_TUNNEL_VXLAN);
 
   ::p4::config::v1::P4Info expected_p4info;
   InitP4Info(&expected_p4info);
@@ -141,7 +142,7 @@ TEST_F(Es2kConfigTunnelEntryTest, decapTableWriteFailure) {
   constexpr char ERROR_MESSAGE[] = "ConfigDecapTableEntry";
 
   struct tunnel_info tunnel_info = {0};
-  InitTunnelInfo(tunnel_info, OVS_TUNNEL_VXLAN);
+  InitIpv4TunnelInfo(tunnel_info, OVS_TUNNEL_VXLAN);
 
   ::p4::config::v1::P4Info expected_p4info;
   InitP4Info(&expected_p4info);
@@ -171,7 +172,7 @@ TEST_F(Es2kConfigTunnelEntryTest, tunnelTermTableWriteFailure) {
   constexpr char ERROR_MESSAGE[] = "ConfigTunnelTermTableEntry";
 
   struct tunnel_info tunnel_info = {0};
-  InitTunnelInfo(tunnel_info, OVS_TUNNEL_VXLAN);
+  InitIpv4TunnelInfo(tunnel_info, OVS_TUNNEL_VXLAN);
 
   ::p4::config::v1::P4Info expected_p4info;
   InitP4Info(&expected_p4info);
@@ -199,7 +200,7 @@ TEST_F(Es2kConfigTunnelEntryTest, tunnelTermTableWriteFailure) {
  */
 TEST_F(Es2kConfigTunnelEntryTest, tunnelTermTableWriteSuccess) {
   struct tunnel_info tunnel_info = {0};
-  InitTunnelInfo(tunnel_info, OVS_TUNNEL_VXLAN);
+  InitIpv4TunnelInfo(tunnel_info, OVS_TUNNEL_VXLAN);
 
   ::p4::config::v1::P4Info expected_p4info;
   InitP4Info(&expected_p4info);
