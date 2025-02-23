@@ -1856,6 +1856,7 @@ absl::Status ConfigVlanPopTableEntry(ClientInterface& client,
   return client.sendWriteRequest(write_request);
 }
 
+// called-by: DoConfigTunnelSrcPortEntry (es2k)
 void PrepareSrcPortTableEntry(p4::v1::TableEntry* table_entry,
                               const struct src_port_info& sp,
                               const ::p4::config::v1::P4Info& p4info,
@@ -2118,6 +2119,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetVmDstTableEntry(
   return client.sendReadRequest(read_request);
 }
 
+// called-by: DoConfigSrcPortEntry, ConfigFdbUpdateSrcPort
 absl::StatusOr<::p4::v1::ReadResponse> GetTxAccVsiTableEntry(
     ClientInterface& client, uint32_t sp,
     const ::p4::config::v1::P4Info& p4info) {
@@ -2131,6 +2133,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetTxAccVsiTableEntry(
   return client.sendReadRequest(read_request);
 }
 
+// called-by: DoConfigSrcPortEntry (es2k)
 absl::Status ConfigureVsiSrcPortTableEntry(
     ClientInterface& client, const struct src_port_info& sp,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
@@ -2144,6 +2147,7 @@ absl::Status ConfigureVsiSrcPortTableEntry(
   return client.sendWriteRequest(write_request);
 }
 
+// called-by: DoConfigRxTunnelSrcEntry (es2k)
 absl::Status ConfigRxTunnelSrcPortTableEntry(
     ClientInterface& client, const struct tunnel_info& tunnel_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
