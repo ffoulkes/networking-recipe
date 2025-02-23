@@ -10,6 +10,7 @@
 
 #include "client/ovsp4rt_test_client_mock.h"
 #include "ovsp4rt/ovs-p4rt.h"
+#include "ovsp4rt_config_int.h"
 #include "ovsp4rt_doconfig_int.h"
 #include "p4/config/v1/p4info.pb.h"
 #include "p4info_text.h"
@@ -146,11 +147,59 @@ TEST_F(Es2kConfigIpMacMapTest, getVmSrcTableNeitherFound) {
   EXPECT_CALL(client, sendReadRequest)
       .WillOnce(InvokeWithoutArgs(NotFoundReadRequest))
       .WillOnce(InvokeWithoutArgs(NotFoundReadRequest));
+  EXPECT_CALL(client, sendWriteRequest)
+      .WillRepeatedly(Return(absl::OkStatus()));
 
   auto status =
       DoConfigIpMacMapEntry(client, map_info, INSERT_ENTRY, GRPC_ADDR);
 
   ASSERT_TRUE(status.ok()) << status;
+}
+
+/**
+ * Exercises the ConfigSrcIpMacMapTableEntry() failure path.
+ */
+TEST_F(Es2kConfigIpMacMapTest, ConfigSrcIpMacMapTableEntryFailure) {
+  constexpr char ERROR_MESSAGE[] = "sendReadRequest";
+
+  struct ip_mac_map_info map_info = {0};
+  InitIpv4MapInfo(map_info);
+
+  ::p4::config::v1::P4Info p4info;
+  InitP4Info(&p4info);
+
+  TestClientMock client;
+  EXPECT_CALL(client, sendWriteRequest)
+      .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
+
+  auto status =
+      ConfigSrcIpMacMapTableEntry(client, map_info, p4info, INSERT_ENTRY);
+
+  EXPECT_FALSE(status.ok());
+  ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE);
+}
+
+/**
+ * Exercises the ConfigDstIpMacMapTableEntry() failure path.
+ */
+TEST_F(Es2kConfigIpMacMapTest, configDstIpMacMapTableEntryFailure) {
+  constexpr char ERROR_MESSAGE[] = "sendReadRequest";
+
+  struct ip_mac_map_info map_info = {0};
+  InitIpv4MapInfo(map_info);
+
+  ::p4::config::v1::P4Info p4info;
+  InitP4Info(&p4info);
+
+  TestClientMock client;
+  EXPECT_CALL(client, sendWriteRequest)
+      .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
+
+  auto status =
+      ConfigDstIpMacMapTableEntry(client, map_info, p4info, INSERT_ENTRY);
+
+  EXPECT_FALSE(status.ok());
+  ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE);
 }
 
 }  // namespace ovsp4rt

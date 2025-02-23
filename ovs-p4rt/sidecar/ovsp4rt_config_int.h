@@ -4,15 +4,30 @@
 #ifndef OVSP4RT_CONFIG_INT_H_
 #define OVSP4RT_CONFIG_INT_H_
 
+#include <absl/status/statusor.h>
+
 #include "client/ovsp4rt_client_interface.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "p4/config/v1/p4info.pb.h"
+#include "p4/v1/p4runtime.pb.h"
 
 namespace ovsp4rt {
 
-void ConfigFdbUpdateTunnelInfo(ClientInterface& client,
-                               struct mac_learning_info& learn_info,
-                               const ::p4::config::v1::P4Info& p4info);
+#if defined(ES2K_TARGET)
+
+extern absl::Status ConfigDstIpMacMapTableEntry(
+    ClientInterface& client, const struct ip_mac_map_info& ip_info,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry);
+
+extern void ConfigFdbUpdateTunnelInfo(ClientInterface& client,
+                                      struct mac_learning_info& learn_info,
+                                      const ::p4::config::v1::P4Info& p4info);
+
+extern absl::Status ConfigSrcIpMacMapTableEntry(
+    ClientInterface& client, const struct ip_mac_map_info& ip_info,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry);
+
+#endif  // ES2K_TARGET
 
 }  // namespace ovsp4rt
 
