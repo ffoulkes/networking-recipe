@@ -4,7 +4,6 @@
 // Unit test for ES2K version of DoConfigVlanEntry().
 
 #include <absl/status/status.h>
-#include <arpa/inet.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 #include <stdint.h>
@@ -73,6 +72,77 @@ TEST_F(Es2kConfigVlanEntryTest, getPipelineConfigFailure) {
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == PIPELINE_ERROR)
       << status.message();
+}
+
+/**
+ * Exercises the ConfigVlanPushTableEntry error path.
+ */
+TEST_F(Es2kConfigVlanEntryTest, configVlanPushTableEntryFailure) {
+  constexpr char PUSH_ENTRY_ERROR[] = "ConfigVlanPushTableEntry";
+  constexpr uint16_t vlan_id = VLAN_ID;
+
+  ::p4::config::v1::P4Info expected_p4info;
+  InitP4Info(&expected_p4info);
+
+  TestClientMock client;
+  EXPECT_CALL(client, connect).WillOnce(Return(absl::OkStatus()));
+  EXPECT_CALL(client, getPipelineConfig).WillOnce(Return(absl::OkStatus()));
+  EXPECT_CALL(client, sendWriteRequest)
+      .WillOnce(Return(absl::InternalError(PUSH_ENTRY_ERROR)));
+
+  auto status = DoConfigVlanEntry(client, vlan_id, INSERT_ENTRY, GRPC_ADDR);
+
+  ASSERT_FALSE(status.ok());
+  ASSERT_TRUE(IsInternal(status) && status.message() == PUSH_ENTRY_ERROR)
+      << status.message();
+}
+
+/**
+ * Exercises the ConfigVlanPopTableEntry error path.
+ */
+TEST_F(Es2kConfigVlanEntryTest, configVlanPopTableEntryFailure) {
+  constexpr char POP_ENTRY_ERROR[] = "ConfigVlanPopTableEntry";
+  constexpr uint16_t vlan_id = VLAN_ID;
+
+  ::p4::config::v1::P4Info expected_p4info;
+  InitP4Info(&expected_p4info);
+
+  TestClientMock client;
+  EXPECT_CALL(client, connect).WillOnce(Return(absl::OkStatus()));
+  EXPECT_CALL(client, getPipelineConfig)
+      .WillRepeatedly(
+          DoAll(SetArgPointee<0>(expected_p4info), Return(absl::OkStatus())));
+  EXPECT_CALL(client, sendWriteRequest)
+      .WillOnce(Return(absl::OkStatus()))  // ConfigVlanPushTableEntry
+      .WillOnce(Return(absl::InternalError(POP_ENTRY_ERROR)));
+
+  auto status = DoConfigVlanEntry(client, vlan_id, INSERT_ENTRY, GRPC_ADDR);
+
+  ASSERT_FALSE(status.ok());
+  ASSERT_TRUE(IsInternal(status) && status.message() == POP_ENTRY_ERROR)
+      << status.message();
+}
+
+/**
+ * Exercises the DoConfigVlanEntry happy path.
+ */
+TEST_F(Es2kConfigVlanEntryTest, doConfigVlanEntrySuccess) {
+  constexpr uint16_t vlan_id = VLAN_ID;
+
+  ::p4::config::v1::P4Info expected_p4info;
+  InitP4Info(&expected_p4info);
+
+  TestClientMock client;
+  EXPECT_CALL(client, connect).WillOnce(Return(absl::OkStatus()));
+  EXPECT_CALL(client, getPipelineConfig)
+      .WillRepeatedly(
+          DoAll(SetArgPointee<0>(expected_p4info), Return(absl::OkStatus())));
+  EXPECT_CALL(client, sendWriteRequest)
+      .WillRepeatedly(Return(absl::OkStatus()));
+
+  auto status = DoConfigVlanEntry(client, vlan_id, INSERT_ENTRY, GRPC_ADDR);
+
+  ASSERT_TRUE(status.ok()) << status.message();
 }
 
 }  // namespace ovsp4rt
