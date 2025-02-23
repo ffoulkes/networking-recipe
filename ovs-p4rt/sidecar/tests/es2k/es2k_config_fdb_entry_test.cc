@@ -93,9 +93,9 @@ TEST_F(Es2kConfigFdbEntryTest, getPipelineConfigFailure) {
 }
 
 /**
- * Exercises GetFdbTunnelTableEntry(VXLAN) insert path.
+ * Exercises GetFdbTunnelTableEntry insert path.
  */
-TEST_F(Es2kConfigFdbEntryTest, insertV4VxlanTunnelTableEntry) {
+TEST_F(Es2kConfigFdbEntryTest, insertVxlanTunnelTableEntry) {
   struct mac_learning_info learn_info = {0};
   InitLearnInfo(learn_info, OVS_TUNNEL_VXLAN);
   InitV4NativeTagged(learn_info);
