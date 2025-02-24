@@ -5,6 +5,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+option(EXTRA_TESTS "Build ill-considered config unit tests" OFF)
+
 #-----------------------------------------------------------------------
 # es2k_ovsp4rt_test
 #-----------------------------------------------------------------------
@@ -118,39 +120,12 @@ define_tunnel_test(vxlan_encap_v6_table_test)
 define_tunnel_test(vxlan_encap_v4_vlan_pop_test)
 define_tunnel_test(vxlan_encap_v6_vlan_pop_test)
 
-#-----------------------------------------------------------------------
-# define_es2k_config_test()
-#-----------------------------------------------------------------------
-macro(define_es2k_config_test TARGET)
-  add_executable(${TARGET}
-    ${TARGET}.cc
-    test_main.cc
-    $<TARGET_OBJECTS:ovsp4rt_test_client_o>
-  )
+define_es2k_test(es2k_update_tunnel_info_test)
+target_sources(es2k_update_tunnel_info_test PRIVATE
+  $<TARGET_OBJECTS:ovsp4rt_test_client_o>)
 
-  set_test_properties(${TARGET})
-
-  target_link_libraries(${TARGET} PUBLIC
-    absl::flags_parse
-    p4runtime_proto
-    stratum_utils
-  )
-
-  list(APPEND UNIT_TEST_NAMES ${TARGET})
-endmacro(define_es2k_config_test)
-
-#-----------------------------------------------------------------------
-# ES2K ConfigTableEntry unit tests
-#-----------------------------------------------------------------------
-if(BUILD_CLIENT)
-  define_es2k_config_test(es2k_config_fdb_entry_test)
-  define_es2k_config_test(es2k_config_ip_mac_map_test)
-  define_es2k_config_test(es2k_config_rx_tunnel_src_port_test)
-  define_es2k_config_test(es2k_config_src_port_entry_test)
-  define_es2k_config_test(es2k_config_tunnel_entry_test)
-  define_es2k_config_test(es2k_config_tunnel_src_port_test)
-  define_es2k_config_test(es2k_config_vlan_entry_test)
-  define_es2k_config_test(es2k_update_tunnel_info_test)
+if(BUILD_CLIENT AND EXTRA_TESTS)
+  add_subdirectory(extra)
 endif()
 
 # Export list of unit tests.
