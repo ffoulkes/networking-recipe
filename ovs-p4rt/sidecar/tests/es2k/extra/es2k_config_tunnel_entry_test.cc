@@ -28,17 +28,15 @@ constexpr char GRPC_ADDR[] = "1.2.3.4:5678";
 class Es2kConfigTunnelEntryTest : public ::testing::Test {
  protected:
   Es2kConfigTunnelEntryTest() {}
-  ~Es2kConfigTunnelEntryTest() = default;
+  virtual ~Es2kConfigTunnelEntryTest() = default;
 
-  void InitIpv4TunnelInfo(struct tunnel_info& tunnel_info,
-                          uint8_t tunnel_type) {
+  void InitIpv4TunnelInfo(struct tunnel_info& tunnel_info) {
     constexpr char IPV4_SRC_ADDR[] = "10.20.30.40";
     constexpr char IPV4_DST_ADDR[] = "192.168.17.5";
     constexpr int IPV4_PREFIX_LEN = 24;
 
     constexpr uint16_t SRC_PORT = 0x1066;
     constexpr uint16_t DST_PORT = 0x4224;
-    constexpr uint16_t VNI = 0x1776;
 
     EXPECT_EQ(inet_pton(AF_INET, IPV4_SRC_ADDR,
                         &tunnel_info.local_ip.ip.v4addr.s_addr),
@@ -56,9 +54,31 @@ class Es2kConfigTunnelEntryTest : public ::testing::Test {
 
     tunnel_info.src_port = SRC_PORT;
     tunnel_info.dst_port = DST_PORT;
-    tunnel_info.vni = VNI;
-    tunnel_info.tunnel_type = tunnel_type;
   };
+
+  void InitVxlanTagged(struct tunnel_info& tunnel_info) {
+    tunnel_info.tunnel_type = OVS_TUNNEL_VXLAN;
+    tunnel_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_TAGGED;
+    tunnel_info.vni = 0x1066;
+  }
+
+  void InitVxlanUntagged(struct tunnel_info& tunnel_info) {
+    tunnel_info.tunnel_type = OVS_TUNNEL_VXLAN;
+    tunnel_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_UNTAGGED;
+    tunnel_info.vni = 0x1492;
+  }
+
+  void InitGeneveTagged(struct tunnel_info& tunnel_info) {
+    tunnel_info.tunnel_type = OVS_TUNNEL_GENEVE;
+    tunnel_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_TAGGED;
+    tunnel_info.vni = 0x1776;
+  }
+
+  void InitGeneveUntagged(struct tunnel_info& tunnel_info) {
+    tunnel_info.tunnel_type = OVS_TUNNEL_GENEVE;
+    tunnel_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_UNTAGGED;
+    tunnel_info.vni = 0x1984;
+  }
 
   void InitP4Info(::p4::config::v1::P4Info* p4info) {
     auto status = stratum::ParseProtoFromString(P4INFO_TEXT, p4info);
@@ -107,13 +127,19 @@ TEST_F(Es2kConfigTunnelEntryTest, getPipelineConfigFailure) {
       << status.message();
 }
 
+//----------------------------------------------------------------------
+// ConfigEncapTableEntry
+//----------------------------------------------------------------------
+
 /**
  * Exercises ConfigEncapTableEntry() error path.
  */
 TEST_F(Es2kConfigTunnelEntryTest, encapTableWriteFailure) {
   constexpr char ERROR_MESSAGE[] = "ConfigEncapTableEntry";
+
   struct tunnel_info tunnel_info = {0};
-  InitIpv4TunnelInfo(tunnel_info, OVS_TUNNEL_VXLAN);
+  InitIpv4TunnelInfo(tunnel_info);
+  InitVxlanTagged(tunnel_info);
 
   ::p4::config::v1::P4Info expected_p4info;
   InitP4Info(&expected_p4info);
@@ -142,7 +168,8 @@ TEST_F(Es2kConfigTunnelEntryTest, decapTableWriteFailure) {
   constexpr char ERROR_MESSAGE[] = "ConfigDecapTableEntry";
 
   struct tunnel_info tunnel_info = {0};
-  InitIpv4TunnelInfo(tunnel_info, OVS_TUNNEL_VXLAN);
+  InitIpv4TunnelInfo(tunnel_info);
+  InitVxlanTagged(tunnel_info);
 
   ::p4::config::v1::P4Info expected_p4info;
   InitP4Info(&expected_p4info);
@@ -164,6 +191,10 @@ TEST_F(Es2kConfigTunnelEntryTest, decapTableWriteFailure) {
       << status.message();
 }
 
+//----------------------------------------------------------------------
+// ConfigDecapTableEntry
+//----------------------------------------------------------------------
+
 /**
  * Exercises ConfigDecapTableEntry() happy path and
  * ConfigTunnelTermTableEntry() error path.
@@ -172,7 +203,8 @@ TEST_F(Es2kConfigTunnelEntryTest, tunnelTermTableWriteFailure) {
   constexpr char ERROR_MESSAGE[] = "ConfigTunnelTermTableEntry";
 
   struct tunnel_info tunnel_info = {0};
-  InitIpv4TunnelInfo(tunnel_info, OVS_TUNNEL_VXLAN);
+  InitIpv4TunnelInfo(tunnel_info);
+  InitVxlanTagged(tunnel_info);
 
   ::p4::config::v1::P4Info expected_p4info;
   InitP4Info(&expected_p4info);
@@ -195,12 +227,17 @@ TEST_F(Es2kConfigTunnelEntryTest, tunnelTermTableWriteFailure) {
       << status.message();
 }
 
+//----------------------------------------------------------------------
+// ConfigTunnelTermTableEntry
+//----------------------------------------------------------------------
+
 /**
  * Exercises ConfigTunnelTermTableEntry() happy path.
  */
 TEST_F(Es2kConfigTunnelEntryTest, tunnelTermTableWriteSuccess) {
   struct tunnel_info tunnel_info = {0};
-  InitIpv4TunnelInfo(tunnel_info, OVS_TUNNEL_VXLAN);
+  InitIpv4TunnelInfo(tunnel_info);
+  InitVxlanTagged(tunnel_info);
 
   ::p4::config::v1::P4Info expected_p4info;
   InitP4Info(&expected_p4info);
