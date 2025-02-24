@@ -29,7 +29,7 @@ constexpr char GRPC_ADDR[] = "1.2.3.4:5678";
 class Es2kConfigFdbEntryTest : public ::testing::Test {
  protected:
   Es2kConfigFdbEntryTest() {}
-  ~Es2kConfigFdbEntryTest() = default;
+  virtual ~Es2kConfigFdbEntryTest() = default;
 
   void InitTunnelLearnInfo(struct mac_learning_info& fdb_info,
                            uint8_t tunnel_type) {
