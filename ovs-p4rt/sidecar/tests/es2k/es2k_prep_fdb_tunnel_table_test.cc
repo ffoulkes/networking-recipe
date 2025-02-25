@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareFdbTunnelTableEntry().
+// Unit test for Es2kPrepareFdbTunnelTableEntry().
 
 #include <absl/status/status.h>
 #include <gmock/gmock.h>
@@ -119,8 +119,8 @@ TEST_F(Es2kPrepFdbTunnelTableTest, configV4VxlanTunnelEntry) {
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
 
-  PrepareFdbTunnelTableEntry(&table_entry, learn_info, p4info, INSERT_ENTRY,
-                             detail);
+  Es2kPrepareFdbTunnelTableEntry(&table_entry, learn_info, p4info, INSERT_ENTRY,
+                                 detail);
 
   // ASSERT
   CheckActionId(table_entry, p4info, OVS_TUNNEL_VXLAN);
@@ -137,8 +137,8 @@ TEST_F(Es2kPrepFdbTunnelTableTest, configV4GeneveTunnelEntry) {
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
 
-  PrepareFdbTunnelTableEntry(&table_entry, learn_info, p4info, INSERT_ENTRY,
-                             detail);
+  Es2kPrepareFdbTunnelTableEntry(&table_entry, learn_info, p4info, INSERT_ENTRY,
+                                 detail);
 
   CheckActionId(table_entry, p4info, OVS_TUNNEL_GENEVE);
 }
