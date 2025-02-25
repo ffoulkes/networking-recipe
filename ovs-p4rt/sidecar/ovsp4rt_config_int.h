@@ -5,7 +5,7 @@
 #ifndef OVSP4RT_CONFIG_INT_H_
 #define OVSP4RT_CONFIG_INT_H_
 
-#include <absl/status/statusor.h>
+#include <absl/status/status.h>
 
 #include "client/ovsp4rt_client_interface.h"
 #include "ovsp4rt/ovs-p4rt.h"
