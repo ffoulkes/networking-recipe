@@ -168,10 +168,13 @@ endmacro()
 define_es2k_mac_map_test(es2k_config_dst_ip_mac_map_test)
 define_es2k_mac_map_test(es2k_config_src_ip_mac_map_test)
 
-define_es2k_config_test(es2k_prep_fdb_tunnel_table_test)
-
 define_es2k_config_test(es2k_update_src_port_test)
 define_es2k_config_test(es2k_update_tunnel_info_test)
+
+#-----------------------------------------------------------------------
+# es2k_mac_learn_info_tests
+#-----------------------------------------------------------------------
+include(es2k_mac_learn_info_tests.cmake)
 
 if(BUILD_CLIENT AND EXTRA_TESTS)
   add_subdirectory(extra)
