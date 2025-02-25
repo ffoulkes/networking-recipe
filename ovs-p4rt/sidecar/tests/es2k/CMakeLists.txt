@@ -60,9 +60,9 @@ target_link_libraries(tunnel_test_utils PUBLIC
 )
 
 #-----------------------------------------------------------------------
-# define_tunnel_test()
+# define_es2k_tunnel_test()
 #-----------------------------------------------------------------------
-macro(define_tunnel_test TARGET)
+macro(define_es2k_tunnel_test TARGET)
   add_executable(${TARGET}
     ${TARGET}.cc
   )
@@ -74,7 +74,7 @@ macro(define_tunnel_test TARGET)
   )
 
   list(APPEND UNIT_TEST_NAMES ${TARGET})
-endmacro(define_tunnel_test)
+endmacro(define_es2k_tunnel_test)
 
 #-----------------------------------------------------------------------
 # ES2K PrepareTableEntry unit tests
@@ -88,10 +88,10 @@ define_es2k_test(fdb_tx_vxlan_entry_test)
 define_es2k_test(geneve_decap_mod_table_test)
 define_es2k_test(geneve_decap_mod_vlan_push_test)
 
-define_tunnel_test(geneve_encap_v4_table_test)
-define_tunnel_test(geneve_encap_v6_table_test)
-define_tunnel_test(geneve_encap_v4_vlan_pop_test)
-define_tunnel_test(geneve_encap_v6_vlan_pop_test)
+define_es2k_tunnel_test(geneve_encap_v4_table_test)
+define_es2k_tunnel_test(geneve_encap_v6_table_test)
+define_es2k_tunnel_test(geneve_encap_v4_vlan_pop_test)
+define_es2k_tunnel_test(geneve_encap_v6_vlan_pop_test)
 
 define_es2k_test(src_ip_mac_map_table_test)
 define_es2k_test(dst_ip_mac_map_table_test)
@@ -115,14 +115,31 @@ define_es2k_test(vlan_push_mod_table_test)
 define_es2k_test(vxlan_decap_mod_table_test)
 define_es2k_test(vxlan_decap_mod_vlan_push_test)
 
-define_tunnel_test(vxlan_encap_v4_table_test)
-define_tunnel_test(vxlan_encap_v6_table_test)
-define_tunnel_test(vxlan_encap_v4_vlan_pop_test)
-define_tunnel_test(vxlan_encap_v6_vlan_pop_test)
+define_es2k_tunnel_test(vxlan_encap_v4_table_test)
+define_es2k_tunnel_test(vxlan_encap_v6_table_test)
+define_es2k_tunnel_test(vxlan_encap_v4_vlan_pop_test)
+define_es2k_tunnel_test(vxlan_encap_v6_vlan_pop_test)
 
-define_es2k_test(es2k_update_tunnel_info_test)
-target_sources(es2k_update_tunnel_info_test PRIVATE
-  $<TARGET_OBJECTS:ovsp4rt_test_client_o>)
+#-----------------------------------------------------------------------
+# define_es2k_config_test()
+#-----------------------------------------------------------------------
+macro(define_es2k_config_test TARGET)
+  add_executable(${TARGET}
+    ${TARGET}.cc
+    $<TARGET_OBJECTS:ovsp4rt_test_client_o>
+  )
+
+  set_test_properties(${TARGET})
+
+  target_link_libraries(${TARGET} PUBLIC
+    tunnel_test_utils
+  )
+
+  list(APPEND UNIT_TEST_NAMES ${TARGET})
+endmacro()
+
+define_es2k_config_test(es2k_update_src_port_test)
+define_es2k_config_test(es2k_update_tunnel_info_test)
 
 if(BUILD_CLIENT AND EXTRA_TESTS)
   add_subdirectory(extra)

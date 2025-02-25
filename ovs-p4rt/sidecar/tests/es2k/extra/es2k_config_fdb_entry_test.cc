@@ -10,7 +10,7 @@
 #include "client/ovsp4rt_test_client_mock.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_doconfig_int.h"
-#include "ovsp4rt_private.h"  // EncodeBytes
+#include "ovsp4rt_private.h"  // EncodeByteValue
 #include "p4/config/v1/p4info.pb.h"
 #include "p4info_text.h"
 #include "stratum/lib/utils.h"
@@ -35,6 +35,7 @@ class Es2kConfigFdbEntryTest : public ::testing::Test {
                            uint8_t tunnel_type) {
     constexpr uint8_t MAC_ADDR[] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66};
     constexpr uint8_t BRIDGE_ID = 42;
+
     memcpy(fdb_info.mac_addr, MAC_ADDR, sizeof(MAC_ADDR));
     fdb_info.bridge_id = BRIDGE_ID;
     fdb_info.tnl_info.tunnel_type = tunnel_type;

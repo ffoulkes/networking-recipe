@@ -4,7 +4,6 @@
 // Unit test for ConfigFdbUpdateTunnelInfo() [ES2K]
 
 #include <absl/status/status.h>
-#include <arpa/inet.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
@@ -15,11 +14,8 @@
 #include "p4info_text.h"
 #include "stratum/lib/utils.h"
 
-using ::testing::_;
-using ::testing::DoAll;
 using ::testing::InvokeWithoutArgs;
 using ::testing::Return;
-using ::testing::SetArgPointee;
 
 namespace ovsp4rt {
 
