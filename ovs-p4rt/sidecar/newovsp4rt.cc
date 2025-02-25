@@ -670,19 +670,11 @@ absl::Status ConfigFdbRxVlanTableEntry(
   return status;
 }
 
-absl::Status ConfigFdbTunnelTableEntry(
-    ClientInterface& client, const struct mac_learning_info& learn_info,
-    const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
-  ::p4::v1::WriteRequest write_request;
-  ::p4::v1::TableEntry* table_entry;
-  DiagDetail detail;
-
-  table_entry = client.initWriteRequest(&write_request, insert_entry);
-
-#if defined(DPDK_TARGET)
-  PrepareFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info,
-                                       insert_entry, detail);
-#elif defined(ES2K_TARGET)
+#if defined(ES2K_TARGET)
+void PrepareFdbTunnelTableEntry(p4::v1::TableEntry* table_entry,
+                                const struct mac_learning_info& learn_info,
+                                const ::p4::config::v1::P4Info& p4info,
+                                bool insert_entry, DiagDetail& detail) {
   if (learn_info.tnl_info.tunnel_type == OVS_TUNNEL_VXLAN) {
     PrepareFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info,
                                          insert_entry, detail);
@@ -697,6 +689,24 @@ absl::Status ConfigFdbTunnelTableEntry(
                                            insert_entry, detail);
     }
   }
+}
+#endif  // ES2K_TARGET
+
+absl::Status ConfigFdbTunnelTableEntry(
+    ClientInterface& client, const struct mac_learning_info& learn_info,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
+  ::p4::v1::WriteRequest write_request;
+  ::p4::v1::TableEntry* table_entry;
+  DiagDetail detail;
+
+  table_entry = client.initWriteRequest(&write_request, insert_entry);
+
+#if defined(DPDK_TARGET)
+  PrepareFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info,
+                                       insert_entry, detail);
+#elif defined(ES2K_TARGET)
+  PrepareFdbTunnelTableEntry(table_entry, learn_info, p4info, insert_entry,
+                             detail);
 #else
 #error "ASSERT: Unknown TARGET type!"
 #endif
