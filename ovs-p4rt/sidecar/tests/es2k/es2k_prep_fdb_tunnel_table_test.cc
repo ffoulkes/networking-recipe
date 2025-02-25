@@ -4,30 +4,20 @@
 // Unit test for Es2kPrepareFdbTunnelTableEntry().
 
 #include <absl/status/status.h>
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
-#include "client/ovsp4rt_test_client_mock.h"
+#include "base_mac_learn_info_test.h"
 #include "es2k/p4_name_mapping.h"
 #include "logging/ovsp4rt_diag_detail.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_private.h"
 #include "p4/config/v1/p4info.pb.h"
-#include "p4info_text.h"
-#include "stratum/lib/utils.h"
-
-using ::testing::InvokeWithoutArgs;
-using ::testing::Return;
 
 namespace ovsp4rt {
 
-constexpr bool INSERT_ENTRY = true;
-constexpr bool REMOVE_ENTRY = false;
-
-constexpr bool DELETE_ENTRY = false;
 constexpr char GRPC_ADDR[] = "1.2.3.4:5678";
 
-class Es2kPrepFdbTunnelTableTest : public ::testing::Test {
+class Es2kPrepFdbTunnelTableTest : public BaseMacLearnInfoTest {
  protected:
   Es2kPrepFdbTunnelTableTest() {}
   virtual ~Es2kPrepFdbTunnelTableTest() = default;
@@ -41,51 +31,6 @@ class Es2kPrepFdbTunnelTableTest : public ::testing::Test {
     fdb_info.bridge_id = BRIDGE_ID;
     fdb_info.tnl_info.tunnel_type = tunnel_type;
     fdb_info.is_tunnel = true;
-  }
-
-  static void InitVlanLearnInfo(struct mac_learning_info& fdb_info) {
-    constexpr uint8_t MAC_ADDR[] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66};
-    constexpr uint8_t BRIDGE_ID = 99;
-    constexpr uint32_t SRC_PORT = 0x42;
-
-    memcpy(fdb_info.mac_addr, MAC_ADDR, sizeof(fdb_info.mac_addr));
-    fdb_info.bridge_id = BRIDGE_ID;
-    fdb_info.rx_src_port = SRC_PORT;
-    fdb_info.is_vlan = true;
-  }
-
-  static void InitV4NativeTagged(struct mac_learning_info& fdb_info) {
-    fdb_info.tnl_info.local_ip.family = AF_INET;
-    fdb_info.tnl_info.remote_ip.family = AF_INET;
-    fdb_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_TAGGED;
-    fdb_info.tnl_info.vni = 0x1984U;
-  }
-
-  static void InitV4NativeUntagged(struct mac_learning_info& fdb_info) {
-    fdb_info.tnl_info.local_ip.family = AF_INET;
-    fdb_info.tnl_info.remote_ip.family = AF_INET;
-    fdb_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_UNTAGGED;
-    fdb_info.tnl_info.vni = 0x1776U;
-  }
-
-  static void InitV6NativeTagged(struct mac_learning_info& fdb_info) {
-    fdb_info.tnl_info.local_ip.family = AF_INET6;
-    fdb_info.tnl_info.remote_ip.family = AF_INET6;
-    fdb_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_TAGGED;
-    fdb_info.tnl_info.vni = 0xFACEU;
-  }
-
-  static void InitV6NativeUntagged(struct mac_learning_info& fdb_info) {
-    fdb_info.tnl_info.local_ip.family = AF_INET6;
-    fdb_info.tnl_info.remote_ip.family = AF_INET6;
-    fdb_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_UNTAGGED;
-    fdb_info.tnl_info.vni = 0xCEDEU;
-  }
-
-  static void InitP4Info(::p4::config::v1::P4Info* p4info) {
-    auto status = stratum::ParseProtoFromString(P4INFO_TEXT, p4info);
-    EXPECT_TRUE(status.ok())
-        << "ParseProtoFromString: " << status.error_message();
   }
 
   static void CheckActionId(const ::p4::v1::TableEntry& table_entry,
