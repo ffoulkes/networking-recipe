@@ -1,4 +1,5 @@
 // Copyright 2022-2024 Intel Corporation
+// Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
 #ifndef OVSP4RT_PRIVATE_H_
@@ -69,6 +70,11 @@ extern void PrepareFdbSmacTableEntry(p4::v1::TableEntry* table_entry,
                                      const struct mac_learning_info& learn_info,
                                      const ::p4::config::v1::P4Info& p4info,
                                      bool insert_entry, DiagDetail& detail);
+
+extern void PrepareFdbTunnelTableEntry(
+    p4::v1::TableEntry* table_entry, const struct mac_learning_info& learn_info,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry,
+    DiagDetail& detail);
 
 extern void PrepareSrcIpMacMapTableEntry(p4::v1::TableEntry* table_entry,
                                          const struct ip_mac_map_info& ip_info,
