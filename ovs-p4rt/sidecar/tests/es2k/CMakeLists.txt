@@ -138,6 +138,7 @@ macro(define_es2k_config_test TARGET)
   list(APPEND UNIT_TEST_NAMES ${TARGET})
 endmacro()
 
+define_es2k_config_test(es2k_config_src_ip_mac_map_test)
 define_es2k_config_test(es2k_update_src_port_test)
 define_es2k_config_test(es2k_update_tunnel_info_test)
 
