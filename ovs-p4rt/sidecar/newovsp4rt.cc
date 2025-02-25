@@ -671,10 +671,10 @@ absl::Status ConfigFdbRxVlanTableEntry(
 }
 
 #if defined(ES2K_TARGET)
-void PrepareFdbTunnelTableEntry(p4::v1::TableEntry* table_entry,
-                                const struct mac_learning_info& learn_info,
-                                const ::p4::config::v1::P4Info& p4info,
-                                bool insert_entry, DiagDetail& detail) {
+void Es2kPrepareFdbTunnelTableEntry(p4::v1::TableEntry* table_entry,
+                                    const struct mac_learning_info& learn_info,
+                                    const ::p4::config::v1::P4Info& p4info,
+                                    bool insert_entry, DiagDetail& detail) {
   if (learn_info.tnl_info.tunnel_type == OVS_TUNNEL_VXLAN) {
     PrepareFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info,
                                          insert_entry, detail);
@@ -705,8 +705,8 @@ absl::Status ConfigFdbTunnelTableEntry(
   PrepareFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info,
                                        insert_entry, detail);
 #elif defined(ES2K_TARGET)
-  PrepareFdbTunnelTableEntry(table_entry, learn_info, p4info, insert_entry,
-                             detail);
+  Es2kPrepareFdbTunnelTableEntry(table_entry, learn_info, p4info, insert_entry,
+                                 detail);
 #else
 #error "ASSERT: Unknown TARGET type!"
 #endif
