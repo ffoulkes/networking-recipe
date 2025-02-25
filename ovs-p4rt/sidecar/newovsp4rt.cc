@@ -1569,6 +1569,8 @@ void Es2kPrepareEncapTableEntry(p4::v1::TableEntry* table_entry,
     } else {
       PrepareV6EncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
     }
+  } else {
+    // TODO(derek): error case?
   }
 }
 #endif  // ES2K_TARGET
@@ -1585,7 +1587,6 @@ absl::Status ConfigEncapTableEntry(ClientInterface& client,
 
 #if defined(DPDK_TARGET)
   PrepareEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
-
 #elif defined(ES2K_TARGET)
   Es2kPrepareEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
 #else
