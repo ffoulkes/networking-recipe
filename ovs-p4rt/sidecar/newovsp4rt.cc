@@ -1548,20 +1548,11 @@ void PrepareV6TunnelTermTableEntry(p4::v1::TableEntry* table_entry,
 }
 #endif  // ES2K_TARGET
 
-// called-by: DoConfigTunnelEntry (common)
-absl::Status ConfigEncapTableEntry(ClientInterface& client,
-                                   const struct tunnel_info& tunnel_info,
-                                   const ::p4::config::v1::P4Info& p4info,
-                                   bool insert_entry) {
-  ::p4::v1::WriteRequest write_request;
-  ::p4::v1::TableEntry* table_entry;
-
-  table_entry = client.initWriteRequest(&write_request, insert_entry);
-
-#if defined(DPDK_TARGET)
-  PrepareEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
-
-#elif defined(ES2K_TARGET)
+#if defined(ES2K_TARGET)
+void Es2kPrepareEncapTableEntry(p4::v1::TableEntry* table_entry,
+                                const struct tunnel_info& tunnel_info,
+                                const ::p4::config::v1::P4Info& p4info,
+                                bool insert_entry) {
   if (tunnel_info.local_ip.family == AF_INET &&
       tunnel_info.remote_ip.family == AF_INET) {
     if (tunnel_info.vlan_info.port_vlan_mode == P4_PORT_VLAN_NATIVE_UNTAGGED) {
@@ -1578,7 +1569,26 @@ absl::Status ConfigEncapTableEntry(ClientInterface& client,
     } else {
       PrepareV6EncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
     }
+  } else {
+    // TODO(derek): error case?
   }
+}
+#endif  // ES2K_TARGET
+
+// called-by: DoConfigTunnelEntry (common)
+absl::Status ConfigEncapTableEntry(ClientInterface& client,
+                                   const struct tunnel_info& tunnel_info,
+                                   const ::p4::config::v1::P4Info& p4info,
+                                   bool insert_entry) {
+  ::p4::v1::WriteRequest write_request;
+  ::p4::v1::TableEntry* table_entry;
+
+  table_entry = client.initWriteRequest(&write_request, insert_entry);
+
+#if defined(DPDK_TARGET)
+  PrepareEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+#elif defined(ES2K_TARGET)
+  Es2kPrepareEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
 #else
 #error "ASSERT: Unknown TARGET type!"
 #endif
