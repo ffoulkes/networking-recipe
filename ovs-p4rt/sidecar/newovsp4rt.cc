@@ -2200,6 +2200,21 @@ absl::Status ConfigRxTunnelSrcPortTableEntry(
   return client.sendWriteRequest(write_request);
 }
 
+// called-by: ConfigTunnelTermTableEntry
+void Es2kPrepareTunnelTermTableEntry(p4::v1::TableEntry* table_entry,
+                                     const struct tunnel_info& tunnel_info,
+                                     const ::p4::config::v1::P4Info& p4info,
+                                     bool insert_entry) {
+  if (tunnel_info.local_ip.family == AF_INET &&
+      tunnel_info.remote_ip.family == AF_INET) {
+    PrepareTunnelTermTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+  } else if (tunnel_info.local_ip.family == AF_INET6 &&
+             tunnel_info.remote_ip.family == AF_INET6) {
+    PrepareV6TunnelTermTableEntry(table_entry, tunnel_info, p4info,
+                                  insert_entry);
+  }
+}
+
 #endif  // ES2K_TARGET
 
 // called-by: DoConfigTunnelEntry (common)
@@ -2211,18 +2226,12 @@ absl::Status ConfigTunnelTermTableEntry(ClientInterface& client,
   ::p4::v1::TableEntry* table_entry;
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
+
 #if defined(DPDK_TARGET)
   PrepareTunnelTermTableEntry(table_entry, tunnel_info, p4info, insert_entry);
-
 #elif defined(ES2K_TARGET)
-  if (tunnel_info.local_ip.family == AF_INET &&
-      tunnel_info.remote_ip.family == AF_INET) {
-    PrepareTunnelTermTableEntry(table_entry, tunnel_info, p4info, insert_entry);
-  } else if (tunnel_info.local_ip.family == AF_INET6 &&
-             tunnel_info.remote_ip.family == AF_INET6) {
-    PrepareV6TunnelTermTableEntry(table_entry, tunnel_info, p4info,
+  Es2kPrepareTunnelTermTableEntry(table_entry, tunnel_info, p4info,
                                   insert_entry);
-  }
 #else
 #error "ASSERT: Unknown TARGET type!"
 #endif

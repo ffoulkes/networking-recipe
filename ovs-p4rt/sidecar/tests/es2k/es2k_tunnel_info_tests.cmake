@@ -45,6 +45,8 @@ macro(define_es2k_tunnel_info_test TARGET)
 endmacro()
 
 define_es2k_tunnel_info_test(config_encap_table_entry_test)
+define_es2k_tunnel_info_test(config_tunnel_term_entry_test)
 define_es2k_tunnel_info_test(es2k_prep_decap_table_test)
 define_es2k_tunnel_info_test(es2k_prep_encap_table_test)
+define_es2k_tunnel_info_test(es2k_prep_tunnel_term_entry_test)
 
