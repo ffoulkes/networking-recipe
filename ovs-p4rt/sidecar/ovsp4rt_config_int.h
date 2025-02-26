@@ -6,6 +6,7 @@
 #define OVSP4RT_CONFIG_INT_H_
 
 #include <absl/status/status.h>
+#include <absl/status/statusor.h>
 
 #include "client/ovsp4rt_client_interface.h"
 #include "ovsp4rt/ovs-p4rt.h"
@@ -35,6 +36,18 @@ extern void ConfigFdbUpdateTunnelInfo(ClientInterface& client,
 extern absl::Status ConfigSrcIpMacMapTableEntry(
     ClientInterface& client, const struct ip_mac_map_info& ip_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
+
+extern absl::Status ConfigVlanPopTableEntry(
+    ClientInterface& client, const uint16_t vlan_id,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry);
+
+extern absl::Status ConfigVlanPushTableEntry(
+    ClientInterface& client, const uint16_t vlan_id,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry);
+
+extern absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV4TableEntry(
+    ClientInterface& client, const struct mac_learning_info& learn_info,
+    const ::p4::config::v1::P4Info& p4info);
 
 #endif  // ES2K_TARGET
 
