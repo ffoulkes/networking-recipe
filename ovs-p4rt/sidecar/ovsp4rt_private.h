@@ -51,7 +51,13 @@ extern void PrepareTunnelTermTableEntry(p4::v1::TableEntry* table_entry,
 //----------------------------------------------------------------------
 
 #if defined(ES2K_TARGET)
-extern void Es2kPrepareEncapTableEntry(p4::v1::TableEntry* table_entry,
+
+extern void Es2kPrepareDecapTableEntry(::p4::v1::TableEntry* table_entry,
+                                       const struct tunnel_info& tunnel_info,
+                                       const ::p4::config::v1::P4Info& p4info,
+                                       bool insert_entry);
+
+extern void Es2kPrepareEncapTableEntry(::p4::v1::TableEntry* table_entry,
                                        const struct tunnel_info& tunnel_info,
                                        const ::p4::config::v1::P4Info& p4info,
                                        bool insert_entry);
