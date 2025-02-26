@@ -11,6 +11,7 @@
 #include "logging/ovsp4rt_diag_detail.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_private.h"
+#include "ovsp4rt_util_int.h"
 #include "p4/config/v1/p4info.pb.h"
 
 namespace ovsp4rt {

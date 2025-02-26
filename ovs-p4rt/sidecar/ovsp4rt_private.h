@@ -5,27 +5,12 @@
 #ifndef OVSP4RT_PRIVATE_H_
 #define OVSP4RT_PRIVATE_H_
 
-#include <stdarg.h>
-#include <stdbool.h>
-
 #include "logging/ovsp4rt_diag_detail.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "p4/config/v1/p4info.pb.h"
 #include "p4/v1/p4runtime.pb.h"
 
 namespace ovsp4rt {
-
-//----------------------------------------------------------------------
-// Utility functions
-//----------------------------------------------------------------------
-
-extern std::string EncodeByteValue(int arg_count...);
-
-extern int GetActionId(const ::p4::config::v1::P4Info& p4info,
-                       const std::string& a_name);
-
-extern int GetTableId(const ::p4::config::v1::P4Info& p4info,
-                      const std::string& t_name);
 
 //----------------------------------------------------------------------
 // Common functions
