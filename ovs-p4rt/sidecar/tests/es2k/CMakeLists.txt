@@ -176,6 +176,14 @@ define_es2k_config_test(es2k_update_tunnel_info_test)
 #-----------------------------------------------------------------------
 include(es2k_mac_learn_info_tests.cmake)
 
+#-----------------------------------------------------------------------
+# es2k_tunnel_info_tests
+#-----------------------------------------------------------------------
+include(es2k_tunnel_info_tests.cmake)
+
+#-----------------------------------------------------------------------
+# DoConfig tests
+#-----------------------------------------------------------------------
 if(BUILD_CLIENT AND EXTRA_TESTS)
   add_subdirectory(extra)
 endif()
