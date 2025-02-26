@@ -1,4 +1,5 @@
 // Copyright 2024 Intel Corporation
+// Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
 #include <arpa/inet.h>
@@ -8,7 +9,7 @@
 
 #include "gtest/gtest.h"
 #include "ovsp4rt/ovs-p4rt.h"
-#include "ovsp4rt_private.h"
+#include "ovsp4rt_util_int.h"
 
 namespace ovsp4rt {
 

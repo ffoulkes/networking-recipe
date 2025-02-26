@@ -15,6 +15,7 @@
 #include "ovsp4rt_config_int.h"
 #include "ovsp4rt_doconfig_int.h"
 #include "ovsp4rt_private.h"
+#include "ovsp4rt_util_int.h"
 
 #if defined(DPDK_TARGET)
 #include "dpdk/p4_name_mapping.h"
