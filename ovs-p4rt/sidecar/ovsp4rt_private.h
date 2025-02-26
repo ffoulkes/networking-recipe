@@ -5,6 +5,8 @@
 #ifndef OVSP4RT_PRIVATE_H_
 #define OVSP4RT_PRIVATE_H_
 
+#include <absl/status/status.h>
+
 #include "logging/ovsp4rt_diag_detail.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "p4/config/v1/p4info.pb.h"
