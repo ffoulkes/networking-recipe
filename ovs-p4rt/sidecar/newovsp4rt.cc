@@ -720,6 +720,7 @@ absl::Status ConfigFdbTunnelTableEntry(
 }
 
 /* VXLAN_ENCAP_MOD_TABLE */
+// Ipv4, Tagged, Vxlan
 void PrepareVxlanEncapTableEntry(p4::v1::TableEntry* table_entry,
                                  const struct tunnel_info& tunnel_info,
                                  const ::p4::config::v1::P4Info& p4info,
@@ -782,6 +783,7 @@ void PrepareVxlanEncapTableEntry(p4::v1::TableEntry* table_entry,
 
 #if defined(ES2K_TARGET)
 /* GENEVE_ENCAP_MOD_TABLE */
+// Ipv4, Tagged, Geneve
 void PrepareGeneveEncapTableEntry(p4::v1::TableEntry* table_entry,
                                   const struct tunnel_info& tunnel_info,
                                   const ::p4::config::v1::P4Info& p4info,
@@ -841,6 +843,7 @@ void PrepareGeneveEncapTableEntry(p4::v1::TableEntry* table_entry,
 }
 #endif  // ES2K_TARGET
 
+// Ipv4, Tagged
 void PrepareEncapTableEntry(p4::v1::TableEntry* table_entry,
                             const struct tunnel_info& tunnel_info,
                             const ::p4::config::v1::P4Info& p4info,
@@ -862,6 +865,7 @@ void PrepareEncapTableEntry(p4::v1::TableEntry* table_entry,
 #if defined(ES2K_TARGET)
 
 /* VXLAN_ENCAP_V6_MOD_TABLE */
+// Ipv6, Tagged, Vxlan
 void PrepareV6VxlanEncapTableEntry(p4::v1::TableEntry* table_entry,
                                    const struct tunnel_info& tunnel_info,
                                    const ::p4::config::v1::P4Info& p4info,
@@ -921,6 +925,7 @@ void PrepareV6VxlanEncapTableEntry(p4::v1::TableEntry* table_entry,
 }
 
 /* GENEVE_ENCAP_V6_MOD_TABLE */
+// Ipv6, Tagged, Geneve
 void PrepareV6GeneveEncapTableEntry(p4::v1::TableEntry* table_entry,
                                     const struct tunnel_info& tunnel_info,
                                     const ::p4::config::v1::P4Info& p4info,
@@ -979,6 +984,7 @@ void PrepareV6GeneveEncapTableEntry(p4::v1::TableEntry* table_entry,
   }
 }
 
+// Ipv6, Tagged
 void PrepareV6EncapTableEntry(p4::v1::TableEntry* table_entry,
                               const struct tunnel_info& tunnel_info,
                               const ::p4::config::v1::P4Info& p4info,
@@ -1130,6 +1136,7 @@ void PrepareGeneveEncapAndVlanPopTableEntry(
   }
 }
 
+// Ipv4, Untagged
 void PrepareEncapAndVlanPopTableEntry(p4::v1::TableEntry* table_entry,
                                       const struct tunnel_info& tunnel_info,
                                       const ::p4::config::v1::P4Info& p4info,
@@ -1146,6 +1153,7 @@ void PrepareEncapAndVlanPopTableEntry(p4::v1::TableEntry* table_entry,
 }
 
 /* VXLAN_ENCAP_V6_VLAN_POP_MOD_TABLE */
+// Ipv6, Untagged, Vxlan
 void PrepareV6VxlanEncapAndVlanPopTableEntry(
     p4::v1::TableEntry* table_entry, const struct tunnel_info& tunnel_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
@@ -1209,6 +1217,7 @@ void PrepareV6VxlanEncapAndVlanPopTableEntry(
 }
 
 /* GENEVE_ENCAP_V6_VLAN_POP_MOD_TABLE */
+// Ipv6, Untagged, Geneve
 void PrepareV6GeneveEncapAndVlanPopTableEntry(
     p4::v1::TableEntry* table_entry, const struct tunnel_info& tunnel_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
@@ -1272,6 +1281,7 @@ void PrepareV6GeneveEncapAndVlanPopTableEntry(
   }
 }
 
+// Ipv6, Untagged
 void PrepareV6EncapAndVlanPopTableEntry(p4::v1::TableEntry* table_entry,
                                         const struct tunnel_info& tunnel_info,
                                         const ::p4::config::v1::P4Info& p4info,

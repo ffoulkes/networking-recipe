@@ -6,16 +6,15 @@
 
 namespace ovsp4rt {
 
-class Es2kConfigEncapTableTest : public BaseTunnelInfoTest {
+class Es2kPrepEncapTableTest : public BaseTunnelInfoTest {
  public:
-  Es2kConfigEncapTableTest() {}
-  virtual ~Es2kConfigEncapTableTest() = default;
+  Es2kPrepEncapTableTest() {}
+  virtual ~Es2kPrepEncapTableTest() = default;
 };
 
 //----------------------------------------------------------------------
 
-// AF_INET && P4_PORT_VLAN_NATIVE_UNTAGGED && OVS_TUNNEL_VXLAN
-TEST_F(Es2kConfigEncapTableTest, configEncapIpv4VxlanUntagged) {
+TEST_F(Es2kPrepEncapTableTest, configEncapIpv4VxlanUntagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -27,12 +26,10 @@ TEST_F(Es2kConfigEncapTableTest, configEncapIpv4VxlanUntagged) {
 
   Es2kPrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
-  CheckV4TunnelInfo(table_entry);
-  CheckVxlanUntagged(table_entry);
+  AssertV4VxlanUntagged(table_entry, p4info);
 }
 
-// AF_INET && P4_PORT_VLAN_NATIVE_UNTAGGED && OVS_TUNNEL_GENEVE
-TEST_F(Es2kConfigEncapTableTest, configEncapIpv4GeneveUntagged) {
+TEST_F(Es2kPrepEncapTableTest, configEncapIpv4GeneveUntagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -44,14 +41,12 @@ TEST_F(Es2kConfigEncapTableTest, configEncapIpv4GeneveUntagged) {
 
   Es2kPrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
-  CheckV4TunnelInfo(table_entry);
-  CheckGeneveUntagged(table_entry);
+  AssertV4GeneveUntagged(table_entry, p4info);
 }
 
 //----------------------------------------------------------------------
 
-// AF_INET && P4_PORT_VLAN_NATIVE_TAGGED && OVS_TUNNEL_VXLAN
-TEST_F(Es2kConfigEncapTableTest, configEncapIpv4VxlanTagged) {
+TEST_F(Es2kPrepEncapTableTest, configEncapIpv4VxlanTagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -63,12 +58,10 @@ TEST_F(Es2kConfigEncapTableTest, configEncapIpv4VxlanTagged) {
 
   Es2kPrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
-  CheckV4TunnelInfo(table_entry);
-  CheckVxlanTagged(table_entry);
+  AssertV4VxlanTagged(table_entry, p4info);
 }
 
-// AF_INET && P4_PORT_VLAN_NATIVE_TAGGED && OVS_TUNNEL_GENEVE
-TEST_F(Es2kConfigEncapTableTest, configEncapIpv4GeneveTagged) {
+TEST_F(Es2kPrepEncapTableTest, configEncapIpv4GeneveTagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -80,14 +73,12 @@ TEST_F(Es2kConfigEncapTableTest, configEncapIpv4GeneveTagged) {
 
   Es2kPrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
-  CheckV4TunnelInfo(table_entry);
-  CheckGeneveTagged(table_entry);
+  AssertV4GeneveTagged(table_entry, p4info);
 }
 
 //----------------------------------------------------------------------
 
-// AF_INET6 && P4_PORT_VLAN_NATIVE_UNTAGGED && OVS_TUNNEL_VXLAN
-TEST_F(Es2kConfigEncapTableTest, configEncapIpv6VxlanUntagged) {
+TEST_F(Es2kPrepEncapTableTest, configEncapIpv6VxlanUntagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -99,12 +90,10 @@ TEST_F(Es2kConfigEncapTableTest, configEncapIpv6VxlanUntagged) {
 
   Es2kPrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
-  CheckV6TunnelInfo(table_entry);
-  CheckVxlanUntagged(table_entry);
+  AssertV6VxlanUntagged(table_entry, p4info);
 }
 
-// AF_INET6 && P4_PORT_VLAN_NATIVE_UNTAGGED && OVS_TUNNEL_GENEVE
-TEST_F(Es2kConfigEncapTableTest, configEncapIpv6GeneveUntagged) {
+TEST_F(Es2kPrepEncapTableTest, configEncapIpv6GeneveUntagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -116,14 +105,12 @@ TEST_F(Es2kConfigEncapTableTest, configEncapIpv6GeneveUntagged) {
 
   Es2kPrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
-  CheckV6TunnelInfo(table_entry);
-  CheckGeneveUntagged(table_entry);
+  AssertV6GeneveUntagged(table_entry, p4info);
 }
 
 //----------------------------------------------------------------------
 
-// AF_INET6 && P4_PORT_VLAN_NATIVE_TAGGED && OVS_TUNNEL_VXLAN
-TEST_F(Es2kConfigEncapTableTest, configEncapIpv6VxlanTagged) {
+TEST_F(Es2kPrepEncapTableTest, configEncapIpv6VxlanTagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -135,12 +122,10 @@ TEST_F(Es2kConfigEncapTableTest, configEncapIpv6VxlanTagged) {
 
   Es2kPrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
-  CheckV6TunnelInfo(table_entry);
-  CheckVxlanTagged(table_entry);
+  AssertV6VxlanTagged(table_entry, p4info);
 }
 
-// AF_INET6 && P4_PORT_VLAN_NATIVE_TAGGED && OVS_TUNNEL_GENEVE
-TEST_F(Es2kConfigEncapTableTest, configEncapIpv6GeneveTagged) {
+TEST_F(Es2kPrepEncapTableTest, configEncapIpv6GeneveTagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -152,8 +137,7 @@ TEST_F(Es2kConfigEncapTableTest, configEncapIpv6GeneveTagged) {
 
   Es2kPrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
-  CheckV6TunnelInfo(table_entry);
-  CheckGeneveTagged(table_entry);
+  AssertV6GeneveTagged(table_entry, p4info);
 }
 
 }  // namespace ovsp4rt

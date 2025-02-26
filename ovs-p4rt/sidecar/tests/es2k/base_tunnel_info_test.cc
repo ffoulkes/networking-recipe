@@ -6,7 +6,9 @@
 #include <arpa/inet.h>
 #include <gtest/gtest.h>
 
+#include "es2k/p4_name_mapping.h"
 #include "ovsp4rt/ovs-p4rt.h"
+#include "ovsp4rt_private.h"  // GetTableId
 #include "p4/config/v1/p4info.pb.h"
 #include "p4info_text.h"
 #include "stratum/lib/utils.h"
@@ -99,22 +101,59 @@ void BaseTunnelInfoTest::InitP4Info(::p4::config::v1::P4Info* p4info) {
                            << status.error_message();
 }
 
-void BaseTunnelInfoTest::CheckV4TunnelInfo(
-    const p4::v1::TableEntry& table_entry) {}
+void BaseTunnelInfoTest::AssertV4VxlanUntagged(
+    const p4::v1::TableEntry& table_entry,
+    const ::p4::config::v1::P4Info& p4info) {
+  AssertTableId(table_entry, p4info, VXLAN_ENCAP_VLAN_POP_MOD_TABLE);
+}
 
-void BaseTunnelInfoTest::CheckV6TunnelInfo(
-    const p4::v1::TableEntry& table_entry) {}
+void BaseTunnelInfoTest::AssertV4GeneveUntagged(
+    const p4::v1::TableEntry& table_entry,
+    const ::p4::config::v1::P4Info& p4info) {
+  AssertTableId(table_entry, p4info, GENEVE_ENCAP_VLAN_POP_MOD_TABLE);
+}
 
-void BaseTunnelInfoTest::CheckVxlanTagged(
-    const p4::v1::TableEntry& table_entry) {}
+void BaseTunnelInfoTest::AssertV4VxlanTagged(
+    const p4::v1::TableEntry& table_entry,
+    const ::p4::config::v1::P4Info& p4info) {
+  AssertTableId(table_entry, p4info, VXLAN_ENCAP_MOD_TABLE);
+}
 
-void BaseTunnelInfoTest::CheckVxlanUntagged(
-    const p4::v1::TableEntry& table_entry) {}
+void BaseTunnelInfoTest::AssertV4GeneveTagged(
+    const p4::v1::TableEntry& table_entry,
+    const ::p4::config::v1::P4Info& p4info) {
+  AssertTableId(table_entry, p4info, GENEVE_ENCAP_MOD_TABLE);
+}
 
-void BaseTunnelInfoTest::CheckGeneveTagged(
-    const p4::v1::TableEntry& table_entry) {}
+void BaseTunnelInfoTest::AssertV6VxlanUntagged(
+    const p4::v1::TableEntry& table_entry,
+    const ::p4::config::v1::P4Info& p4info) {
+  AssertTableId(table_entry, p4info, VXLAN_ENCAP_V6_VLAN_POP_MOD_TABLE);
+}
 
-void BaseTunnelInfoTest::CheckGeneveUntagged(
-    const p4::v1::TableEntry& table_entry) {}
+void BaseTunnelInfoTest::AssertV6GeneveUntagged(
+    const p4::v1::TableEntry& table_entry,
+    const ::p4::config::v1::P4Info& p4info) {
+  AssertTableId(table_entry, p4info, GENEVE_ENCAP_V6_VLAN_POP_MOD_TABLE);
+}
+
+void BaseTunnelInfoTest::AssertV6VxlanTagged(
+    const p4::v1::TableEntry& table_entry,
+    const ::p4::config::v1::P4Info& p4info) {
+  AssertTableId(table_entry, p4info, VXLAN_ENCAP_V6_MOD_TABLE);
+}
+
+void BaseTunnelInfoTest::AssertV6GeneveTagged(
+    const p4::v1::TableEntry& table_entry,
+    const ::p4::config::v1::P4Info& p4info) {
+  AssertTableId(table_entry, p4info, GENEVE_ENCAP_V6_MOD_TABLE);
+}
+
+void BaseTunnelInfoTest::AssertTableId(const p4::v1::TableEntry& table_entry,
+                                       const ::p4::config::v1::P4Info& p4info,
+                                       const char* table_name) {
+  auto expected_id = GetTableId(p4info, table_name);
+  EXPECT_EQ(table_entry.table_id(), expected_id);
+}
 
 }  // namespace ovsp4rt

@@ -41,12 +41,10 @@ macro(define_es2k_tunnel_info_test TARGET)
     es2k_tunnel_info
   )
 
-  message("define_es2k_tunnel_info_test(${TARGET})")
-
   list(APPEND UNIT_TEST_NAMES ${TARGET})
 endmacro()
 
 #define_es2k_tunnel_info_test(es2k_config_decap_table_test)
-define_es2k_tunnel_info_test(es2k_config_encap_table_test)
+define_es2k_tunnel_info_test(es2k_prep_encap_table_test)
 #define_es2k_tunnel_info_test(es2k_config_tunnel_term_test)
 

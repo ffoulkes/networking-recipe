@@ -31,14 +31,34 @@ class BaseTunnelInfoTest : public ::testing::Test {
 
   static void InitP4Info(::p4::config::v1::P4Info* p4info);
 
-  static void CheckV4TunnelInfo(const p4::v1::TableEntry& table_entry);
-  static void CheckV6TunnelInfo(const p4::v1::TableEntry& table_entry);
+  static void AssertV4VxlanUntagged(const p4::v1::TableEntry& table_entry,
+                                    const ::p4::config::v1::P4Info& p4info);
 
-  static void CheckVxlanTagged(const p4::v1::TableEntry& table_entry);
-  static void CheckVxlanUntagged(const p4::v1::TableEntry& table_entry);
+  static void AssertV4GeneveUntagged(const p4::v1::TableEntry& table_entry,
+                                     const ::p4::config::v1::P4Info& p4info);
 
-  static void CheckGeneveTagged(const p4::v1::TableEntry& table_entry);
-  static void CheckGeneveUntagged(const p4::v1::TableEntry& table_entry);
+  static void AssertV4VxlanTagged(const p4::v1::TableEntry& table_entry,
+                                  const ::p4::config::v1::P4Info& p4info);
+
+  static void AssertV4GeneveTagged(const p4::v1::TableEntry& table_entry,
+                                   const ::p4::config::v1::P4Info& p4info);
+
+  static void AssertV6VxlanUntagged(const p4::v1::TableEntry& table_entry,
+                                    const ::p4::config::v1::P4Info& p4info);
+
+  static void AssertV6GeneveUntagged(const p4::v1::TableEntry& table_entry,
+                                     const ::p4::config::v1::P4Info& p4info);
+
+  static void AssertV6VxlanTagged(const p4::v1::TableEntry& table_entry,
+                                  const ::p4::config::v1::P4Info& p4info);
+
+  static void AssertV6GeneveTagged(const p4::v1::TableEntry& table_entry,
+                                   const ::p4::config::v1::P4Info& p4info);
+
+ private:
+  static void AssertTableId(const p4::v1::TableEntry& table_entry,
+                            const ::p4::config::v1::P4Info& p4info,
+                            const char* table_name);
 };
 
 }  // namespace ovsp4rt

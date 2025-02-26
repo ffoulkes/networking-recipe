@@ -24,6 +24,9 @@ extern std::string EncodeByteValue(int arg_count...);
 extern int GetActionId(const ::p4::config::v1::P4Info& p4info,
                        const std::string& a_name);
 
+extern int GetTableId(const ::p4::config::v1::P4Info& p4info,
+                      const std::string& t_name);
+
 //----------------------------------------------------------------------
 // Common functions
 //----------------------------------------------------------------------
