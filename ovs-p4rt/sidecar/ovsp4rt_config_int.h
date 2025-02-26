@@ -15,19 +15,23 @@
 
 namespace ovsp4rt {
 
+extern absl::Status ConfigTunnelTermTableEntry(
+    ClientInterface& client, const struct tunnel_info& tunnel_info,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry);
+
 #if defined(ES2K_TARGET)
 
 extern absl::Status ConfigDstIpMacMapTableEntry(
     ClientInterface& client, const struct ip_mac_map_info& ip_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
-extern absl::Status ConfigFdbUpdateSrcPort(
-    ClientInterface& client, struct mac_learning_info& learn_info,
-    const ::p4::config::v1::P4Info& p4info);
-
 extern absl::Status ConfigEncapTableEntry(
     ClientInterface& client, const struct tunnel_info& tunnel_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
+
+extern absl::Status ConfigFdbUpdateSrcPort(
+    ClientInterface& client, struct mac_learning_info& learn_info,
+    const ::p4::config::v1::P4Info& p4info);
 
 extern void ConfigFdbUpdateTunnelInfo(ClientInterface& client,
                                       struct mac_learning_info& learn_info,
