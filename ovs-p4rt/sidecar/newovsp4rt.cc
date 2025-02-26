@@ -1560,7 +1560,7 @@ void PrepareV6TunnelTermTableEntry(p4::v1::TableEntry* table_entry,
 #endif  // ES2K_TARGET
 
 #if defined(ES2K_TARGET)
-void Es2kPrepareEncapTableEntry(p4::v1::TableEntry* table_entry,
+void Es2kPrepareEncapTableEntry(::p4::v1::TableEntry* table_entry,
                                 const struct tunnel_info& tunnel_info,
                                 const ::p4::config::v1::P4Info& p4info,
                                 bool insert_entry) {
@@ -1647,6 +1647,8 @@ void PrepareGeneveDecapModTableEntry(p4::v1::TableEntry* table_entry,
   }
 }
 
+// called-by: Es2kPrepareDecapTableEntry
+// port_vlan_mode == P4_PORT_VLAN_NATIVE_TAGGED
 void PrepareDecapModTableEntry(p4::v1::TableEntry* table_entry,
                                const struct tunnel_info& tunnel_info,
                                const ::p4::config::v1::P4Info& p4info,
@@ -1662,6 +1664,7 @@ void PrepareDecapModTableEntry(p4::v1::TableEntry* table_entry,
   }
 }
 
+// called-by: PrepareDecapModAndVlanPushTableEntry
 void PrepareVxlanDecapModAndVlanPushTableEntry(
     p4::v1::TableEntry* table_entry, const struct tunnel_info& tunnel_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
@@ -1706,6 +1709,7 @@ void PrepareVxlanDecapModAndVlanPushTableEntry(
   }
 }
 
+// called-by: PrepareDecapModAndVlanPushTableEntry
 void PrepareGeneveDecapModAndVlanPushTableEntry(
     p4::v1::TableEntry* table_entry, const struct tunnel_info& tunnel_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
@@ -1750,6 +1754,8 @@ void PrepareGeneveDecapModAndVlanPushTableEntry(
   }
 }
 
+// called-by: Es2kPrepareDecapTableEntry
+// port_vlan_mode == P4_PORT_VLAN_NATIVE_TAGGED
 void PrepareDecapModAndVlanPushTableEntry(
     p4::v1::TableEntry* table_entry, const struct tunnel_info& tunnel_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
@@ -1764,6 +1770,19 @@ void PrepareDecapModAndVlanPushTableEntry(
   }
 }
 
+// called-by: ConfigDecapTableEntry
+void Es2kPrepareDecapTableEntry(::p4::v1::TableEntry* table_entry,
+                                const struct tunnel_info& tunnel_info,
+                                const ::p4::config::v1::P4Info& p4info,
+                                bool insert_entry) {
+  if (tunnel_info.vlan_info.port_vlan_mode == P4_PORT_VLAN_NATIVE_TAGGED) {
+    PrepareDecapModTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+  } else {
+    PrepareDecapModAndVlanPushTableEntry(table_entry, tunnel_info, p4info,
+                                         insert_entry);
+  }
+}
+
 // called-by: DoConfigTunnelEntry (es2k)
 absl::Status ConfigDecapTableEntry(ClientInterface& client,
                                    const struct tunnel_info& tunnel_info,
@@ -1774,12 +1793,7 @@ absl::Status ConfigDecapTableEntry(ClientInterface& client,
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  if (tunnel_info.vlan_info.port_vlan_mode == P4_PORT_VLAN_NATIVE_TAGGED) {
-    PrepareDecapModTableEntry(table_entry, tunnel_info, p4info, insert_entry);
-  } else {
-    PrepareDecapModAndVlanPushTableEntry(table_entry, tunnel_info, p4info,
-                                         insert_entry);
-  }
+  Es2kPrepareDecapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
 
   return client.sendWriteRequest(write_request);
 }
