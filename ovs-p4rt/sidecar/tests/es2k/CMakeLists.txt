@@ -69,6 +69,7 @@ endmacro(define_es2k_test)
 #-----------------------------------------------------------------------
 add_library(tunnel_test_utils STATIC
   base_table_test.h
+  basic_test.h
   ip_tunnel_test.h
   p4info_text.h
   test_main.cc
@@ -158,6 +159,15 @@ macro(define_es2k_config_test TARGET)
 endmacro()
 
 #-----------------------------------------------------------------------
+# Basic tests
+#-----------------------------------------------------------------------
+define_es2k_config_test(config_vlan_pop_table_entry_test)
+define_es2k_config_test(config_vlan_push_table_entry_test)
+
+define_es2k_config_test(es2k_update_src_port_test)
+define_es2k_config_test(es2k_update_tunnel_info_test)
+
+#-----------------------------------------------------------------------
 # define_es2k_mac_map_test()
 #-----------------------------------------------------------------------
 macro(define_es2k_mac_map_test TARGET)
@@ -167,9 +177,6 @@ endmacro()
 
 define_es2k_mac_map_test(es2k_config_dst_ip_mac_map_test)
 define_es2k_mac_map_test(es2k_config_src_ip_mac_map_test)
-
-define_es2k_config_test(es2k_update_src_port_test)
-define_es2k_config_test(es2k_update_tunnel_info_test)
 
 #-----------------------------------------------------------------------
 # es2k_mac_learn_info_tests
