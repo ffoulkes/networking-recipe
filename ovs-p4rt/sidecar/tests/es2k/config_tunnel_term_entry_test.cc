@@ -23,7 +23,7 @@ using ::testing::Return;
 namespace ovsp4rt {
 
 class ConfigTunnelTermEntryTest : public BaseTunnelInfoTest {
-public:
+ public:
   ConfigTunnelTermEntryTest() {}
   virtual ~ConfigTunnelTermEntryTest() = default;
 };
@@ -45,7 +45,8 @@ TEST_F(ConfigTunnelTermEntryTest, configTunnelTermEntryFailure) {
       ConfigTunnelTermTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
 
   ASSERT_FALSE(status.ok());
-  ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE) << status;
+  ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
+      << status;
 }
 
 TEST_F(ConfigTunnelTermEntryTest, configTunnelTermEntrySuccess) {
