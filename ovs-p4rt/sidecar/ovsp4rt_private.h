@@ -70,6 +70,11 @@ extern void Es2kPrepareEncapTableEntry(::p4::v1::TableEntry* table_entry,
                                        const ::p4::config::v1::P4Info& p4info,
                                        bool insert_entry);
 
+extern void PrepareFdbTableV4TunnelEntry(
+    p4::v1::TableEntry* table_entry, const struct mac_learning_info& learn_info,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry,
+    DiagDetail& detail, bool testing = false);
+
 extern void Es2kPrepareFdbTunnelTableEntry(
     p4::v1::TableEntry* table_entry, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry,
