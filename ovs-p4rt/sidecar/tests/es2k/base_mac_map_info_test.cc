@@ -1,4 +1,4 @@
-// Copyright 2022-2024 Intel Corporation
+// Copyright 2024 Intel Corporation
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
@@ -30,8 +30,7 @@ void BaseMacMapInfoTest::InitIpv4MapInfo(struct ip_mac_map_info map_info) {
 
 void BaseMacMapInfoTest::InitP4Info(::p4::config::v1::P4Info* p4info) {
   auto status = stratum::ParseProtoFromString(P4INFO_TEXT, p4info);
-  EXPECT_TRUE(status.ok()) << "ParseProtoFromString: "
-                           << status.error_message();
+  EXPECT_TRUE(status.ok()) << "ParseProtoFromString: " << status;
 }
 
 }  // namespace ovsp4rt
