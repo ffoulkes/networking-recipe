@@ -19,6 +19,10 @@ extern absl::Status ConfigFdbRxVlanTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
+absl::Status ConfigFdbTunnelTableEntry(
+    ClientInterface& client, const struct mac_learning_info& learn_info,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry);
+
 extern absl::Status ConfigFdbTxVlanTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
