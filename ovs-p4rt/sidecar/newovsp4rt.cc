@@ -2075,9 +2075,30 @@ absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV6TableEntry(
   return client.sendReadRequest(read_request);
 }
 
+// extracted from GetFdbTunnelTableEntry
+void PrepareFdbTableV4TunnelEntry(p4::v1::TableEntry* table_entry,
+                                  const struct mac_learning_info& learn_info,
+                                  const ::p4::config::v1::P4Info& p4info,
+                                  bool insert_entry, DiagDetail& detail,
+                                  bool testing) {
+  // We ignore the 'insert_entry' parameter and specify 'false' when
+  // calling the selected function. get-entry, like remove-entry, only
+  // needs the match fields.
+  //
+  // The optional 'testing' parameter (which defaults to 'false') allows
+  // the unit test to override this behavior.
+  if (learn_info.tnl_info.tunnel_type == OVS_TUNNEL_VXLAN) {
+    PrepareFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info,
+                                         testing, detail);
+  } else if (learn_info.tnl_info.tunnel_type == OVS_TUNNEL_GENEVE) {
+    PrepareFdbTableEntryforV4GeneveTunnel(table_entry, learn_info, p4info,
+                                          testing, detail);
+  }
+}
+
 absl::StatusOr<::p4::v1::ReadResponse> GetFdbTunnelTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
-    const ::p4::config::v1::P4Info& p4info, bool adding = false) {
+    const ::p4::config::v1::P4Info& p4info, bool adding) {
   ::p4::v1::ReadRequest read_request;
   ::p4::v1::TableEntry* table_entry;
   DiagDetail detail;
@@ -2088,16 +2109,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetFdbTunnelTableEntry(
   PrepareFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info, false,
                                        detail);
 #elif defined(ES2K_TARGET)
-  if (learn_info.tnl_info.tunnel_type == OVS_TUNNEL_VXLAN) {
-    PrepareFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info, false,
-                                         detail);
-  } else if (learn_info.tnl_info.tunnel_type == OVS_TUNNEL_GENEVE) {
-    PrepareFdbTableEntryforV4GeneveTunnel(table_entry, learn_info, p4info,
-                                          false, detail);
-  } else {
-    // TODO(derek): display tunnel type in message.
-    return absl::UnknownError("Unsupported tunnel type");
-  }
+  PrepareFdbTableV4TunnelEntry(table_entry, learn_info, p4info, false, detail);
 #else
 #error "ASSERT: Unknown TARGET type!"
 #endif
@@ -2107,7 +2119,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetFdbTunnelTableEntry(
 
 absl::StatusOr<::p4::v1::ReadResponse> GetFdbVlanTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
-    const ::p4::config::v1::P4Info& p4info, bool adding = false) {
+    const ::p4::config::v1::P4Info& p4info, bool adding) {
   ::p4::v1::ReadRequest read_request;
   ::p4::v1::TableEntry* table_entry;
   DiagDetail detail;
