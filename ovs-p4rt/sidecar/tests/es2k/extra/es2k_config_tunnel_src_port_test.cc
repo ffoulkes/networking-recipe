@@ -4,9 +4,12 @@
 // Unit test for DoConfigSrcPortEntry().
 
 #include <absl/status/status.h>
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
 #include <stdint.h>
+
+// clang-format off
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
+// clang-format on
 
 #include "client/ovsp4rt_test_client_mock.h"
 #include "ovsp4rt/ovs-p4rt.h"

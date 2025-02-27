@@ -10,7 +10,7 @@
 #include <absl/status/status.h>
 
 // clang-format off
-#include <gtest/gtest.h>    // must precede gmock.h
+#include <gtest/gtest.h>
 #include <gmock/gmock.h>
 // clang-format on
 

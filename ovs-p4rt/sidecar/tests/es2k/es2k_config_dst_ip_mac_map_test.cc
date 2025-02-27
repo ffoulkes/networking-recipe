@@ -5,8 +5,11 @@
 // Unit test for ConfigDstIpMacMapTableEntry(). [es2k]
 
 #include <absl/status/status.h>
-#include <gmock/gmock.h>
+
+// clang-format off
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
+// clang-format on
 
 #include "base_mac_map_info_test.h"
 #include "client/ovsp4rt_test_client_mock.h"
