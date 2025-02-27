@@ -44,4 +44,6 @@ macro(define_es2k_mac_learn_info TARGET)
   list(APPEND UNIT_TEST_NAMES ${TARGET})
 endmacro()
 
+
+define_es2k_mac_learn_info(config_fdb_tunnel_table_entry_test)
 define_es2k_mac_learn_info(es2k_prep_fdb_tunnel_table_test)
