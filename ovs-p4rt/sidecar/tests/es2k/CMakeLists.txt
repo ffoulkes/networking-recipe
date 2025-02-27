@@ -162,6 +162,9 @@ endmacro()
 # Basic tests
 #-----------------------------------------------------------------------
 # ::ovsp4rt::BasicTest subclasses
+define_es2k_config_test(config_fdb_smac_table_entry_test)
+define_es2k_config_test(config_fdb_rx_vlan_table_entry_test)
+define_es2k_config_test(config_fdb_tx_vlan_table_entry_test)
 define_es2k_config_test(config_vlan_pop_table_entry_test)
 define_es2k_config_test(config_vlan_push_table_entry_test)
 define_es2k_config_test(get_l2_to_tunnel_v4_entry_test)
