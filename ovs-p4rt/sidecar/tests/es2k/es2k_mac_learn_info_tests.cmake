@@ -46,4 +46,6 @@ endmacro()
 
 
 define_es2k_mac_learn_info(config_fdb_tunnel_table_entry_test)
+define_es2k_mac_learn_info(es2k_config_l2_tunnel_table_entry_test)
+define_es2k_mac_learn_info(es2k_prep_l2_tunnel_table_entry)
 define_es2k_mac_learn_info(es2k_prep_fdb_tunnel_table_test)

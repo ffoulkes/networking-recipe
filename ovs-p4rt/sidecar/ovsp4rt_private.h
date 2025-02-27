@@ -38,6 +38,12 @@ extern void PrepareFdbTxVlanTableEntry(
     const ::p4::config::v1::P4Info& p4info, bool insert_entry,
     DiagDetail& detail);
 
+// extracted from ConfigL2TunnelTableEntry
+extern void PrepareL2TunnelTableEntry(
+    p4::v1::TableEntry* table_entry, const struct mac_learning_info& learn_info,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry,
+    DiagDetail& detail);
+
 extern void PrepareVxlanEncapTableEntry(p4::v1::TableEntry* table_entry,
                                         const struct tunnel_info& tunnel_info,
                                         const ::p4::config::v1::P4Info& p4info,
