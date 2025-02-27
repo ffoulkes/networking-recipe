@@ -93,6 +93,14 @@ extern absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV6TableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info);
 
+extern absl::StatusOr<::p4::v1::ReadResponse> GetVmDstTableEntry(
+    ClientInterface& client, const struct ip_mac_map_info& ip_info,
+    const ::p4::config::v1::P4Info& p4info);
+
+extern absl::StatusOr<::p4::v1::ReadResponse> GetVmSrcTableEntry(
+    ClientInterface& client, struct ip_mac_map_info ip_info,
+    const ::p4::config::v1::P4Info& p4info);
+
 #endif  // ES2K_TARGET
 
 }  // namespace ovsp4rt
