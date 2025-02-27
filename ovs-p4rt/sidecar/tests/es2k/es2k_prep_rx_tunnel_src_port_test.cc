@@ -17,12 +17,12 @@ class Es2kPrepRxTunnelSrcPortTest : public BaseTunnelInfoTest {
   virtual ~Es2kPrepRxTunnelSrcPortTest() = default;
 
   static void AssertV4Table(const p4::v1::TableEntry& table_entry,
-                             const ::p4::config::v1::P4Info& p4info) {
+                            const ::p4::config::v1::P4Info& p4info) {
     AssertTableId(table_entry, p4info, RX_IPV4_TUNNEL_SOURCE_PORT_TABLE);
   }
 
   static void AssertV6Table(const p4::v1::TableEntry& table_entry,
-                             const ::p4::config::v1::P4Info& p4info) {
+                            const ::p4::config::v1::P4Info& p4info) {
     AssertTableId(table_entry, p4info, RX_IPV6_TUNNEL_SOURCE_PORT_TABLE);
   }
 };
