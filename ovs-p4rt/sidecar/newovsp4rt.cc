@@ -605,6 +605,19 @@ absl::Status ConfigFdbSmacTableEntry(ClientInterface& client,
   return status;
 }
 
+// extracted from ConfigL2TunnelTableEntry
+void PrepareL2TunnelTableEntry(p4::v1::TableEntry* table_entry,
+                               const struct mac_learning_info& learn_info,
+                               const ::p4::config::v1::P4Info& p4info,
+                               bool insert_entry, DiagDetail& detail) {
+  if (learn_info.tnl_info.local_ip.family == AF_INET6 &&
+      learn_info.tnl_info.remote_ip.family == AF_INET6) {
+    PrepareL2ToTunnelV6(table_entry, learn_info, p4info, insert_entry, detail);
+  } else {
+    PrepareL2ToTunnelV4(table_entry, learn_info, p4info, insert_entry, detail);
+  }
+}
+
 absl::Status ConfigL2TunnelTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
@@ -614,12 +627,8 @@ absl::Status ConfigL2TunnelTableEntry(
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  if (learn_info.tnl_info.local_ip.family == AF_INET6 &&
-      learn_info.tnl_info.remote_ip.family == AF_INET6) {
-    PrepareL2ToTunnelV6(table_entry, learn_info, p4info, insert_entry, detail);
-  } else {
-    PrepareL2ToTunnelV4(table_entry, learn_info, p4info, insert_entry, detail);
-  }
+  PrepareL2TunnelTableEntry(table_entry, learn_info, p4info, insert_entry,
+                            detail);
 
   auto status = client.sendWriteRequest(write_request);
   if (!status.ok()) {
@@ -672,6 +681,7 @@ absl::Status ConfigFdbRxVlanTableEntry(
 }
 
 #if defined(ES2K_TARGET)
+// extracted from ConfigFdbTunnelTableEntry
 void Es2kPrepareFdbTunnelTableEntry(p4::v1::TableEntry* table_entry,
                                     const struct mac_learning_info& learn_info,
                                     const ::p4::config::v1::P4Info& p4info,
@@ -1078,17 +1088,6 @@ void PrepareGeneveEncapAndVlanPopTableEntry(
   if (insert_entry) {
     auto table_action = table_entry->mutable_action();
     auto action = table_action->mutable_action();
-    //
-    // TODO(derek): We could simplify the configuration process (here and
-    // elsewhere) by fetching a reference to the action node and using that
-    // to access the remaining information:
-    //
-    //   auto node = GetActionNode(p4info, ACTION_GENEVE_ENCAP_VLAN_POP);
-    //   action->set_action_id(node.actionId());
-    //   ..
-    //   param->set_param_id(
-    //     node.paramId(ACTION_GENEVE_ENCAP_VLAN_POP_PARAM_SRC_ADDR));
-    //
     action->set_action_id(GetActionId(p4info, ACTION_GENEVE_ENCAP_VLAN_POP));
     {
       auto param = action->add_params();
@@ -1581,8 +1580,6 @@ void Es2kPrepareEncapTableEntry(::p4::v1::TableEntry* table_entry,
     } else {
       PrepareV6EncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
     }
-  } else {
-    // TODO(derek): error case?
   }
 }
 #endif  // ES2K_TARGET
