@@ -2176,9 +2176,10 @@ absl::StatusOr<::p4::v1::ReadResponse> GetTxAccVsiTableEntry(
 }
 
 // called-by: DoConfigSrcPortEntry (es2k)
-absl::Status ConfigVsiSrcPortTableEntry(
-    ClientInterface& client, const struct src_port_info& sp,
-    const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
+absl::Status ConfigVsiSrcPortTableEntry(ClientInterface& client,
+                                        const struct src_port_info& sp,
+                                        const ::p4::config::v1::P4Info& p4info,
+                                        bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
   ::p4::v1::TableEntry* table_entry;
 
