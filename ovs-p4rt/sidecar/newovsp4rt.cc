@@ -2177,6 +2177,20 @@ absl::Status ConfigureVsiSrcPortTableEntry(
   return client.sendWriteRequest(write_request);
 }
 
+// extracted from ConfigRxTunnelSrcPortTableEntry
+void PrepareRxTunnelSrcPortTableEntry(p4::v1::TableEntry* table_entry,
+                                      const struct tunnel_info& tunnel_info,
+                                      const ::p4::config::v1::P4Info& p4info,
+                                      bool insert_entry) {
+  if (tunnel_info.local_ip.family == AF_INET &&
+      tunnel_info.remote_ip.family == AF_INET) {
+    PrepareRxTunnelTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+  } else if (tunnel_info.local_ip.family == AF_INET6 &&
+             tunnel_info.remote_ip.family == AF_INET6) {
+    PrepareV6RxTunnelTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+  }
+}
+
 // called-by: DoConfigRxTunnelSrcEntry (es2k)
 absl::Status ConfigRxTunnelSrcPortTableEntry(
     ClientInterface& client, const struct tunnel_info& tunnel_info,
@@ -2186,13 +2200,8 @@ absl::Status ConfigRxTunnelSrcPortTableEntry(
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  if (tunnel_info.local_ip.family == AF_INET &&
-      tunnel_info.remote_ip.family == AF_INET) {
-    PrepareRxTunnelTableEntry(table_entry, tunnel_info, p4info, insert_entry);
-  } else if (tunnel_info.local_ip.family == AF_INET6 &&
-             tunnel_info.remote_ip.family == AF_INET6) {
-    PrepareV6RxTunnelTableEntry(table_entry, tunnel_info, p4info, insert_entry);
-  }
+  PrepareRxTunnelSrcPortTableEntry(table_entry, tunnel_info, p4info,
+                                   insert_entry);
 
   return client.sendWriteRequest(write_request);
 }

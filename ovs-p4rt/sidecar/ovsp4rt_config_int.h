@@ -61,6 +61,10 @@ extern void ConfigFdbUpdateTunnelInfo(ClientInterface& client,
                                       struct mac_learning_info& learn_info,
                                       const ::p4::config::v1::P4Info& p4info);
 
+extern absl::Status ConfigRxTunnelSrcPortTableEntry(
+    ClientInterface& client, const struct tunnel_info& tunnel_info,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry);
+
 extern absl::Status ConfigSrcIpMacMapTableEntry(
     ClientInterface& client, const struct ip_mac_map_info& ip_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
