@@ -103,8 +103,7 @@ TEST_F(DoConfigTunnelEntryTest, connectFailure) {
       DoConfigTunnelEntry(client, tunnel_info, INSERT_ENTRY, GRPC_ADDR);
 
   ASSERT_FALSE(status.ok());
-  ASSERT_TRUE(IsInternal(status) && status.message() == "connect")
-      << status;
+  ASSERT_TRUE(IsInternal(status) && status.message() == "connect") << status;
 }
 
 /**

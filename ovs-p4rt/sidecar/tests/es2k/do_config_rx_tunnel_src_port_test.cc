@@ -64,8 +64,7 @@ class DoConfigRxTunnelSrcPortTest : public ::testing::Test {
 
   void InitP4Info(::p4::config::v1::P4Info* p4info) {
     auto status = stratum::ParseProtoFromString(P4INFO_TEXT, p4info);
-    EXPECT_TRUE(status.ok())
-        << "ParseProtoFromString: " << status;
+    EXPECT_TRUE(status.ok()) << "ParseProtoFromString: " << status;
   }
 };
 
