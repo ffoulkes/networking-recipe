@@ -171,6 +171,14 @@ define_es2k_config_test(config_vsi_src_port_entry_test)
 define_es2k_config_test(get_l2_to_tunnel_v4_entry_test)
 
 # ::testing::Test subclasses
+define_es2k_config_test(do_config_fdb_entry_test)
+define_es2k_config_test(do_config_ip_mac_map_test)
+define_es2k_config_test(do_config_rx_tunnel_src_port_test)
+define_es2k_config_test(do_config_src_port_entry_test)
+define_es2k_config_test(do_config_tunnel_entry_test)
+define_es2k_config_test(do_config_tunnel_src_port_test)
+define_es2k_config_test(do_config_vlan_entry_test)
+
 define_es2k_config_test(es2k_update_src_port_test)
 define_es2k_config_test(es2k_update_tunnel_info_test)
 
