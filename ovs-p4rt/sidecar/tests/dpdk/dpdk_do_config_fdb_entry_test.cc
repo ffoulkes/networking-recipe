@@ -31,8 +31,7 @@ class DpdkDoConfigFdbEntryTest : public ::testing::Test {
 
   void InitP4Info(::p4::config::v1::P4Info* p4info) {
     auto status = stratum::ParseProtoFromString(P4INFO_TEXT, p4info);
-    EXPECT_TRUE(status.ok())
-        << "ParseProtoFromString: " << status;
+    EXPECT_TRUE(status.ok()) << "ParseProtoFromString: " << status;
   }
 };
 
@@ -48,8 +47,7 @@ TEST_F(DpdkDoConfigFdbEntryTest, connectFailure) {
   auto status = DoConfigFdbEntry(client, learn_info, INSERT_ENTRY, GRPC_ADDR);
 
   ASSERT_FALSE(status.ok());
-  ASSERT_TRUE(IsInternal(status) && status.message() == "connect")
-      << status;
+  ASSERT_TRUE(IsInternal(status) && status.message() == "connect") << status;
 }
 
 /**
