@@ -640,6 +640,7 @@ absl::Status ConfigL2TunnelTableEntry(
 
 #endif  // ES2K_TARGET
 
+// called-by: ConfigFdbVlanEntry (dpdk, es2k)
 absl::Status ConfigFdbTxVlanTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
@@ -660,6 +661,7 @@ absl::Status ConfigFdbTxVlanTableEntry(
   return status;
 }
 
+// called-by: ConfigFdbVlanEntry (dpdk, es2k)
 absl::Status ConfigFdbRxVlanTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
@@ -2368,7 +2370,7 @@ absl::Status ConfigFdbUpdateSrcPort(ClientInterface& client,
   return absl::OkStatus();
 }
 
-// called-by: DoConfigFdbEntry (es2k)
+// called-by: DoConfigFdbEntry (es2k) (not testable)
 absl::Status ConfigFdbTunnelEntry(ClientInterface& client,
                                   const struct mac_learning_info& learn_info,
                                   bool insert_entry,
@@ -2394,7 +2396,7 @@ absl::Status ConfigFdbTunnelEntry(ClientInterface& client,
   return absl::OkStatus();
 }
 
-// called-by: DoConfigFdbEntry (es2k)
+// called-by: DoConfigFdbEntry (es2k) (not testable)
 absl::Status ConfigFdbVlanEntry(ClientInterface& client,
                                 struct mac_learning_info& learn_info,
                                 bool insert_entry,
@@ -2436,7 +2438,7 @@ absl::Status ConfigFdbVlanEntry(ClientInterface& client,
 // modifications to it.
 //----------------------------------------------------------------------
 
-// extracted from DoConfigFdbEntry (testability)
+// extracted from DoConfigFdbEntry (not testable)
 absl::Status ConfigFdbEntry(ClientInterface& client,
                             struct mac_learning_info learn_info,
                             const ::p4::config::v1::P4Info& p4info,
@@ -2499,7 +2501,7 @@ absl::Status DoConfigRxTunnelSrcEntry(ClientInterface& client,
 // DoConfigTunnelSrcPortEntry (ES2K)
 //----------------------------------------------------------------------
 
-// extracted from DoConfigTunnelSrcPortEntry (testability)
+// extracted from DoConfigTunnelSrcPortEntry (testable)
 absl::Status ConfigTunnelSrcPortEntry(ClientInterface& client,
                                       const struct src_port_info& tnl_sp,
                                       const ::p4::config::v1::P4Info& p4info,
@@ -2540,7 +2542,7 @@ absl::Status DoConfigTunnelSrcPortEntry(ClientInterface& client,
 // modifications to it.
 //----------------------------------------------------------------------
 
-// extracted from DoConfigSrcPortEntry (testability)
+// extracted from DoConfigSrcPortEntry (testable)
 absl::Status ConfigSrcPortEntry(ClientInterface& client,
                                 struct src_port_info vsi_sp,
                                 const ::p4::config::v1::P4Info& p4info,
@@ -2604,7 +2606,7 @@ absl::Status DoConfigSrcPortEntry(ClientInterface& client,
 // DoConfigVlanEntry (ES2K)
 //----------------------------------------------------------------------
 
-// extracted from DoConfigVlanEntry (testability)
+// extracted from DoConfigVlanEntry (not testable)
 absl::Status ConfigVlanEntry(ClientInterface& client, uint16_t vlan_id,
                              const ::p4::config::v1::P4Info& p4info,
                              bool insert_entry) {
@@ -2639,7 +2641,7 @@ absl::Status DoConfigVlanEntry(ClientInterface& client, uint16_t vlan_id,
 // DoConfigFdbEntry (DPDK)
 //----------------------------------------------------------------------
 
-// extracted from DoConfigFdbEntry (testability)
+// extracted from DoConfigFdbEntry (not testable)
 absl::Status ConfigFdbEntry(ClientInterface& client,
                             const struct mac_learning_info& learn_info,
                             const ::p4::config::v1::P4Info& p4info,
@@ -2682,7 +2684,7 @@ absl::Status DoConfigFdbEntry(ClientInterface& client,
 // DoConfigTunnelEntry (common)
 //----------------------------------------------------------------------
 
-// extracted from DoConfigTunnelEntry (testability)
+// extracted from DoConfigTunnelEntry (not testable)
 absl::Status ConfigTunnelEntry(ClientInterface& client,
                                const struct tunnel_info& tunnel_info,
                                const ::p4::config::v1::P4Info& p4info,
@@ -2724,7 +2726,7 @@ absl::Status DoConfigTunnelEntry(ClientInterface& client,
 // DoConfigIpMacMapEntry (ES2K)
 //----------------------------------------------------------------------
 
-// extracted from DoConfigIpMacMapEntry (testability)
+// extracted from DoConfigIpMacMapEntry (not testable)
 absl::Status ConfigIpMacMapEntry(ClientInterface& client,
                                  const struct ip_mac_map_info& ip_info,
                                  const ::p4::config::v1::P4Info& p4info,
