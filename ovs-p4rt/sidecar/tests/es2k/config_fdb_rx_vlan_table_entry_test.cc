@@ -3,7 +3,7 @@
 
 // Unit test for ConfigFdbRxVlanTableEntry().
 
-// Core functionality is handled by PrepareFdbRxVlanTableEntry(),
+// Core functionality is handled by EncodeFdbRxVlanTableEntry(),
 // which is tested separately. This is a test of the non-core
 // functionality.
 

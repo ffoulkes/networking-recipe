@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareVxlanDecapModTableEntry().
+// Unit test for EncodeVxlanDecapModTableEntry().
 
 #include <stdint.h>
 
@@ -91,7 +91,7 @@ class VxlanDecapModTableTest : public BaseTableTest {
 };
 
 //----------------------------------------------------------------------
-// PrepareVxlanDecapModTableEntry()
+// EncodeVxlanDecapModTableEntry()
 //----------------------------------------------------------------------
 
 TEST_F(VxlanDecapModTableTest, remove_entry) {
@@ -99,8 +99,8 @@ TEST_F(VxlanDecapModTableTest, remove_entry) {
   InitTunnelInfo();
 
   // Act
-  PrepareVxlanDecapModTableEntry(&table_entry, tunnel_info, p4info,
-                                 REMOVE_ENTRY);
+  EncodeVxlanDecapModTableEntry(&table_entry, tunnel_info, p4info,
+                                REMOVE_ENTRY);
 
   // Assert
   CheckTableEntry();
@@ -114,8 +114,8 @@ TEST_F(VxlanDecapModTableTest, insert_entry) {
   InitAction();
 
   // Act
-  PrepareVxlanDecapModTableEntry(&table_entry, tunnel_info, p4info,
-                                 INSERT_ENTRY);
+  EncodeVxlanDecapModTableEntry(&table_entry, tunnel_info, p4info,
+                                INSERT_ENTRY);
 
   // Assert
   CheckAction();
@@ -128,8 +128,8 @@ TEST_F(VxlanDecapModTableTest, insert_entry_with_20_bit_vni) {
   tunnel_info.vni = 0x87124;  // 20-bit value
 
   // Act
-  PrepareVxlanDecapModTableEntry(&table_entry, tunnel_info, p4info,
-                                 INSERT_ENTRY);
+  EncodeVxlanDecapModTableEntry(&table_entry, tunnel_info, p4info,
+                                INSERT_ENTRY);
 
   // Assert
   CheckTableEntry();
@@ -144,8 +144,8 @@ TEST_F(VxlanDecapModTableTest, insert_entry_with_24_bit_vni) {
   tunnel_info.vni = 0x871244;  // 24-bit value
 
   // Act
-  PrepareVxlanDecapModTableEntry(&table_entry, tunnel_info, p4info,
-                                 INSERT_ENTRY);
+  EncodeVxlanDecapModTableEntry(&table_entry, tunnel_info, p4info,
+                                INSERT_ENTRY);
 
   // Assert
   CheckTableEntry();

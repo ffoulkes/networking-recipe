@@ -3,7 +3,7 @@
 
 // Unit test for ConfigTunnelTermTableEntry (common)
 
-// Core functionality is handled by PrepareL2ToTunnelV4(),
+// Core functionality is handled by EncodeL2ToTunnelV4(),
 // which is tested separately. This is a test of the non-core
 // functionality.
 

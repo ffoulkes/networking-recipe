@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareV6GeneveEncapAndVlanPopTableEntry().
+// Unit test for EncodeV6GeneveEncapAndVlanPopTableEntry().
 
 #include <stdint.h>
 
@@ -191,8 +191,8 @@ TEST_F(GeneveEncapV6VlanPopTest, remove_entry) {
   InitV6TunnelInfo(OVS_TUNNEL_GENEVE);
 
   // Act
-  PrepareV6GeneveEncapAndVlanPopTableEntry(&table_entry, tunnel_info, p4info,
-                                           REMOVE_ENTRY);
+  EncodeV6GeneveEncapAndVlanPopTableEntry(&table_entry, tunnel_info, p4info,
+                                          REMOVE_ENTRY);
 
   // Assert
   CheckTableEntry();
@@ -206,8 +206,8 @@ TEST_F(GeneveEncapV6VlanPopTest, insert_entry) {
   InitAction();
 
   // Act
-  PrepareV6GeneveEncapAndVlanPopTableEntry(&table_entry, tunnel_info, p4info,
-                                           INSERT_ENTRY);
+  EncodeV6GeneveEncapAndVlanPopTableEntry(&table_entry, tunnel_info, p4info,
+                                          INSERT_ENTRY);
 
   // Assert
   CheckTableEntry();
@@ -223,8 +223,8 @@ TEST_F(GeneveEncapV6VlanPopTest, insert_entry_with_24_bit_vni) {
   InitAction();
 
   // Act
-  PrepareV6GeneveEncapAndVlanPopTableEntry(&table_entry, tunnel_info, p4info,
-                                           INSERT_ENTRY);
+  EncodeV6GeneveEncapAndVlanPopTableEntry(&table_entry, tunnel_info, p4info,
+                                          INSERT_ENTRY);
   DumpTableEntry();
 
   // Assert

@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareGeneveDecapModTableEntry()
+// Unit test for EncodeGeneveDecapModTableEntry()
 
 #include <stdint.h>
 
@@ -99,8 +99,8 @@ TEST_F(GeneveDecapModTableTest, remove_entry) {
   InitTunnelInfo();
 
   // Act
-  PrepareGeneveDecapModTableEntry(&table_entry, tunnel_info, p4info,
-                                  REMOVE_ENTRY);
+  EncodeGeneveDecapModTableEntry(&table_entry, tunnel_info, p4info,
+                                 REMOVE_ENTRY);
 
   // Assert
   CheckTableEntry();
@@ -114,8 +114,8 @@ TEST_F(GeneveDecapModTableTest, insert_entry) {
   InitAction();
 
   // Act
-  PrepareGeneveDecapModTableEntry(&table_entry, tunnel_info, p4info,
-                                  INSERT_ENTRY);
+  EncodeGeneveDecapModTableEntry(&table_entry, tunnel_info, p4info,
+                                 INSERT_ENTRY);
 
   // Assert
   CheckTableEntry();

@@ -193,8 +193,8 @@ TEST_F(FdbTxVxlanEntryTest, remove_v4_tagged_entry) {
   InitV4NativeTagged(SET_VXLAN_UNDERLAY_V4);
 
   // Act
-  PrepareFdbTableEntryforV4VxlanTunnel(&table_entry, fdb_info, p4info,
-                                       REMOVE_ENTRY, detail);
+  EncodeFdbTableEntryforV4VxlanTunnel(&table_entry, fdb_info, p4info,
+                                      REMOVE_ENTRY, detail);
 
   // Assert
   CheckDetail();
@@ -209,8 +209,8 @@ TEST_F(FdbTxVxlanEntryTest, insert_v4_tagged_entry) {
   InitV4NativeTagged(SET_VXLAN_UNDERLAY_V4);
 
   // Act
-  PrepareFdbTableEntryforV4VxlanTunnel(&table_entry, fdb_info, p4info,
-                                       INSERT_ENTRY, detail);
+  EncodeFdbTableEntryforV4VxlanTunnel(&table_entry, fdb_info, p4info,
+                                      INSERT_ENTRY, detail);
 
   // Assert
   CheckTableEntry();
@@ -223,8 +223,8 @@ TEST_F(FdbTxVxlanEntryTest, insert_v4_untagged_entry) {
   InitV4NativeUntagged(POP_VLAN_SET_VXLAN_UNDERLAY_V4);
 
   // Act
-  PrepareFdbTableEntryforV4VxlanTunnel(&table_entry, fdb_info, p4info,
-                                       INSERT_ENTRY, detail);
+  EncodeFdbTableEntryforV4VxlanTunnel(&table_entry, fdb_info, p4info,
+                                      INSERT_ENTRY, detail);
 
   // Assert
   CheckTableEntry();
@@ -237,8 +237,8 @@ TEST_F(FdbTxVxlanEntryTest, insert_v6_tagged_entry) {
   InitV6NativeTagged(SET_VXLAN_UNDERLAY_V6);
 
   // Act
-  PrepareFdbTableEntryforV4VxlanTunnel(&table_entry, fdb_info, p4info,
-                                       INSERT_ENTRY, detail);
+  EncodeFdbTableEntryforV4VxlanTunnel(&table_entry, fdb_info, p4info,
+                                      INSERT_ENTRY, detail);
 
   // Assert
   CheckTableEntry();
@@ -251,8 +251,8 @@ TEST_F(FdbTxVxlanEntryTest, insert_v6_untagged_entry) {
   InitV6NativeUntagged(POP_VLAN_SET_VXLAN_UNDERLAY_V6);
 
   // Act
-  PrepareFdbTableEntryforV4VxlanTunnel(&table_entry, fdb_info, p4info,
-                                       INSERT_ENTRY, detail);
+  EncodeFdbTableEntryforV4VxlanTunnel(&table_entry, fdb_info, p4info,
+                                      INSERT_ENTRY, detail);
 
   // Assert
   CheckTableEntry();

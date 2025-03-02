@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareFdbSmacTableEntry()
+// Unit test for EncodeFdbSmacTableEntry()
 
 #include <arpa/inet.h>
 #include <stdint.h>
@@ -125,8 +125,7 @@ TEST_F(FdbSmacEntryTest, remove_entry) {
   InitFdbInfo();
 
   // Act
-  PrepareFdbSmacTableEntry(&table_entry, fdb_info, p4info, REMOVE_ENTRY,
-                           detail);
+  EncodeFdbSmacTableEntry(&table_entry, fdb_info, p4info, REMOVE_ENTRY, detail);
 
   // Assert
   CheckDetail();
@@ -140,8 +139,7 @@ TEST_F(FdbSmacEntryTest, insert_entry) {
   InitFdbInfo();
 
   // Act
-  PrepareFdbSmacTableEntry(&table_entry, fdb_info, p4info, INSERT_ENTRY,
-                           detail);
+  EncodeFdbSmacTableEntry(&table_entry, fdb_info, p4info, INSERT_ENTRY, detail);
 
   // Assert
   CheckAction();

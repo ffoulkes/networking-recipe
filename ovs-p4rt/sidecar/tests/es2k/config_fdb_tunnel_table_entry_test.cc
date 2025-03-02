@@ -3,8 +3,8 @@
 
 // Unit test for ConfigFdbTunnelTableEntry().
 
-// Core functionality is handled by PrepareFdbTableEntryforV4VxlanTunnel()
-// or PrepareFdbTableEntryforV4GeneveTunnel, which are tested separately.
+// Core functionality is handled by EncodeFdbTableEntryforV4VxlanTunnel()
+// or EncodeFdbTableEntryforV4GeneveTunnel, which are tested separately.
 // This is a test of the non-core functionality.
 
 #include <absl/status/status.h>

@@ -3,7 +3,7 @@
 
 // Unit test for ConfigFdbSmacTableEntry().
 
-// Core functionality is handled by PrepareFdbSmacTableEntry(),
+// Core functionality is handled by EncodeFdbSmacTableEntry(),
 // which is tested separately. This is a test of the non-core
 // functionality.
 

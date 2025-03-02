@@ -3,7 +3,7 @@
 
 // Unit test for ConfigVlanPushTableEntry().
 
-// Core functionality is handled by PrepareVlanPushTableEntry(),
+// Core functionality is handled by EncodeVlanPushTableEntry(),
 // which is tested separately. This is a test of the non-core
 // functionality.
 

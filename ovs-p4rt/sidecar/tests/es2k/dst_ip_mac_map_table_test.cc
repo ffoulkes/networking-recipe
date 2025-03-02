@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareDstIpMacMapTableEntry().
+// Unit test for EncodeDstIpMacMapTableEntry().
 
 //#define DUMP_JSON
 
@@ -159,8 +159,8 @@ TEST_F(DstIpMacMapTableTest, remove_entry) {
   InitMapInfo();
 
   // Act
-  PrepareDstIpMacMapTableEntry(&table_entry, map_info, p4info, REMOVE_ENTRY,
-                               detail);
+  EncodeDstIpMacMapTableEntry(&table_entry, map_info, p4info, REMOVE_ENTRY,
+                              detail);
   DumpTableEntry();
 
   // Assert
@@ -176,8 +176,8 @@ TEST_F(DstIpMacMapTableTest, insert_entry) {
   InitAction();
 
   // Act
-  PrepareDstIpMacMapTableEntry(&table_entry, map_info, p4info, INSERT_ENTRY,
-                               detail);
+  EncodeDstIpMacMapTableEntry(&table_entry, map_info, p4info, INSERT_ENTRY,
+                              detail);
   DumpTableEntry();
 
   // Assert

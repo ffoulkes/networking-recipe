@@ -3,7 +3,7 @@
 
 // Unit test for GetVmDstTableEntry().
 
-// Core functionality is handled by PrepareDstIpMacMapTableEntry(),
+// Core functionality is handled by EncodeDstIpMacMapTableEntry(),
 // which is tested separately. This is a test of the non-core
 // functionality.
 

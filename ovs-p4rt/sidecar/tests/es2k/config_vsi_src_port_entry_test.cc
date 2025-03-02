@@ -3,7 +3,7 @@
 
 // Unit test for ConfigVlanPopTableEntry().
 
-// Core functionality is handled by PrepareSrcPortTableEntry(),
+// Core functionality is handled by EncodeSrcPortTableEntry(),
 // which is tested separately. This is a test of the non-core
 // functionality.
 

@@ -3,7 +3,7 @@
 
 // Unit test for ConfigVlanPopTableEntry().
 
-// Core functionality is handled by PrepareVlanPopTableEntry(),
+// Core functionality is handled by EncodeVlanPopTableEntry(),
 // which is tested separately. This is a test of the non-core
 // functionality.
 

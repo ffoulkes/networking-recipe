@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareFdbRxVlanTableEntry()
+// Unit test for EncodeFdbRxVlanTableEntry()
 
 #include <stdint.h>
 
@@ -143,7 +143,7 @@ class FdbRxVlanEntryTest : public BaseTableTest {
 };
 
 //----------------------------------------------------------------------
-// PrepareFdbRxVlanTableEntry()
+// EncodeFdbRxVlanTableEntry()
 //----------------------------------------------------------------------
 
 TEST_F(FdbRxVlanEntryTest, remove_entry) {
@@ -151,8 +151,8 @@ TEST_F(FdbRxVlanEntryTest, remove_entry) {
   InitFdbInfo();
 
   // Act
-  PrepareFdbRxVlanTableEntry(&table_entry, fdb_info, p4info, REMOVE_ENTRY,
-                             detail);
+  EncodeFdbRxVlanTableEntry(&table_entry, fdb_info, p4info, REMOVE_ENTRY,
+                            detail);
   DumpTableEntry();
 
   // Assert
@@ -168,8 +168,8 @@ TEST_F(FdbRxVlanEntryTest, insert_entry) {
   InitAction();
 
   // Act
-  PrepareFdbRxVlanTableEntry(&table_entry, fdb_info, p4info, INSERT_ENTRY,
-                             detail);
+  EncodeFdbRxVlanTableEntry(&table_entry, fdb_info, p4info, INSERT_ENTRY,
+                            detail);
   DumpTableEntry();
 
   // Assert
