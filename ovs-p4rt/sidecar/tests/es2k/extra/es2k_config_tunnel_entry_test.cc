@@ -131,14 +131,14 @@ TEST_F(Es2kConfigTunnelEntryTest, getPipelineConfigFailure) {
 }
 
 //----------------------------------------------------------------------
-// ConfigEncapTableEntry
+// WriteEncapTableEntry
 //----------------------------------------------------------------------
 
 /**
- * Exercises ConfigEncapTableEntry() error path.
+ * Exercises WriteEncapTableEntry() error path.
  */
 TEST_F(Es2kConfigTunnelEntryTest, encapTableWriteFailure) {
-  constexpr char ERROR_MESSAGE[] = "ConfigEncapTableEntry";
+  constexpr char ERROR_MESSAGE[] = "WriteEncapTableEntry";
 
   struct tunnel_info tunnel_info = {0};
   InitIpv4TunnelInfo(tunnel_info);
@@ -164,7 +164,7 @@ TEST_F(Es2kConfigTunnelEntryTest, encapTableWriteFailure) {
 }
 
 /**
- * Exercises ConfigEncapTableEntry() happy path and
+ * Exercises WriteEncapTableEntry() happy path and
  * WriteDecapTableEntry() error path.
  */
 TEST_F(Es2kConfigTunnelEntryTest, decapTableWriteFailure) {
@@ -183,7 +183,7 @@ TEST_F(Es2kConfigTunnelEntryTest, decapTableWriteFailure) {
       .WillRepeatedly(
           DoAll(SetArgPointee<0>(expected_p4info), Return(absl::OkStatus())));
   EXPECT_CALL(client, sendWriteRequest)
-      .WillOnce(Return(absl::OkStatus()))  // ConfigEncapTableEntry
+      .WillOnce(Return(absl::OkStatus()))  // WriteEncapTableEntry
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
   auto status =
@@ -218,7 +218,7 @@ TEST_F(Es2kConfigTunnelEntryTest, tunnelTermTableWriteFailure) {
       .WillRepeatedly(
           DoAll(SetArgPointee<0>(expected_p4info), Return(absl::OkStatus())));
   EXPECT_CALL(client, sendWriteRequest)
-      .WillOnce(Return(absl::OkStatus()))  // ConfigEncapTableEntry
+      .WillOnce(Return(absl::OkStatus()))  // WriteEncapTableEntry
       .WillOnce(Return(absl::OkStatus()))  // WriteDecapTableEntry
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 

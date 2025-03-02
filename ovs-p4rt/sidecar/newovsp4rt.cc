@@ -1561,7 +1561,7 @@ void EncodeV6TunnelTermTableEntry(p4::v1::TableEntry* table_entry,
 #endif  // ES2K_TARGET
 
 #if defined(ES2K_TARGET)
-// called-by: ConfigEncapTableEntry
+// called-by: WriteEncapTableEntry
 void Es2kPrepareEncapTableEntry(::p4::v1::TableEntry* table_entry,
                                 const struct tunnel_info& tunnel_info,
                                 const ::p4::config::v1::P4Info& p4info,
@@ -1587,10 +1587,10 @@ void Es2kPrepareEncapTableEntry(::p4::v1::TableEntry* table_entry,
 #endif  // ES2K_TARGET
 
 // called-by: DoConfigTunnelEntry (common)
-absl::Status ConfigEncapTableEntry(ClientInterface& client,
-                                   const struct tunnel_info& tunnel_info,
-                                   const ::p4::config::v1::P4Info& p4info,
-                                   bool insert_entry) {
+absl::Status WriteEncapTableEntry(ClientInterface& client,
+                                  const struct tunnel_info& tunnel_info,
+                                  const ::p4::config::v1::P4Info& p4info,
+                                  bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
   ::p4::v1::TableEntry* table_entry;
 
@@ -2691,7 +2691,7 @@ absl::Status ConfigTunnelEntry(ClientInterface& client,
                                bool insert_entry) {
   absl::Status status;
 
-  status = ConfigEncapTableEntry(client, tunnel_info, p4info, insert_entry);
+  status = WriteEncapTableEntry(client, tunnel_info, p4info, insert_entry);
   if (!status.ok()) return status;
 
 #if defined(ES2K_TARGET)

@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for ConfigEncapTableEntry().
+// Unit test for WriteEncapTableEntry().
 
 // Core functionality is handled by Es2kPrepareEncapTableEntry(),
 // which is tested separately. This is a test of the non-core
@@ -23,13 +23,13 @@ using ::testing::Return;
 
 namespace ovsp4rt {
 
-class ConfigEncapTableEntryTest : public BaseTunnelInfoTest {
+class WriteEncapTableEntryTest : public BaseTunnelInfoTest {
  public:
-  ConfigEncapTableEntryTest() {}
-  virtual ~ConfigEncapTableEntryTest() = default;
+  WriteEncapTableEntryTest() {}
+  virtual ~WriteEncapTableEntryTest() = default;
 };
 
-TEST_F(ConfigEncapTableEntryTest, configEncapTableEntryFailure) {
+TEST_F(WriteEncapTableEntryTest, configEncapTableEntryFailure) {
   constexpr char ERROR_MESSAGE[] = "sendWriteRequest failed";
 
   struct tunnel_info tunnel_info = {0};
@@ -43,15 +43,14 @@ TEST_F(ConfigEncapTableEntryTest, configEncapTableEntryFailure) {
   EXPECT_CALL(client, sendWriteRequest)
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
-  auto status =
-      ConfigEncapTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
+  auto status = WriteEncapTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
       << status.message();
 }
 
-TEST_F(ConfigEncapTableEntryTest, configEncapTableEntrySuccess) {
+TEST_F(WriteEncapTableEntryTest, configEncapTableEntrySuccess) {
   struct tunnel_info tunnel_info = {0};
   InitV4TunnelInfo(tunnel_info);
   InitVxlanTagged(tunnel_info);
@@ -62,8 +61,7 @@ TEST_F(ConfigEncapTableEntryTest, configEncapTableEntrySuccess) {
   TestClientMock client;
   EXPECT_CALL(client, sendWriteRequest).WillOnce(Return(absl::OkStatus()));
 
-  auto status =
-      ConfigEncapTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
+  auto status = WriteEncapTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
 
   ASSERT_TRUE(status.ok()) << status;
 }
