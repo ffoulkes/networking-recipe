@@ -69,7 +69,7 @@ class Es2kUpdateSrcPortTest : public ::testing::Test {
 };
 
 /**
- * GetTxAccVsiTableEntry failure path.
+ * ReadTxAccVsiTableEntry failure path.
  */
 TEST_F(Es2kUpdateSrcPortTest, getTxAccVsiEntryFailure) {
   constexpr char VSI_LOOKUP_FAILED[] = "Not found in VSI table";
@@ -91,7 +91,7 @@ TEST_F(Es2kUpdateSrcPortTest, getTxAccVsiEntryFailure) {
 }
 
 /**
- * GetTxAccVsiTableEntry success path.
+ * ReadTxAccVsiTableEntry success path.
  */
 TEST_F(Es2kUpdateSrcPortTest, getTxAccVsiEntrySuccess) {
   struct mac_learning_info learn_info = {0};

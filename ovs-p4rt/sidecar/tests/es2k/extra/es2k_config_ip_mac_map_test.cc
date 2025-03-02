@@ -108,7 +108,7 @@ TEST_F(Es2kConfigIpMacMapTest, getPipelineConfigFailure) {
 }
 
 /**
- * Exercises the GetVmSrcTableEntry() both-found path.
+ * Exercises the ReadVmSrcTableEntry() both-found path.
  */
 TEST_F(Es2kConfigIpMacMapTest, getVmSrcTableBothFound) {
   struct ip_mac_map_info map_info = {0};
@@ -133,7 +133,7 @@ TEST_F(Es2kConfigIpMacMapTest, getVmSrcTableBothFound) {
 }
 
 /**
- * Exercises the GetVmSrcTableEntry() neither-found path.
+ * Exercises the ReadVmSrcTableEntry() neither-found path.
  */
 TEST_F(Es2kConfigIpMacMapTest, getVmSrcTableNeitherFound) {
   struct ip_mac_map_info map_info = {0};

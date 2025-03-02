@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for GetL2ToTunnelV6TableEntry().
+// Unit test for ReadL2ToTunnelV6TableEntry().
 
 // Core functionality is handled by EncodeL2ToTunnelV6(),
 // which is tested separately. This is a test of the non-core
@@ -55,7 +55,7 @@ TEST_F(GetL2ToTunnelV6EntryTest, getL2ToTunnelV6EntryFailure) {
   EXPECT_CALL(client, sendReadRequest)
       .WillOnce(Return(absl::NotFoundError(REQUEST_FAILED)));
 
-  auto response = GetL2ToTunnelV6TableEntry(client, learn_info, p4info);
+  auto response = ReadL2ToTunnelV6TableEntry(client, learn_info, p4info);
   auto status = response.status();
 
   ASSERT_FALSE(status.ok());
@@ -74,7 +74,7 @@ TEST_F(GetL2ToTunnelV6EntryTest, getL2ToTunnelV6EntrySuccess) {
   EXPECT_CALL(client, sendReadRequest)
       .WillOnce(InvokeWithoutArgs(GoodReadResponse));
 
-  auto response = GetL2ToTunnelV6TableEntry(client, learn_info, p4info);
+  auto response = ReadL2ToTunnelV6TableEntry(client, learn_info, p4info);
 
   ASSERT_TRUE(response.ok()) << response.status();
 }

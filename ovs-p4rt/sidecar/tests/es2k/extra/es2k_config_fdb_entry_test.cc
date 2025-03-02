@@ -155,7 +155,7 @@ TEST_F(Es2kConfigFdbEntryTest, deleteVxlanTunnelTableEntry) {
       .WillOnce(
           DoAll(SetArgPointee<0>(expected_p4info), Return(absl::OkStatus())));
   EXPECT_CALL(client, sendReadRequest)
-      .WillOnce(Return(absl::NotFoundError("GetFdbTunnelTableEntry failed")));
+      .WillOnce(Return(absl::NotFoundError("ReadFdbTunnelTableEntry failed")));
   EXPECT_CALL(client, sendWriteRequest)
       .WillRepeatedly(Return(absl::OkStatus()));
 
@@ -181,7 +181,7 @@ TEST_F(Es2kConfigFdbEntryTest, insertVxlanTunnelTableEntry) {
       .WillOnce(
           DoAll(SetArgPointee<0>(expected_p4info), Return(absl::OkStatus())));
   EXPECT_CALL(client, sendReadRequest)
-      .WillOnce(Return(absl::NotFoundError("GetFdbTunnelTableEntry failed")));
+      .WillOnce(Return(absl::NotFoundError("ReadFdbTunnelTableEntry failed")));
   EXPECT_CALL(client, sendWriteRequest)
       .WillRepeatedly(Return(absl::OkStatus()));
 
@@ -191,12 +191,12 @@ TEST_F(Es2kConfigFdbEntryTest, insertVxlanTunnelTableEntry) {
 }
 
 /**
- * Exercises ConfigFdbVlanEntry with the GetTxAccVsiTableEntry
+ * Exercises ConfigFdbVlanEntry with the ReadTxAccVsiTableEntry
  * failure path.
  */
 TEST_F(Es2kConfigFdbEntryTest, insertVlanEntryVsiNotFound) {
-  constexpr char VLAN_LOOKUP_FAILED[] = "GetFdbVlanTableEntry failed";
-  constexpr char VSI_LOOKUP_FAILED[] = "GetTxAccVsiTableEntry failed";
+  constexpr char VLAN_LOOKUP_FAILED[] = "ReadFdbVlanTableEntry failed";
+  constexpr char VSI_LOOKUP_FAILED[] = "ReadTxAccVsiTableEntry failed";
 
   struct mac_learning_info learn_info = {0};
   InitVlanLearnInfo(learn_info);
@@ -222,11 +222,11 @@ TEST_F(Es2kConfigFdbEntryTest, insertVlanEntryVsiNotFound) {
 }
 
 /**
- * Exercises ConfigFdbVlanEntry with the GetTxAccVsiTableEntry
+ * Exercises ConfigFdbVlanEntry with the ReadTxAccVsiTableEntry
  * success path.
  */
 TEST_F(Es2kConfigFdbEntryTest, insertVlanEntryVsiFound) {
-  constexpr char VLAN_LOOKUP_FAILED[] = "GetFdbVlanTableEntry failed";
+  constexpr char VLAN_LOOKUP_FAILED[] = "ReadFdbVlanTableEntry failed";
 
   struct mac_learning_info learn_info = {0};
   InitVlanLearnInfo(learn_info);

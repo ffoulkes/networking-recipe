@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for GetVmDstTableEntry().
+// Unit test for ReadVmDstTableEntry().
 
 // Core functionality is handled by EncodeDstIpMacMapTableEntry(),
 // which is tested separately. This is a test of the non-core
@@ -50,7 +50,7 @@ TEST_F(GetVmDstTableEntryTest, getVmDstTableEntryFailure) {
   EXPECT_CALL(client, sendReadRequest)
       .WillOnce(Return(absl::NotFoundError(REQUEST_FAILED)));
 
-  auto response = GetVmDstTableEntry(client, map_info, p4info);
+  auto response = ReadVmDstTableEntry(client, map_info, p4info);
   auto status = response.status();
 
   ASSERT_FALSE(status.ok());
@@ -68,7 +68,7 @@ TEST_F(GetVmDstTableEntryTest, getVmDstTableEntrySuccess) {
   EXPECT_CALL(client, sendReadRequest)
       .WillOnce(InvokeWithoutArgs(GoodReadResponse));
 
-  auto response = GetVmDstTableEntry(client, map_info, p4info);
+  auto response = ReadVmDstTableEntry(client, map_info, p4info);
 
   ASSERT_TRUE(response.ok()) << response.status();
 }

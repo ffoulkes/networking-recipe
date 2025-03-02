@@ -2049,7 +2049,7 @@ void EncodeTxAccVsiTableEntry(p4::v1::TableEntry* table_entry, uint32_t sp,
 #endif
 }
 
-absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV4TableEntry(
+absl::StatusOr<::p4::v1::ReadResponse> ReadL2ToTunnelV4TableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info) {
   ::p4::v1::ReadRequest read_request;
@@ -2063,7 +2063,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV4TableEntry(
   return client.sendReadRequest(read_request);
 }
 
-absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV6TableEntry(
+absl::StatusOr<::p4::v1::ReadResponse> ReadL2ToTunnelV6TableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info) {
   ::p4::v1::ReadRequest read_request;
@@ -2077,7 +2077,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV6TableEntry(
   return client.sendReadRequest(read_request);
 }
 
-// extracted from GetFdbTunnelTableEntry
+// extracted from ReadFdbTunnelTableEntry
 void PrepareFdbTableV4TunnelEntry(p4::v1::TableEntry* table_entry,
                                   const struct mac_learning_info& learn_info,
                                   const ::p4::config::v1::P4Info& p4info,
@@ -2098,7 +2098,7 @@ void PrepareFdbTableV4TunnelEntry(p4::v1::TableEntry* table_entry,
   }
 }
 
-absl::StatusOr<::p4::v1::ReadResponse> GetFdbTunnelTableEntry(
+absl::StatusOr<::p4::v1::ReadResponse> ReadFdbTunnelTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool adding) {
   ::p4::v1::ReadRequest read_request;
@@ -2119,7 +2119,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetFdbTunnelTableEntry(
   return client.sendReadRequest(read_request);
 }
 
-absl::StatusOr<::p4::v1::ReadResponse> GetFdbVlanTableEntry(
+absl::StatusOr<::p4::v1::ReadResponse> ReadFdbVlanTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool adding) {
   ::p4::v1::ReadRequest read_request;
@@ -2134,7 +2134,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetFdbVlanTableEntry(
 }
 
 // called-by: DoConfigIpMacMapEntry (es2k)
-absl::StatusOr<::p4::v1::ReadResponse> GetVmSrcTableEntry(
+absl::StatusOr<::p4::v1::ReadResponse> ReadVmSrcTableEntry(
     ClientInterface& client, struct ip_mac_map_info ip_info,
     const ::p4::config::v1::P4Info& p4info) {
   ::p4::v1::ReadRequest read_request;
@@ -2149,7 +2149,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetVmSrcTableEntry(
 }
 
 // called-by: DoConfigIpMacMapEntry (es2k)
-absl::StatusOr<::p4::v1::ReadResponse> GetVmDstTableEntry(
+absl::StatusOr<::p4::v1::ReadResponse> ReadVmDstTableEntry(
     ClientInterface& client, const struct ip_mac_map_info& ip_info,
     const ::p4::config::v1::P4Info& p4info) {
   ::p4::v1::ReadRequest read_request;
@@ -2164,7 +2164,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetVmDstTableEntry(
 }
 
 // called-by: DoConfigSrcPortEntry, ConfigFdbUpdateSrcPort
-absl::StatusOr<::p4::v1::ReadResponse> GetTxAccVsiTableEntry(
+absl::StatusOr<::p4::v1::ReadResponse> ReadTxAccVsiTableEntry(
     ClientInterface& client, uint32_t sp,
     const ::p4::config::v1::P4Info& p4info) {
   ::p4::v1::ReadRequest read_request;
@@ -2314,7 +2314,7 @@ void ConfigFdbUpdateTunnelInfo(ClientInterface& client,
                                const ::p4::config::v1::P4Info& p4info) {
   // Matching entry in IPv4 tunnel table?
   auto status_or_read_response =
-      GetL2ToTunnelV4TableEntry(client, learn_info, p4info);
+      ReadL2ToTunnelV4TableEntry(client, learn_info, p4info);
   if (status_or_read_response.ok()) {
     // Yes, we're deleting an IPv4 tunnel.
     learn_info.is_tunnel = true;
@@ -2323,7 +2323,7 @@ void ConfigFdbUpdateTunnelInfo(ClientInterface& client,
   if (!learn_info.is_tunnel) {
     // Matching entry in IPv6 tunnel table?
     status_or_read_response =
-        GetL2ToTunnelV6TableEntry(client, learn_info, p4info);
+        ReadL2ToTunnelV6TableEntry(client, learn_info, p4info);
     if (status_or_read_response.ok()) {
       // We're deleting an IPv6 tunnel.
       learn_info.is_tunnel = true;
@@ -2338,7 +2338,7 @@ absl::Status ConfigFdbUpdateSrcPort(ClientInterface& client,
                                     struct mac_learning_info& learn_info,
                                     const ::p4::config::v1::P4Info& p4info) {
   auto response_or_status =
-      GetTxAccVsiTableEntry(client, learn_info.src_port, p4info);
+      ReadTxAccVsiTableEntry(client, learn_info.src_port, p4info);
   if (!response_or_status.ok()) {
     return response_or_status.status();
   }
@@ -2377,7 +2377,7 @@ absl::Status ConfigFdbTunnelEntry(ClientInterface& client,
                                   const ::p4::config::v1::P4Info& p4info) {
   if (insert_entry) {
     auto status_or_read_response =
-        GetFdbTunnelTableEntry(client, learn_info, p4info, true);
+        ReadFdbTunnelTableEntry(client, learn_info, p4info, true);
     if (status_or_read_response.ok()) {
       // Return if entry already exists.
       return absl::OkStatus();
@@ -2405,7 +2405,7 @@ absl::Status ConfigFdbVlanEntry(ClientInterface& client,
 
   if (insert_entry) {
     auto status_or_read_response =
-        GetFdbVlanTableEntry(client, learn_info, p4info, true);
+        ReadFdbVlanTableEntry(client, learn_info, p4info, true);
     if (status_or_read_response.ok()) {
       // Return if entry already exists.
       return absl::OkStatus();
@@ -2549,7 +2549,7 @@ absl::Status ConfigSrcPortEntry(ClientInterface& client,
                                 bool insert_entry) {
   // TODO(derek): refactor (extract method)
   auto response_or_status =
-      GetTxAccVsiTableEntry(client, vsi_sp.src_port, p4info);
+      ReadTxAccVsiTableEntry(client, vsi_sp.src_port, p4info);
   if (!response_or_status.ok()) return response_or_status.status();
 
   ::p4::v1::ReadResponse read_response = std::move(response_or_status).value();
@@ -2732,7 +2732,7 @@ absl::Status ConfigIpMacMapEntry(ClientInterface& client,
                                  const ::p4::config::v1::P4Info& p4info,
                                  bool insert_entry) {
   if (insert_entry) {
-    auto status_or_read_response = GetVmSrcTableEntry(client, ip_info, p4info);
+    auto status_or_read_response = ReadVmSrcTableEntry(client, ip_info, p4info);
     if (status_or_read_response.ok()) {
       goto try_dstip;
     }
@@ -2745,7 +2745,7 @@ absl::Status ConfigIpMacMapEntry(ClientInterface& client,
 
 try_dstip:
   if (insert_entry) {
-    auto status_or_read_response = GetVmDstTableEntry(client, ip_info, p4info);
+    auto status_or_read_response = ReadVmDstTableEntry(client, ip_info, p4info);
     if (status_or_read_response.ok()) {
       return status_or_read_response.status();
     }

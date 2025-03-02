@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for GetFdbVlanTableEntry().
+// Unit test for ReadFdbVlanTableEntry().
 
 // Core functionality is handled by EncodeFdbTxVlanTableEntry(),
 // which is tested separately. This is a test of the non-core
@@ -67,7 +67,7 @@ TEST_F(GetFdbVlanEntryTest, getFdbVlanTableEntryFailure) {
   EXPECT_CALL(client, sendReadRequest)
       .WillOnce(Return(absl::NotFoundError(REQUEST_FAILED)));
 
-  auto response = GetFdbVlanTableEntry(client, learn_info, p4info);
+  auto response = ReadFdbVlanTableEntry(client, learn_info, p4info);
   auto status = response.status();
 
   ASSERT_FALSE(status.ok());
@@ -86,7 +86,7 @@ TEST_F(GetFdbVlanEntryTest, getFdbVlanTableEntrySuccess) {
   EXPECT_CALL(client, sendReadRequest)
       .WillOnce(InvokeWithoutArgs(GoodReadResponse));
 
-  auto response = GetFdbVlanTableEntry(client, learn_info, p4info);
+  auto response = ReadFdbVlanTableEntry(client, learn_info, p4info);
 
   ASSERT_TRUE(response.ok()) << response.status();
 }

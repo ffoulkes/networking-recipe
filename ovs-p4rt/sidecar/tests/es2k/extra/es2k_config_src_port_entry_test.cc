@@ -108,10 +108,10 @@ TEST_F(Es2kConfigSrcPortEntryTest, getPipelineConfigFailure) {
 }
 
 /**
- * Exercises GetTxAccVsiTableEntry() error path.
+ * Exercises ReadTxAccVsiTableEntry() error path.
  */
 TEST_F(Es2kConfigSrcPortEntryTest, getTxAccVsiTableEntryFailure) {
-  constexpr char ERROR_MESSAGE[] = "GetTxAccVsiTableEntry";
+  constexpr char ERROR_MESSAGE[] = "ReadTxAccVsiTableEntry";
   struct src_port_info port_info = {0};
   InitSrcPortInfo(port_info);
 
