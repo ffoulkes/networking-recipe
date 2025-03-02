@@ -15,6 +15,10 @@
 
 namespace ovsp4rt {
 
+extern absl::Status ConfigEncapTableEntry(
+    ClientInterface& client, const struct tunnel_info& tunnel_info,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry);
+
 extern absl::Status ConfigFdbRxVlanTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
@@ -43,10 +47,6 @@ extern absl::Status ConfigDecapTableEntry(
 
 extern absl::Status ConfigDstIpMacMapTableEntry(
     ClientInterface& client, const struct ip_mac_map_info& ip_info,
-    const ::p4::config::v1::P4Info& p4info, bool insert_entry);
-
-extern absl::Status ConfigEncapTableEntry(
-    ClientInterface& client, const struct tunnel_info& tunnel_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
 extern absl::Status ConfigFdbSmacTableEntry(

@@ -15,20 +15,17 @@ option(TEST_COVERAGE OFF "Measure unit test code coverage")
 # We can use this with ctest to filter the tests to be run.
 set_property(DIRECTORY PROPERTY LABELS ovsp4rt)
 
+set(TESTS_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+
 #-----------------------------------------------------------------------
-# encode_host_port_value_test
+# base test test libraries
 #-----------------------------------------------------------------------
-add_executable(encode_host_port_value_test
-  encode_host_port_value_test.cc
-)
+add_subdirectory(base)
 
-set_test_properties(encode_host_port_value_test)
-
-target_link_libraries(encode_host_port_value_test PUBLIC
-  GTest::gtest_main
-)
-
-list(APPEND UNIT_TEST_NAMES encode_host_port_value_test)
+#-----------------------------------------------------------------------
+# common tests
+#-----------------------------------------------------------------------
+add_subdirectory(common)
 
 #-----------------------------------------------------------------------
 # Target-specific unit tests

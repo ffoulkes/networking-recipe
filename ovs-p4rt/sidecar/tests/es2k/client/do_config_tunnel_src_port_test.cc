@@ -1,10 +1,9 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Minimal unit test for DoConfigTunnelEntry().
+// Unit test for DoConfigSrcPortEntry().
 
 #include <absl/status/status.h>
-#include <arpa/inet.h>
 #include <stdint.h>
 
 // clang-format off
@@ -18,33 +17,37 @@
 #include "p4/config/v1/p4info.pb.h"
 #include "tests/base/basic_test.h"
 
+using ::testing::DoAll;
 using ::testing::Return;
+using ::testing::SetArgPointee;
 
 namespace ovsp4rt {
 
-constexpr char GRPC_ADDR[] = "1.2.3.4:5678";
+constexpr char GRPC_ADDR[] = "172.54.19.3:5678";
 
-class DpdkConfigTunnelEntryTest : public BasicTest {
+class DoConfigTunnelSrcPortTest : public BasicTest {
  protected:
-  DpdkConfigTunnelEntryTest() {}
-  ~DpdkConfigTunnelEntryTest() = default;
-};
+  DoConfigTunnelSrcPortTest() {}
+  ~DoConfigTunnelSrcPortTest() = default;
 
-//----------------------------------------------------------------------
-// Setup test cases
-//----------------------------------------------------------------------
+  void InitPortInfo(struct src_port_info& port_info) {
+    port_info.bridge_id = 42;
+    port_info.vlan_id = 0x123;
+    port_info.src_port = 0x1066;
+  }
+};
 
 /**
  * Exercises client.connect() error path.
  */
-TEST_F(DpdkConfigTunnelEntryTest, connectFailure) {
-  struct tunnel_info tunnel_info = {0};
+TEST_F(DoConfigTunnelSrcPortTest, connectFailure) {
+  struct src_port_info port_info = {0};
 
   TestClientMock client;
   EXPECT_CALL(client, connect).WillOnce(Return(absl::InternalError("connect")));
 
   auto status =
-      DoConfigTunnelEntry(client, tunnel_info, INSERT_ENTRY, GRPC_ADDR);
+      DoConfigTunnelSrcPortEntry(client, port_info, INSERT_ENTRY, GRPC_ADDR);
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == "connect") << status;
@@ -53,8 +56,8 @@ TEST_F(DpdkConfigTunnelEntryTest, connectFailure) {
 /**
  * Exercises config.getPipelineConfig() error path.
  */
-TEST_F(DpdkConfigTunnelEntryTest, getPipelineConfigFailure) {
-  struct tunnel_info tunnel_info = {0};
+TEST_F(DoConfigTunnelSrcPortTest, getPipelineConfigFailure) {
+  struct src_port_info port_info = {0};
 
   TestClientMock client;
   EXPECT_CALL(client, connect).WillOnce(Return(absl::OkStatus()));
@@ -62,7 +65,7 @@ TEST_F(DpdkConfigTunnelEntryTest, getPipelineConfigFailure) {
       .WillOnce(Return(absl::InternalError("getPipelineConfig")));
 
   auto status =
-      DoConfigTunnelEntry(client, tunnel_info, INSERT_ENTRY, GRPC_ADDR);
+      DoConfigTunnelSrcPortEntry(client, port_info, INSERT_ENTRY, GRPC_ADDR);
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == "getPipelineConfig")

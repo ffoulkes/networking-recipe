@@ -5,27 +5,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-option(EXTRA_TESTS "Build ill-considered config unit tests" OFF)
-
-#-----------------------------------------------------------------------
-# base_mac_map_info_test
-#-----------------------------------------------------------------------
-add_library(base_mac_map_info_test STATIC
-  base_mac_map_info_test.cc
-  base_mac_map_info_test.h
-)
-
-target_include_directories(base_mac_map_info_test PUBLIC
-  ${SIDECAR_SOURCE_DIR}
-  ${STRATUM_SOURCE_DIR}
-  ${OVSP4RT_INCLUDE_DIR}
-)
-
-target_link_libraries(base_mac_map_info_test PUBLIC
-  p4runtime_proto
-  stratum_utils
-)
-
 #-----------------------------------------------------------------------
 # es2k_ovsp4rt_test
 #-----------------------------------------------------------------------
@@ -65,21 +44,6 @@ macro(define_es2k_test TARGET)
 endmacro(define_es2k_test)
 
 #-----------------------------------------------------------------------
-# tunnel_test_utils
-#-----------------------------------------------------------------------
-add_library(tunnel_test_utils STATIC
-  base_table_test.h
-  basic_test.h
-  ip_tunnel_test.h
-  p4info_text.h
-  test_main.cc
-)
-
-target_link_libraries(tunnel_test_utils PUBLIC
-  absl::flags_parse
-)
-
-#-----------------------------------------------------------------------
 # define_es2k_tunnel_test()
 #-----------------------------------------------------------------------
 macro(define_es2k_tunnel_test TARGET)
@@ -90,7 +54,7 @@ macro(define_es2k_tunnel_test TARGET)
   set_test_properties(${TARGET})
 
   target_link_libraries(${TARGET} PUBLIC
-    tunnel_test_utils
+    ovsp4rt::tunnel_info_test
   )
 
   list(APPEND UNIT_TEST_NAMES ${TARGET})
@@ -141,75 +105,10 @@ define_es2k_tunnel_test(vxlan_encap_v4_vlan_pop_test)
 define_es2k_tunnel_test(vxlan_encap_v6_vlan_pop_test)
 
 #-----------------------------------------------------------------------
-# define_es2k_config_test()
+# ES2K client tests
 #-----------------------------------------------------------------------
-macro(define_es2k_config_test TARGET)
-  add_executable(${TARGET}
-    ${TARGET}.cc
-    $<TARGET_OBJECTS:ovsp4rt_test_client_o>
-  )
-
-  set_test_properties(${TARGET})
-
-  target_link_libraries(${TARGET} PUBLIC
-    tunnel_test_utils
-  )
-
-  list(APPEND UNIT_TEST_NAMES ${TARGET})
-endmacro()
-
-#-----------------------------------------------------------------------
-# Basic tests
-#-----------------------------------------------------------------------
-# ::ovsp4rt::BasicTest subclasses
-define_es2k_config_test(config_fdb_smac_table_entry_test)
-define_es2k_config_test(config_fdb_rx_vlan_table_entry_test)
-define_es2k_config_test(config_fdb_tx_vlan_table_entry_test)
-define_es2k_config_test(config_vlan_pop_table_entry_test)
-define_es2k_config_test(config_vlan_push_table_entry_test)
-define_es2k_config_test(config_vsi_src_port_entry_test)
-define_es2k_config_test(get_l2_to_tunnel_v4_entry_test)
-
-# ::testing::Test subclasses
-define_es2k_config_test(do_config_fdb_entry_test)
-define_es2k_config_test(do_config_ip_mac_map_test)
-define_es2k_config_test(do_config_rx_tunnel_src_port_test)
-define_es2k_config_test(do_config_src_port_entry_test)
-define_es2k_config_test(do_config_tunnel_entry_test)
-define_es2k_config_test(do_config_tunnel_src_port_test)
-define_es2k_config_test(do_config_vlan_entry_test)
-
-define_es2k_config_test(es2k_update_src_port_test)
-define_es2k_config_test(es2k_update_tunnel_info_test)
-
-#-----------------------------------------------------------------------
-# define_es2k_mac_map_test()
-#-----------------------------------------------------------------------
-macro(define_es2k_mac_map_test TARGET)
-  define_es2k_config_test(${TARGET})
-  target_link_libraries(${TARGET} PRIVATE base_mac_map_info_test)
-endmacro()
-
-define_es2k_mac_map_test(es2k_config_dst_ip_mac_map_test)
-define_es2k_mac_map_test(es2k_config_src_ip_mac_map_test)
-define_es2k_mac_map_test(get_vm_dst_table_entry_test)
-define_es2k_mac_map_test(get_vm_src_table_entry_test)
-
-#-----------------------------------------------------------------------
-# es2k_mac_learn_info_tests
-#-----------------------------------------------------------------------
-include(es2k_mac_learn_info_tests.cmake)
-
-#-----------------------------------------------------------------------
-# es2k_tunnel_info_tests
-#-----------------------------------------------------------------------
-include(es2k_tunnel_info_tests.cmake)
-
-#-----------------------------------------------------------------------
-# DoConfig tests
-#-----------------------------------------------------------------------
-if(BUILD_CLIENT AND EXTRA_TESTS)
-  add_subdirectory(extra)
+if(BUILD_CLIENT)
+  add_subdirectory(client)
 endif()
 
 # Export list of unit tests.
