@@ -165,10 +165,10 @@ TEST_F(Es2kConfigTunnelEntryTest, encapTableWriteFailure) {
 
 /**
  * Exercises ConfigEncapTableEntry() happy path and
- * ConfigDecapTableEntry() error path.
+ * WriteDecapTableEntry() error path.
  */
 TEST_F(Es2kConfigTunnelEntryTest, decapTableWriteFailure) {
-  constexpr char ERROR_MESSAGE[] = "ConfigDecapTableEntry";
+  constexpr char ERROR_MESSAGE[] = "WriteDecapTableEntry";
 
   struct tunnel_info tunnel_info = {0};
   InitIpv4TunnelInfo(tunnel_info);
@@ -195,15 +195,15 @@ TEST_F(Es2kConfigTunnelEntryTest, decapTableWriteFailure) {
 }
 
 //----------------------------------------------------------------------
-// ConfigDecapTableEntry
+// WriteDecapTableEntry
 //----------------------------------------------------------------------
 
 /**
- * Exercises ConfigDecapTableEntry() happy path and
- * ConfigTunnelTermTableEntry() error path.
+ * Exercises WriteDecapTableEntry() happy path and
+ * WriteTunnelTermTableEntry() error path.
  */
 TEST_F(Es2kConfigTunnelEntryTest, tunnelTermTableWriteFailure) {
-  constexpr char ERROR_MESSAGE[] = "ConfigTunnelTermTableEntry";
+  constexpr char ERROR_MESSAGE[] = "WriteTunnelTermTableEntry";
 
   struct tunnel_info tunnel_info = {0};
   InitIpv4TunnelInfo(tunnel_info);
@@ -219,7 +219,7 @@ TEST_F(Es2kConfigTunnelEntryTest, tunnelTermTableWriteFailure) {
           DoAll(SetArgPointee<0>(expected_p4info), Return(absl::OkStatus())));
   EXPECT_CALL(client, sendWriteRequest)
       .WillOnce(Return(absl::OkStatus()))  // ConfigEncapTableEntry
-      .WillOnce(Return(absl::OkStatus()))  // ConfigDecapTableEntry
+      .WillOnce(Return(absl::OkStatus()))  // WriteDecapTableEntry
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
   auto status =
@@ -231,11 +231,11 @@ TEST_F(Es2kConfigTunnelEntryTest, tunnelTermTableWriteFailure) {
 }
 
 //----------------------------------------------------------------------
-// ConfigTunnelTermTableEntry
+// WriteTunnelTermTableEntry
 //----------------------------------------------------------------------
 
 /**
- * Exercises ConfigTunnelTermTableEntry() happy path.
+ * Exercises WriteTunnelTermTableEntry() happy path.
  */
 TEST_F(Es2kConfigTunnelEntryTest, tunnelTermTableWriteSuccess) {
   struct tunnel_info tunnel_info = {0};

@@ -78,10 +78,10 @@ TEST_F(Es2kConfigVlanEntryTest, getPipelineConfigFailure) {
 }
 
 /**
- * Exercises the ConfigVlanPushTableEntry error path.
+ * Exercises the WriteVlanPushTableEntry error path.
  */
 TEST_F(Es2kConfigVlanEntryTest, configVlanPushTableEntryFailure) {
-  constexpr char PUSH_ENTRY_ERROR[] = "ConfigVlanPushTableEntry";
+  constexpr char PUSH_ENTRY_ERROR[] = "WriteVlanPushTableEntry";
   constexpr uint16_t vlan_id = VLAN_ID;
 
   ::p4::config::v1::P4Info expected_p4info;
@@ -101,10 +101,10 @@ TEST_F(Es2kConfigVlanEntryTest, configVlanPushTableEntryFailure) {
 }
 
 /**
- * Exercises the ConfigVlanPopTableEntry error path.
+ * Exercises the WriteVlanPopTableEntry error path.
  */
 TEST_F(Es2kConfigVlanEntryTest, configVlanPopTableEntryFailure) {
-  constexpr char POP_ENTRY_ERROR[] = "ConfigVlanPopTableEntry";
+  constexpr char POP_ENTRY_ERROR[] = "WriteVlanPopTableEntry";
   constexpr uint16_t vlan_id = VLAN_ID;
 
   ::p4::config::v1::P4Info expected_p4info;
@@ -116,7 +116,7 @@ TEST_F(Es2kConfigVlanEntryTest, configVlanPopTableEntryFailure) {
       .WillRepeatedly(
           DoAll(SetArgPointee<0>(expected_p4info), Return(absl::OkStatus())));
   EXPECT_CALL(client, sendWriteRequest)
-      .WillOnce(Return(absl::OkStatus()))  // ConfigVlanPushTableEntry
+      .WillOnce(Return(absl::OkStatus()))  // WriteVlanPushTableEntry
       .WillOnce(Return(absl::InternalError(POP_ENTRY_ERROR)));
 
   auto status = DoConfigVlanEntry(client, vlan_id, INSERT_ENTRY, GRPC_ADDR);

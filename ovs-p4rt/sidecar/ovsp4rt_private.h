@@ -38,7 +38,7 @@ extern void EncodeFdbTxVlanTableEntry(
     const ::p4::config::v1::P4Info& p4info, bool insert_entry,
     DiagDetail& detail);
 
-// extracted from ConfigL2TunnelTableEntry
+// extracted from WriteL2TunnelTableEntry
 extern void PrepareL2TunnelTableEntry(
     p4::v1::TableEntry* table_entry, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry,

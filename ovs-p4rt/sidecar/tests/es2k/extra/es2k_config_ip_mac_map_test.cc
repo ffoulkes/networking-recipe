@@ -160,7 +160,7 @@ TEST_F(Es2kConfigIpMacMapTest, getVmSrcTableNeitherFound) {
 }
 
 /**
- * Exercises the ConfigSrcIpMacMapTableEntry() failure path.
+ * Exercises the WriteSrcIpMacMapTableEntry() failure path.
  */
 TEST_F(Es2kConfigIpMacMapTest, ConfigSrcIpMacMapTableEntryFailure) {
   constexpr char ERROR_MESSAGE[] = "sendReadRequest";
@@ -176,14 +176,14 @@ TEST_F(Es2kConfigIpMacMapTest, ConfigSrcIpMacMapTableEntryFailure) {
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
   auto status =
-      ConfigSrcIpMacMapTableEntry(client, map_info, p4info, INSERT_ENTRY);
+      WriteSrcIpMacMapTableEntry(client, map_info, p4info, INSERT_ENTRY);
 
   EXPECT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE);
 }
 
 /**
- * Exercises the ConfigDstIpMacMapTableEntry() failure path.
+ * Exercises the WriteDstIpMacMapTableEntry() failure path.
  */
 TEST_F(Es2kConfigIpMacMapTest, configDstIpMacMapTableEntryFailure) {
   constexpr char ERROR_MESSAGE[] = "sendReadRequest";
@@ -199,7 +199,7 @@ TEST_F(Es2kConfigIpMacMapTest, configDstIpMacMapTableEntryFailure) {
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
   auto status =
-      ConfigDstIpMacMapTableEntry(client, map_info, p4info, INSERT_ENTRY);
+      WriteDstIpMacMapTableEntry(client, map_info, p4info, INSERT_ENTRY);
 
   EXPECT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE);

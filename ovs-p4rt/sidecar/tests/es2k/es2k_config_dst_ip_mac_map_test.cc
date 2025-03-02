@@ -2,7 +2,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for ConfigDstIpMacMapTableEntry(). [es2k]
+// Unit test for WriteDstIpMacMapTableEntry(). [es2k]
 
 #include <absl/status/status.h>
 
@@ -40,7 +40,7 @@ TEST_F(Es2kConfigDstIpMacMapTest, configDstIpMacMapWriteFailure) {
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
   auto status =
-      ConfigDstIpMacMapTableEntry(client, map_info, p4info, INSERT_ENTRY);
+      WriteDstIpMacMapTableEntry(client, map_info, p4info, INSERT_ENTRY);
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
@@ -58,7 +58,7 @@ TEST_F(Es2kConfigDstIpMacMapTest, configDstIpMacMapWriteSuccess) {
   EXPECT_CALL(client, sendWriteRequest).WillOnce(Return(absl::OkStatus()));
 
   auto status =
-      ConfigDstIpMacMapTableEntry(client, map_info, p4info, REMOVE_ENTRY);
+      WriteDstIpMacMapTableEntry(client, map_info, p4info, REMOVE_ENTRY);
 
   ASSERT_TRUE(status.ok()) << status;
 }

@@ -15,33 +15,34 @@
 
 namespace ovsp4rt {
 
-extern absl::Status ConfigFdbRxVlanTableEntry(
+extern absl::Status WriteFdbRxVlanTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
-absl::Status ConfigFdbTunnelTableEntry(
+absl::Status WriteFdbTunnelTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
-extern absl::Status ConfigFdbTxVlanTableEntry(
+extern absl::Status WriteFdbTxVlanTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
-extern absl::Status ConfigL2TunnelTableEntry(
+extern absl::Status WriteL2TunnelTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
-extern absl::Status ConfigTunnelTermTableEntry(
+extern absl::Status WriteTunnelTermTableEntry(
     ClientInterface& client, const struct tunnel_info& tunnel_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
 #if defined(ES2K_TARGET)
 
-extern absl::Status ConfigDecapTableEntry(
-    ClientInterface& client, const struct tunnel_info& tunnel_info,
-    const ::p4::config::v1::P4Info& p4info, bool insert_entry);
+extern absl::Status WriteDecapTableEntry(ClientInterface& client,
+                                         const struct tunnel_info& tunnel_info,
+                                         const ::p4::config::v1::P4Info& p4info,
+                                         bool insert_entry);
 
-extern absl::Status ConfigDstIpMacMapTableEntry(
+extern absl::Status WriteDstIpMacMapTableEntry(
     ClientInterface& client, const struct ip_mac_map_info& ip_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
@@ -49,7 +50,7 @@ extern absl::Status ConfigEncapTableEntry(
     ClientInterface& client, const struct tunnel_info& tunnel_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
-extern absl::Status ConfigFdbSmacTableEntry(
+extern absl::Status WriteFdbSmacTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
@@ -61,23 +62,23 @@ extern void ConfigFdbUpdateTunnelInfo(ClientInterface& client,
                                       struct mac_learning_info& learn_info,
                                       const ::p4::config::v1::P4Info& p4info);
 
-extern absl::Status ConfigRxTunnelSrcPortTableEntry(
+extern absl::Status WriteRxTunnelSrcPortTableEntry(
     ClientInterface& client, const struct tunnel_info& tunnel_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
-extern absl::Status ConfigSrcIpMacMapTableEntry(
+extern absl::Status WriteSrcIpMacMapTableEntry(
     ClientInterface& client, const struct ip_mac_map_info& ip_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
-extern absl::Status ConfigVlanPopTableEntry(
+extern absl::Status WriteVlanPopTableEntry(
     ClientInterface& client, const uint16_t vlan_id,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
-extern absl::Status ConfigVlanPushTableEntry(
+extern absl::Status WriteVlanPushTableEntry(
     ClientInterface& client, const uint16_t vlan_id,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
-extern absl::Status ConfigVsiSrcPortTableEntry(
+extern absl::Status WriteVsiSrcPortTableEntry(
     ClientInterface& client, const struct src_port_info& sp,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
