@@ -5,8 +5,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-option(EXTRA_TESTS "Build ill-considered config unit tests" OFF)
-
 #-----------------------------------------------------------------------
 # base_mac_map_info_test
 #-----------------------------------------------------------------------
@@ -204,13 +202,6 @@ include(es2k_mac_learn_info_tests.cmake)
 # es2k_tunnel_info_tests
 #-----------------------------------------------------------------------
 include(es2k_tunnel_info_tests.cmake)
-
-#-----------------------------------------------------------------------
-# DoConfig tests
-#-----------------------------------------------------------------------
-if(BUILD_CLIENT AND EXTRA_TESTS)
-  add_subdirectory(extra)
-endif()
 
 # Export list of unit tests.
 set(UNIT_TEST_NAMES "${UNIT_TEST_NAMES}" PARENT_SCOPE)
