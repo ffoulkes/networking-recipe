@@ -21,12 +21,18 @@ if(TEST_COVERAGE)
     add_compile_options(-fprofile-arcs -ftest-coverage)
 endif()
 
+if(BUILD_CLIENT)
+  set(CLIENT_SOURCES newovsp4rt.cc ovsp4rt_encoders.cc)
+else()
+  set(CLIENT_SOURCES ovsp4rt.cc)
+endif()
+
 #-----------------------------------------------------------------------
 # ovs_sidecar_o
 #-----------------------------------------------------------------------
 add_library(ovs_sidecar_o OBJECT
+    ${CLIENT_SOURCES}
     ${OVSP4RT_INCLUDE_DIR}/ovsp4rt/ovs-p4rt.h
-    $<IF:$<BOOL:${BUILD_CLIENT}>,newovsp4rt.cc,ovsp4rt.cc>
     ovsp4rt_private.h
 )
 
