@@ -11,23 +11,19 @@
 #include <gmock/gmock.h>
 // clang-format on
 
+#include "basic_test.h"
 #include "client/ovsp4rt_test_client_mock.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_do_config_int.h"
 #include "p4/config/v1/p4info.pb.h"
-#include "p4info_text.h"
-#include "stratum/lib/utils.h"
 
-using ::testing::DoAll;
 using ::testing::Return;
-using ::testing::SetArgPointee;
 
 namespace ovsp4rt {
 
-constexpr bool INSERT_ENTRY = true;
 constexpr char GRPC_ADDR[] = "1.2.3.4:5678";
 
-class DoConfigRxTunnelSrcPortTest : public ::testing::Test {
+class DoConfigRxTunnelSrcPortTest : public BasicTest {
  protected:
   DoConfigRxTunnelSrcPortTest() {}
   ~DoConfigRxTunnelSrcPortTest() = default;
@@ -60,11 +56,6 @@ class DoConfigRxTunnelSrcPortTest : public ::testing::Test {
 
     tunnel_info.vni = 0x911;
     tunnel_info.src_port = 0xFADE;
-  }
-
-  void InitP4Info(::p4::config::v1::P4Info* p4info) {
-    auto status = stratum::ParseProtoFromString(P4INFO_TEXT, p4info);
-    EXPECT_TRUE(status.ok()) << "ParseProtoFromString: " << status;
   }
 };
 
