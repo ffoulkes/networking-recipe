@@ -9,8 +9,9 @@
 
 #include <stdarg.h>
 
+#include <string>
+
 #include "p4/config/v1/p4info.pb.h"
-#include "p4/v1/p4runtime.pb.h"
 
 namespace ovsp4rt {
 
@@ -22,6 +23,9 @@ extern std::string EncodeByteValue(int arg_count...);
 
 extern int GetActionId(const ::p4::config::v1::P4Info& p4info,
                        const std::string& a_name);
+
+extern int GetParamId(const ::p4::config::v1::P4Info& p4info,
+                      const std::string& a_name, const std::string& param_name);
 
 extern int GetTableId(const ::p4::config::v1::P4Info& p4info,
                       const std::string& t_name);
