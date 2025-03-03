@@ -7,8 +7,6 @@
 #include <gtest/gtest.h>
 
 #include "p4/config/v1/p4info.pb.h"
-#include "p4info_text.h"
-#include "stratum/lib/utils.h"
 
 namespace ovsp4rt {
 
@@ -20,11 +18,7 @@ class BasicTest : public ::testing::Test {
   BasicTest(){};
   virtual ~BasicTest() = default;
 
-  static void InitP4Info(::p4::config::v1::P4Info* p4info) {
-    auto status = stratum::ParseProtoFromString(P4INFO_TEXT, p4info);
-    EXPECT_TRUE(status.ok())
-        << "ParseProtoFromString: " << status.error_message();
-  }
+  static void InitP4Info(::p4::config::v1::P4Info* p4info);
 };
 
 }  // namespace ovsp4rt
