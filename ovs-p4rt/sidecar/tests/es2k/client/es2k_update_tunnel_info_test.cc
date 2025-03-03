@@ -10,22 +10,20 @@
 #include <gmock/gmock.h>
 // clang-format on
 
+#include "basic_test.h"
 #include "client/ovsp4rt_test_client_mock.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_config_int.h"
 #include "p4/config/v1/p4info.pb.h"
-#include "p4info_text.h"
-#include "stratum/lib/utils.h"
 
 using ::testing::InvokeWithoutArgs;
 using ::testing::Return;
 
 namespace ovsp4rt {
 
-constexpr bool DELETE_ENTRY = false;
 constexpr char GRPC_ADDR[] = "1.2.3.4:5678";
 
-class Es2kUpdateTunnelInfoTest : public ::testing::Test {
+class Es2kUpdateTunnelInfoTest : public BasicTest {
  protected:
   Es2kUpdateTunnelInfoTest() {}
   virtual ~Es2kUpdateTunnelInfoTest() = default;
@@ -35,12 +33,6 @@ class Es2kUpdateTunnelInfoTest : public ::testing::Test {
   void InitLearnInfo(struct mac_learning_info& learn_info) {
     constexpr uint8_t MAC_ADDR[] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66};
     memcpy(learn_info.mac_addr, MAC_ADDR, sizeof(learn_info.mac_addr));
-  }
-
-  void InitP4Info(::p4::config::v1::P4Info* p4info) {
-    auto status = stratum::ParseProtoFromString(P4INFO_TEXT, p4info);
-    EXPECT_TRUE(status.ok())
-        << "ParseProtoFromString: " << status.error_message();
   }
 
   // The UUT only cares that it receives a response.

@@ -11,26 +11,20 @@
 #include <gmock/gmock.h>
 // clang-format on
 
+#include "basic_test.h"
 #include "client/ovsp4rt_test_client_mock.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_config_int.h"
 #include "ovsp4rt_do_config_int.h"
 #include "p4/config/v1/p4info.pb.h"
-#include "p4info_text.h"
-#include "stratum/lib/utils.h"
 
-using ::testing::_;
-using ::testing::DoAll;
-using ::testing::InvokeWithoutArgs;
 using ::testing::Return;
-using ::testing::SetArgPointee;
 
 namespace ovsp4rt {
 
-constexpr bool INSERT_ENTRY = true;
 constexpr char GRPC_ADDR[] = "1.2.3.4:5678";
 
-class DoConfigIpMacMapTest : public ::testing::Test {
+class DoConfigIpMacMapTest : public BasicTest {
  protected:
   DoConfigIpMacMapTest() {}
   virtual ~DoConfigIpMacMapTest() = default;
@@ -48,11 +42,6 @@ class DoConfigIpMacMapTest : public ::testing::Test {
         << "Error converting " << IPV4_SRC_ADDR;
     map_info.src_ip_addr.family = AF_INET;
     map_info.src_ip_addr.prefix_len = IPV4_PREFIX_LEN;
-  }
-
-  void InitP4Info(::p4::config::v1::P4Info* p4info) {
-    auto status = stratum::ParseProtoFromString(P4INFO_TEXT, p4info);
-    EXPECT_TRUE(status.ok()) << "ParseProtoFromString: " << status;
   }
 
   static absl::StatusOr<::p4::v1::ReadResponse> FoundReadRequest() {
