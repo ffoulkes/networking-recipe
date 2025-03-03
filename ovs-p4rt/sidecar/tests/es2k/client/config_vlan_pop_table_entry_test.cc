@@ -14,10 +14,10 @@
 #include <gmock/gmock.h>
 // clang-format on
 
-#include "tests/base/basic_test.h"
 #include "client/ovsp4rt_test_client_mock.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_config_int.h"
+#include "tests/base/basic_test.h"
 
 using ::testing::Return;
 

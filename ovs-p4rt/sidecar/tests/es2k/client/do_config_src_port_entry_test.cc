@@ -4,6 +4,7 @@
 // Minimal unit test for DoConfigTunnelEntry().
 
 #include <absl/status/status.h>
+#include <absl/status/statusor.h>
 #include <stdint.h>
 
 // clang-format off
@@ -11,7 +12,6 @@
 #include <gmock/gmock.h>
 // clang-format on
 
-#include "absl/status/statusor.h"
 #include "client/ovsp4rt_test_client_mock.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_do_config_int.h"
