@@ -18,7 +18,6 @@
 #include "ovsp4rt_do_config_int.h"
 #include "p4/config/v1/p4info.pb.h"
 
-//using ::testing::_;
 using ::testing::Return;
 
 namespace ovsp4rt {

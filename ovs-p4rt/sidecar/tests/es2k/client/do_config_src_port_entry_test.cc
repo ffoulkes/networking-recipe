@@ -16,7 +16,7 @@
 #include "client/ovsp4rt_test_client_mock.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_do_config_int.h"
-#include "ovsp4rt_util_int.h"	// EncodeByteValue
+#include "ovsp4rt_util_int.h"  // EncodeByteValue
 #include "p4/config/v1/p4info.pb.h"
 
 using ::testing::Return;
