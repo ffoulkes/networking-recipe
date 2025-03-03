@@ -10,13 +10,12 @@
 #include <gmock/gmock.h>
 // clang-format on
 
+#include "basic_test.h"
 #include "client/ovsp4rt_test_client_mock.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_config_int.h"
 #include "ovsp4rt_util_int.h"
 #include "p4/config/v1/p4info.pb.h"
-#include "p4info_text.h"
-#include "stratum/lib/utils.h"
 
 using ::testing::InvokeWithoutArgs;
 using ::testing::Return;
@@ -25,7 +24,7 @@ namespace ovsp4rt {
 
 constexpr int SRC_PORT = 72;
 
-class Es2kUpdateSrcPortTest : public ::testing::Test {
+class Es2kUpdateSrcPortTest : public BasicTest {
  protected:
   Es2kUpdateSrcPortTest() {}
   virtual ~Es2kUpdateSrcPortTest() = default;
@@ -36,12 +35,6 @@ class Es2kUpdateSrcPortTest : public ::testing::Test {
     memcpy(fdb_info.mac_addr, MAC_ADDR, sizeof(MAC_ADDR));
     fdb_info.bridge_id = BRIDGE_ID;
     fdb_info.is_tunnel = true;
-  }
-
-  void InitP4Info(::p4::config::v1::P4Info* p4info) {
-    auto status = stratum::ParseProtoFromString(P4INFO_TEXT, p4info);
-    EXPECT_TRUE(status.ok())
-        << "ParseProtoFromString: " << status.error_message();
   }
 
   static absl::StatusOr<::p4::v1::ReadResponse> VsiLookupResponse() {

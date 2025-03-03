@@ -164,12 +164,6 @@ macro(define_es2k_config_test TARGET)
 endmacro()
 
 #-----------------------------------------------------------------------
-# ::testing::Test subclasses
-#-----------------------------------------------------------------------
-define_es2k_config_test(es2k_update_src_port_test)
-define_es2k_config_test(es2k_update_tunnel_info_test)
-
-#-----------------------------------------------------------------------
 # define_es2k_mac_map_test()
 #-----------------------------------------------------------------------
 macro(define_es2k_mac_map_test TARGET)

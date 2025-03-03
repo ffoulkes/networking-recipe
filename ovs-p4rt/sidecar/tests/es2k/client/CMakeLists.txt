@@ -20,5 +20,8 @@ define_ovsp4rt_basic_test(do_config_tunnel_entry_test)
 define_ovsp4rt_basic_test(do_config_tunnel_src_port_test)
 define_ovsp4rt_basic_test(do_config_vlan_entry_test)
 
+define_ovsp4rt_basic_test(es2k_update_src_port_test)
+define_ovsp4rt_basic_test(es2k_update_tunnel_info_test)
+
 # Export list of unit tests.
 set(UNIT_TEST_NAMES "${UNIT_TEST_NAMES}" PARENT_SCOPE)
