@@ -93,6 +93,26 @@ target_link_libraries(encode_host_port_value_test PUBLIC
 list(APPEND UNIT_TEST_NAMES encode_host_port_value_test)
 
 #-----------------------------------------------------------------------
+# ovsp4rt_tunnel_info_test
+#-----------------------------------------------------------------------
+add_library(ovsp4rt_tunnel_info_test STATIC
+  base_tunnel_info_test.cc
+  base_tunnel_info_test.h
+)
+
+target_include_directories(ovsp4rt_tunnel_info_test PUBLIC
+  ${OVSP4RT_INCLUDE_DIR}
+  ${SIDECAR_SOURCE_DIR}
+  ${TESTS_SOURCE_DIR}
+)
+
+target_link_libraries(ovsp4rt_tunnel_info_test PUBLIC
+  ovsp4rt::basic_test
+)
+
+add_library(ovsp4rt::tunnel_info_test ALIAS ovsp4rt_tunnel_info_test)
+
+#-----------------------------------------------------------------------
 # Target-specific unit tests
 #-----------------------------------------------------------------------
 if(ES2K_TARGET)

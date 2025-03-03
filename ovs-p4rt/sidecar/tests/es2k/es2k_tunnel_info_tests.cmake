@@ -5,28 +5,6 @@
 #
 
 #-----------------------------------------------------------------------
-# es2k_tunnel_info
-#-----------------------------------------------------------------------
-add_library(es2k_tunnel_info STATIC
-  base_tunnel_info_test.cc
-  base_tunnel_info_test.h
-  p4info_text.h
-  test_main.cc
-)
-
-target_include_directories(es2k_tunnel_info PUBLIC
-  ${SIDECAR_SOURCE_DIR}
-  ${STRATUM_SOURCE_DIR}
-  ${OVSP4RT_INCLUDE_DIR}
-)
-
-target_link_libraries(es2k_tunnel_info PUBLIC
-  absl::flags_parse
-  p4runtime_proto
-  stratum_utils
-)
-
-#-----------------------------------------------------------------------
 # define_es2k_tunnel_info_test()
 #-----------------------------------------------------------------------
 macro(define_es2k_tunnel_info_test TARGET)
@@ -37,8 +15,12 @@ macro(define_es2k_tunnel_info_test TARGET)
 
   set_test_properties(${TARGET})
 
+  target_include_directories(${TARGET} PUBLIC
+    ${TESTS_SOURCE_DIR}
+  )
+
   target_link_libraries(${TARGET} PUBLIC
-    es2k_tunnel_info
+    ovsp4rt::tunnel_info_test
   )
 
   list(APPEND UNIT_TEST_NAMES ${TARGET})
