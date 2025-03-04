@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for ConfigDecapTableEntry().
+// Unit test for WriteDecapTableEntry().
 
 // Core functionality is handled by Es2kPrepareDecapTableEntry(),
 // which is tested separately. This is a test of the non-core
@@ -43,8 +43,7 @@ TEST_F(ConfigDecapTableEntryTest, ConfigDecapTableEntryFailure) {
   EXPECT_CALL(client, sendWriteRequest)
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
-  auto status =
-      ConfigDecapTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
+  auto status = WriteDecapTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
@@ -62,8 +61,7 @@ TEST_F(ConfigDecapTableEntryTest, ConfigDecapTableEntrySuccess) {
   TestClientMock client;
   EXPECT_CALL(client, sendWriteRequest).WillOnce(Return(absl::OkStatus()));
 
-  auto status =
-      ConfigDecapTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
+  auto status = WriteDecapTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
 
   ASSERT_TRUE(status.ok()) << status;
 }

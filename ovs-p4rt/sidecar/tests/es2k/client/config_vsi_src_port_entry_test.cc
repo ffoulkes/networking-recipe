@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for ConfigVlanPopTableEntry().
+// Unit test for WriteVlanPopTableEntry().
 
 // Core functionality is handled by PrepareSrcPortTableEntry(),
 // which is tested separately. This is a test of the non-core
@@ -49,7 +49,7 @@ TEST_F(ConfigVsiSrcPortEntryTest, configVsiSrcPortEntryFailure) {
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
   auto status =
-      ConfigVsiSrcPortTableEntry(client, port_info, p4info, INSERT_ENTRY);
+      WriteVsiSrcPortTableEntry(client, port_info, p4info, INSERT_ENTRY);
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
@@ -67,7 +67,7 @@ TEST_F(ConfigVsiSrcPortEntryTest, configVsiSrcPortEntrySuccess) {
   EXPECT_CALL(client, sendWriteRequest).WillOnce(Return(absl::OkStatus()));
 
   auto status =
-      ConfigVsiSrcPortTableEntry(client, port_info, p4info, INSERT_ENTRY);
+      WriteVsiSrcPortTableEntry(client, port_info, p4info, INSERT_ENTRY);
 
   ASSERT_TRUE(status.ok()) << status;
 }

@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for ConfigFdbRxVlanTableEntry().
+// Unit test for WriteFdbRxVlanTableEntry().
 
 // Core functionality is handled by PrepareFdbRxVlanTableEntry(),
 // which is tested separately. This is a test of the non-core
@@ -51,7 +51,7 @@ TEST_F(ConfigFdbRxVlanTableEntryTest, configFdbRxVlanEntryFailure) {
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
   auto status =
-      ConfigFdbRxVlanTableEntry(client, learn_info, p4info, INSERT_ENTRY);
+      WriteFdbRxVlanTableEntry(client, learn_info, p4info, INSERT_ENTRY);
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
@@ -69,7 +69,7 @@ TEST_F(ConfigFdbRxVlanTableEntryTest, configFdbRxVlanEntrySuccess) {
   EXPECT_CALL(client, sendWriteRequest).WillOnce(Return(absl::OkStatus()));
 
   auto status =
-      ConfigFdbRxVlanTableEntry(client, learn_info, p4info, INSERT_ENTRY);
+      WriteFdbRxVlanTableEntry(client, learn_info, p4info, INSERT_ENTRY);
 
   ASSERT_TRUE(status.ok()) << status;
 }

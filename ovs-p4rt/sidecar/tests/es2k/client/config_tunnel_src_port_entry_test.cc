@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for ConfigTunnelSrcPortEntry().
+// Unit test for WriteTunnelSrcPortEntry().
 
 #include <absl/status/status.h>
 
@@ -48,7 +48,7 @@ TEST_F(ConfigTunnelSrcPortTest, configTunnelSrcPortFailure) {
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
   auto status =
-      ConfigTunnelSrcPortEntry(client, port_info, p4info, INSERT_ENTRY);
+      WriteTunnelSrcPortEntry(client, port_info, p4info, INSERT_ENTRY);
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
@@ -66,7 +66,7 @@ TEST_F(ConfigTunnelSrcPortTest, configTunnelSrcPortSuccess) {
   EXPECT_CALL(client, sendWriteRequest).WillOnce(Return(absl::OkStatus()));
 
   auto status =
-      ConfigTunnelSrcPortEntry(client, port_info, p4info, INSERT_ENTRY);
+      WriteTunnelSrcPortEntry(client, port_info, p4info, INSERT_ENTRY);
 
   ASSERT_TRUE(status.ok()) << status;
 }
