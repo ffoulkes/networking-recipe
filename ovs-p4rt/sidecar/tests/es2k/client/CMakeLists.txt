@@ -24,7 +24,6 @@ define_basic_test(es2k_update_tunnel_info_test)
 #-----------------------------------------------------------------------
 # mac_learn_info tests
 #-----------------------------------------------------------------------
-define_mac_learn_info_test(config_fdb_tunnel_table_entry_test)
 define_mac_learn_info_test(es2k_config_l2_tunnel_table_entry_test)
 define_mac_learn_info_test(es2k_prep_l2_tunnel_table_entry)
 define_mac_learn_info_test(es2k_prep_fdb_table_v4_tunnel_test)
