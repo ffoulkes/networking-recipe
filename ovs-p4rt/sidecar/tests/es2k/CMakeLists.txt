@@ -6,25 +6,6 @@
 #
 
 #-----------------------------------------------------------------------
-# base_mac_map_info_test
-#-----------------------------------------------------------------------
-add_library(base_mac_map_info_test STATIC
-  base_mac_map_info_test.cc
-  base_mac_map_info_test.h
-)
-
-target_include_directories(base_mac_map_info_test PUBLIC
-  ${SIDECAR_SOURCE_DIR}
-  ${STRATUM_SOURCE_DIR}
-  ${OVSP4RT_INCLUDE_DIR}
-)
-
-target_link_libraries(base_mac_map_info_test PUBLIC
-  p4runtime_proto
-  stratum_utils
-)
-
-#-----------------------------------------------------------------------
 # es2k_ovsp4rt_test
 #-----------------------------------------------------------------------
 add_library(es2k_ovsp4rt_test INTERFACE

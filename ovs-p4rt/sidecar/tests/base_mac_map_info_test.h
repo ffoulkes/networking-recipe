@@ -6,21 +6,18 @@
 
 #include <gtest/gtest.h>
 
+#include "basic_test.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "p4/config/v1/p4info.pb.h"
 
 namespace ovsp4rt {
 
-constexpr bool INSERT_ENTRY = true;
-constexpr bool REMOVE_ENTRY = false;
-
-class BaseMacMapInfoTest : public ::testing::Test {
+class BaseMacMapInfoTest : public BasicTest {
  protected:
   BaseMacMapInfoTest() {}
   virtual ~BaseMacMapInfoTest() = default;
 
   static void InitIpv4MapInfo(struct ip_mac_map_info map_info);
-  static void InitP4Info(::p4::config::v1::P4Info* p4info);
 };
 
 }  // namespace ovsp4rt

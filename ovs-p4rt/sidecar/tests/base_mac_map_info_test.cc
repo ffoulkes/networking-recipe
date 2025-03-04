@@ -8,8 +8,6 @@
 
 #include "ovsp4rt/ovs-p4rt.h"
 #include "p4/config/v1/p4info.pb.h"
-#include "p4info_text.h"
-#include "stratum/lib/utils.h"
 
 namespace ovsp4rt {
 
@@ -26,11 +24,6 @@ void BaseMacMapInfoTest::InitIpv4MapInfo(struct ip_mac_map_info map_info) {
       << "Error converting " << IPV4_SRC_ADDR;
   map_info.src_ip_addr.family = AF_INET;
   map_info.src_ip_addr.prefix_len = IPV4_PREFIX_LEN;
-}
-
-void BaseMacMapInfoTest::InitP4Info(::p4::config::v1::P4Info* p4info) {
-  auto status = stratum::ParseProtoFromString(P4INFO_TEXT, p4info);
-  EXPECT_TRUE(status.ok()) << "ParseProtoFromString: " << status;
 }
 
 }  // namespace ovsp4rt
