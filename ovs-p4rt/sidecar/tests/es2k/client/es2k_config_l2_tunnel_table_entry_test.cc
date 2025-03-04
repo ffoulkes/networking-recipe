@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for ConfigL2TunnelTableEntry().
+// Unit test for WriteL2TunnelTableEntry().
 
 // Core functionality is provided by PrepareL2TunnelTableEntry(),
 // which is tested separately. This is a test of the non-core
@@ -44,7 +44,7 @@ TEST_F(ConfigL2TunnelTableEntryTest, ConfigL2TunnelTableEntryFailure) {
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
   auto status =
-      ConfigL2TunnelTableEntry(client, learn_info, p4info, INSERT_ENTRY);
+      WriteL2TunnelTableEntry(client, learn_info, p4info, INSERT_ENTRY);
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
@@ -63,7 +63,7 @@ TEST_F(ConfigL2TunnelTableEntryTest, ConfigL2TunnelTableEntrySuccess) {
   EXPECT_CALL(client, sendWriteRequest).WillOnce(Return(absl::OkStatus()));
 
   auto status =
-      ConfigL2TunnelTableEntry(client, learn_info, p4info, INSERT_ENTRY);
+      WriteL2TunnelTableEntry(client, learn_info, p4info, INSERT_ENTRY);
 
   ASSERT_TRUE(status.ok()) << status;
 }

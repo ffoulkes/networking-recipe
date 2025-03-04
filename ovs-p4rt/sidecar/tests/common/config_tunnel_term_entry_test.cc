@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for ConfigTunnelTermTableEntry (common)
+// Unit test for WriteTunnelTermTableEntry (common)
 
 // Core functionality is handled by PrepareL2ToTunnelV4(),
 // which is tested separately. This is a test of the non-core
@@ -42,7 +42,7 @@ TEST_F(ConfigTunnelTermEntryTest, configTunnelTermEntryFailure) {
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
   auto status =
-      ConfigTunnelTermTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
+      WriteTunnelTermTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
@@ -61,7 +61,7 @@ TEST_F(ConfigTunnelTermEntryTest, configTunnelTermEntrySuccess) {
   EXPECT_CALL(client, sendWriteRequest).WillOnce(Return(absl::OkStatus()));
 
   auto status =
-      ConfigTunnelTermTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
+      WriteTunnelTermTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
 
   ASSERT_TRUE(status.ok()) << status;
 }

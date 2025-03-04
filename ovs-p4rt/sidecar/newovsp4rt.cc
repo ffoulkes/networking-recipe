@@ -32,10 +32,10 @@ static inline int32_t ValidIpAddr(uint32_t nw_addr) {
 
 #ifdef ES2K_TARGET
 
-absl::Status ConfigFdbSmacTableEntry(ClientInterface& client,
-                                     const struct mac_learning_info& learn_info,
-                                     const ::p4::config::v1::P4Info& p4info,
-                                     bool insert_entry) {
+absl::Status WriteFdbSmacTableEntry(ClientInterface& client,
+                                    const struct mac_learning_info& learn_info,
+                                    const ::p4::config::v1::P4Info& p4info,
+                                    bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
   ::p4::v1::TableEntry* table_entry;
   DiagDetail detail;
@@ -53,7 +53,7 @@ absl::Status ConfigFdbSmacTableEntry(ClientInterface& client,
   return status;
 }
 
-// extracted from ConfigL2TunnelTableEntry
+// extracted from WriteL2TunnelTableEntry
 void PrepareL2TunnelTableEntry(p4::v1::TableEntry* table_entry,
                                const struct mac_learning_info& learn_info,
                                const ::p4::config::v1::P4Info& p4info,
@@ -66,9 +66,10 @@ void PrepareL2TunnelTableEntry(p4::v1::TableEntry* table_entry,
   }
 }
 
-absl::Status ConfigL2TunnelTableEntry(
-    ClientInterface& client, const struct mac_learning_info& learn_info,
-    const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
+absl::Status WriteL2TunnelTableEntry(ClientInterface& client,
+                                     const struct mac_learning_info& learn_info,
+                                     const ::p4::config::v1::P4Info& p4info,
+                                     bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
   ::p4::v1::TableEntry* table_entry;
   DiagDetail detail;
@@ -89,7 +90,7 @@ absl::Status ConfigL2TunnelTableEntry(
 #endif  // ES2K_TARGET
 
 // called-by: ConfigFdbVlanEntry (dpdk, es2k)
-absl::Status ConfigFdbTxVlanTableEntry(
+absl::Status WriteFdbTxVlanTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
@@ -110,7 +111,7 @@ absl::Status ConfigFdbTxVlanTableEntry(
 }
 
 // called-by: ConfigFdbVlanEntry (dpdk, es2k)
-absl::Status ConfigFdbRxVlanTableEntry(
+absl::Status WriteFdbRxVlanTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
@@ -131,7 +132,7 @@ absl::Status ConfigFdbRxVlanTableEntry(
 }
 
 #if defined(ES2K_TARGET)
-// extracted from ConfigFdbTunnelTableEntry
+// extracted from WriteFdbTunnelTableEntry
 void Es2kPrepareFdbTunnelTableEntry(p4::v1::TableEntry* table_entry,
                                     const struct mac_learning_info& learn_info,
                                     const ::p4::config::v1::P4Info& p4info,
@@ -153,7 +154,7 @@ void Es2kPrepareFdbTunnelTableEntry(p4::v1::TableEntry* table_entry,
 }
 #endif  // ES2K_TARGET
 
-absl::Status ConfigFdbTunnelTableEntry(
+absl::Status WriteFdbTunnelTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
@@ -252,7 +253,7 @@ void PrepareV6EncapAndVlanPopTableEntry(p4::v1::TableEntry* table_entry,
 #endif  // ES2K_TARGET
 
 #if defined(ES2K_TARGET)
-// called-by: ConfigEncapTableEntry
+// called-by: WriteEncapTableEntry
 void Es2kPrepareEncapTableEntry(::p4::v1::TableEntry* table_entry,
                                 const struct tunnel_info& tunnel_info,
                                 const ::p4::config::v1::P4Info& p4info,
@@ -278,10 +279,10 @@ void Es2kPrepareEncapTableEntry(::p4::v1::TableEntry* table_entry,
 #endif  // ES2K_TARGET
 
 // called-by: DoConfigTunnelEntry (common)
-absl::Status ConfigEncapTableEntry(ClientInterface& client,
-                                   const struct tunnel_info& tunnel_info,
-                                   const ::p4::config::v1::P4Info& p4info,
-                                   bool insert_entry) {
+absl::Status WriteEncapTableEntry(ClientInterface& client,
+                                  const struct tunnel_info& tunnel_info,
+                                  const ::p4::config::v1::P4Info& p4info,
+                                  bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
   ::p4::v1::TableEntry* table_entry;
 
@@ -333,7 +334,7 @@ void PrepareDecapModAndVlanPushTableEntry(
   }
 }
 
-// called-by: ConfigDecapTableEntry
+// called-by: WriteDecapTableEntry
 void Es2kPrepareDecapTableEntry(::p4::v1::TableEntry* table_entry,
                                 const struct tunnel_info& tunnel_info,
                                 const ::p4::config::v1::P4Info& p4info,
@@ -347,10 +348,10 @@ void Es2kPrepareDecapTableEntry(::p4::v1::TableEntry* table_entry,
 }
 
 // called-by: DoConfigTunnelEntry (es2k)
-absl::Status ConfigDecapTableEntry(ClientInterface& client,
-                                   const struct tunnel_info& tunnel_info,
-                                   const ::p4::config::v1::P4Info& p4info,
-                                   bool insert_entry) {
+absl::Status WriteDecapTableEntry(ClientInterface& client,
+                                  const struct tunnel_info& tunnel_info,
+                                  const ::p4::config::v1::P4Info& p4info,
+                                  bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
   ::p4::v1::TableEntry* table_entry;
 
@@ -362,10 +363,10 @@ absl::Status ConfigDecapTableEntry(ClientInterface& client,
 }
 
 // called-by: DoConfigVlanEntry (es2k)
-absl::Status ConfigVlanPushTableEntry(ClientInterface& client,
-                                      const uint16_t vlan_id,
-                                      const ::p4::config::v1::P4Info& p4info,
-                                      bool insert_entry) {
+absl::Status WriteVlanPushTableEntry(ClientInterface& client,
+                                     const uint16_t vlan_id,
+                                     const ::p4::config::v1::P4Info& p4info,
+                                     bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
   ::p4::v1::TableEntry* table_entry;
 
@@ -377,10 +378,10 @@ absl::Status ConfigVlanPushTableEntry(ClientInterface& client,
 }
 
 // called-by: DoConfigVlanEntry (es2k)
-absl::Status ConfigVlanPopTableEntry(ClientInterface& client,
-                                     const uint16_t vlan_id,
-                                     const ::p4::config::v1::P4Info& p4info,
-                                     bool insert_entry) {
+absl::Status WriteVlanPopTableEntry(ClientInterface& client,
+                                    const uint16_t vlan_id,
+                                    const ::p4::config::v1::P4Info& p4info,
+                                    bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
   ::p4::v1::TableEntry* table_entry;
 
@@ -520,10 +521,10 @@ absl::StatusOr<::p4::v1::ReadResponse> GetTxAccVsiTableEntry(
 }
 
 // called-by: DoConfigSrcPortEntry (es2k)
-absl::Status ConfigVsiSrcPortTableEntry(ClientInterface& client,
-                                        const struct src_port_info& sp,
-                                        const ::p4::config::v1::P4Info& p4info,
-                                        bool insert_entry) {
+absl::Status WriteVsiSrcPortTableEntry(ClientInterface& client,
+                                       const struct src_port_info& sp,
+                                       const ::p4::config::v1::P4Info& p4info,
+                                       bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
   ::p4::v1::TableEntry* table_entry;
 
@@ -534,7 +535,7 @@ absl::Status ConfigVsiSrcPortTableEntry(ClientInterface& client,
   return client.sendWriteRequest(write_request);
 }
 
-// extracted from ConfigRxTunnelSrcPortTableEntry
+// extracted from WriteRxTunnelSrcPortTableEntry
 void PrepareRxTunnelSrcPortTableEntry(p4::v1::TableEntry* table_entry,
                                       const struct tunnel_info& tunnel_info,
                                       const ::p4::config::v1::P4Info& p4info,
@@ -549,7 +550,7 @@ void PrepareRxTunnelSrcPortTableEntry(p4::v1::TableEntry* table_entry,
 }
 
 // called-by: DoConfigRxTunnelSrcEntry (es2k)
-absl::Status ConfigRxTunnelSrcPortTableEntry(
+absl::Status WriteRxTunnelSrcPortTableEntry(
     ClientInterface& client, const struct tunnel_info& tunnel_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
@@ -563,7 +564,7 @@ absl::Status ConfigRxTunnelSrcPortTableEntry(
   return client.sendWriteRequest(write_request);
 }
 
-// called-by: ConfigTunnelTermTableEntry
+// called-by: WriteTunnelTermTableEntry
 void Es2kPrepareTunnelTermTableEntry(p4::v1::TableEntry* table_entry,
                                      const struct tunnel_info& tunnel_info,
                                      const ::p4::config::v1::P4Info& p4info,
@@ -581,10 +582,10 @@ void Es2kPrepareTunnelTermTableEntry(p4::v1::TableEntry* table_entry,
 #endif  // ES2K_TARGET
 
 // called-by: DoConfigTunnelEntry (common)
-absl::Status ConfigTunnelTermTableEntry(ClientInterface& client,
-                                        const struct tunnel_info& tunnel_info,
-                                        const ::p4::config::v1::P4Info& p4info,
-                                        bool insert_entry) {
+absl::Status WriteTunnelTermTableEntry(ClientInterface& client,
+                                       const struct tunnel_info& tunnel_info,
+                                       const ::p4::config::v1::P4Info& p4info,
+                                       bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
   ::p4::v1::TableEntry* table_entry;
 
@@ -605,10 +606,10 @@ absl::Status ConfigTunnelTermTableEntry(ClientInterface& client,
 #if defined(ES2K_TARGET)
 
 // called-by: DoConfigIpMacMapEntry (es2k)
-absl::Status ConfigDstIpMacMapTableEntry(ClientInterface& client,
-                                         const struct ip_mac_map_info& ip_info,
-                                         const ::p4::config::v1::P4Info& p4info,
-                                         bool insert_entry) {
+absl::Status WriteDstIpMacMapTableEntry(ClientInterface& client,
+                                        const struct ip_mac_map_info& ip_info,
+                                        const ::p4::config::v1::P4Info& p4info,
+                                        bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
   ::p4::v1::TableEntry* table_entry;
   DiagDetail detail;
@@ -626,10 +627,10 @@ absl::Status ConfigDstIpMacMapTableEntry(ClientInterface& client,
 }
 
 // called-by: DoConfigIpMacMapEntry (es2k)
-absl::Status ConfigSrcIpMacMapTableEntry(ClientInterface& client,
-                                         const struct ip_mac_map_info& ip_info,
-                                         const ::p4::config::v1::P4Info& p4info,
-                                         bool insert_entry) {
+absl::Status WriteSrcIpMacMapTableEntry(ClientInterface& client,
+                                        const struct ip_mac_map_info& ip_info,
+                                        const ::p4::config::v1::P4Info& p4info,
+                                        bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
   ::p4::v1::TableEntry* table_entry;
   DiagDetail detail;
@@ -727,13 +728,13 @@ absl::Status ConfigFdbTunnelEntry(ClientInterface& client,
   }
 
   // Ignores status (why?)
-  (void)ConfigFdbTunnelTableEntry(client, learn_info, p4info, insert_entry);
+  (void)WriteFdbTunnelTableEntry(client, learn_info, p4info, insert_entry);
 
   // Ignores status (why?)
-  (void)ConfigL2TunnelTableEntry(client, learn_info, p4info, insert_entry);
+  (void)WriteL2TunnelTableEntry(client, learn_info, p4info, insert_entry);
 
   // Ignores status (why?)
-  (void)ConfigFdbSmacTableEntry(client, learn_info, p4info, insert_entry);
+  (void)WriteFdbSmacTableEntry(client, learn_info, p4info, insert_entry);
 
   return absl::OkStatus();
 }
@@ -754,17 +755,17 @@ absl::Status ConfigFdbVlanEntry(ClientInterface& client,
     }
 
     // Ignores status (why?)
-    (void)ConfigFdbRxVlanTableEntry(client, learn_info, p4info, insert_entry);
+    (void)WriteFdbRxVlanTableEntry(client, learn_info, p4info, insert_entry);
 
     status = ConfigFdbUpdateSrcPort(client, learn_info, p4info);
     if (!status.ok()) return status;
   }
 
   // Ignores status (why?)
-  (void)ConfigFdbTxVlanTableEntry(client, learn_info, p4info, insert_entry);
+  (void)WriteFdbTxVlanTableEntry(client, learn_info, p4info, insert_entry);
 
   // Ignores status (why?)
-  (void)ConfigFdbSmacTableEntry(client, learn_info, p4info, insert_entry);
+  (void)WriteFdbSmacTableEntry(client, learn_info, p4info, insert_entry);
 
   return absl::OkStatus();
 }
@@ -835,8 +836,8 @@ absl::Status DoConfigRxTunnelSrcEntry(ClientInterface& client,
   if (!status.ok()) return status;
 
   // Update P4 tables.
-  return ConfigRxTunnelSrcPortTableEntry(client, tunnel_info, p4info,
-                                         insert_entry);
+  return WriteRxTunnelSrcPortTableEntry(client, tunnel_info, p4info,
+                                        insert_entry);
 }
 
 //----------------------------------------------------------------------
@@ -844,10 +845,10 @@ absl::Status DoConfigRxTunnelSrcEntry(ClientInterface& client,
 //----------------------------------------------------------------------
 
 // extracted from DoConfigTunnelSrcPortEntry (testable)
-absl::Status ConfigTunnelSrcPortEntry(ClientInterface& client,
-                                      const struct src_port_info& tnl_sp,
-                                      const ::p4::config::v1::P4Info& p4info,
-                                      bool insert_entry) {
+absl::Status WriteTunnelSrcPortEntry(ClientInterface& client,
+                                     const struct src_port_info& tnl_sp,
+                                     const ::p4::config::v1::P4Info& p4info,
+                                     bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
   ::p4::v1::TableEntry* table_entry;
 
@@ -874,7 +875,7 @@ absl::Status DoConfigTunnelSrcPortEntry(ClientInterface& client,
   if (!status.ok()) return status;
 
   // Update P4 tables.
-  return ConfigTunnelSrcPortEntry(client, tnl_sp, p4info, insert_entry);
+  return WriteTunnelSrcPortEntry(client, tnl_sp, p4info, insert_entry);
 }
 
 //----------------------------------------------------------------------
@@ -923,7 +924,7 @@ absl::Status ConfigSrcPortEntry(ClientInterface& client,
   vsi_sp.src_port = host_sp;
   // end of refactoring
 
-  return ConfigVsiSrcPortTableEntry(client, vsi_sp, p4info, insert_entry);
+  return WriteVsiSrcPortTableEntry(client, vsi_sp, p4info, insert_entry);
 }
 
 absl::Status DoConfigSrcPortEntry(ClientInterface& client,
@@ -954,10 +955,10 @@ absl::Status ConfigVlanEntry(ClientInterface& client, uint16_t vlan_id,
                              bool insert_entry) {
   absl::Status status;
 
-  status = ConfigVlanPushTableEntry(client, vlan_id, p4info, insert_entry);
+  status = WriteVlanPushTableEntry(client, vlan_id, p4info, insert_entry);
   if (!status.ok()) return status;
 
-  return ConfigVlanPopTableEntry(client, vlan_id, p4info, insert_entry);
+  return WriteVlanPopTableEntry(client, vlan_id, p4info, insert_entry);
 }
 
 absl::Status DoConfigVlanEntry(ClientInterface& client, uint16_t vlan_id,
@@ -989,13 +990,13 @@ absl::Status ConfigFdbEntry(ClientInterface& client,
                             const ::p4::config::v1::P4Info& p4info,
                             bool insert_entry) {
   if (learn_info.is_tunnel) {
-    return ConfigFdbTunnelTableEntry(client, learn_info, p4info, insert_entry);
+    return WriteFdbTunnelTableEntry(client, learn_info, p4info, insert_entry);
   } else if (learn_info.is_vlan) {
     auto status =
-        ConfigFdbTxVlanTableEntry(client, learn_info, p4info, insert_entry);
+        WriteFdbTxVlanTableEntry(client, learn_info, p4info, insert_entry);
     if (!status.ok()) return status;
 
-    return ConfigFdbRxVlanTableEntry(client, learn_info, p4info, insert_entry);
+    return WriteFdbRxVlanTableEntry(client, learn_info, p4info, insert_entry);
   } else {
     // TODO(Derek): return error status?
     return absl::OkStatus();
@@ -1033,15 +1034,15 @@ absl::Status ConfigTunnelEntry(ClientInterface& client,
                                bool insert_entry) {
   absl::Status status;
 
-  status = ConfigEncapTableEntry(client, tunnel_info, p4info, insert_entry);
+  status = WriteEncapTableEntry(client, tunnel_info, p4info, insert_entry);
   if (!status.ok()) return status;
 
 #if defined(ES2K_TARGET)
-  status = ConfigDecapTableEntry(client, tunnel_info, p4info, insert_entry);
+  status = WriteDecapTableEntry(client, tunnel_info, p4info, insert_entry);
   if (!status.ok()) return status;
 #endif
 
-  return ConfigTunnelTermTableEntry(client, tunnel_info, p4info, insert_entry);
+  return WriteTunnelTermTableEntry(client, tunnel_info, p4info, insert_entry);
 }
 
 absl::Status DoConfigTunnelEntry(ClientInterface& client,
@@ -1082,7 +1083,7 @@ absl::Status ConfigIpMacMapEntry(ClientInterface& client,
 
   if (ValidIpAddr(ip_info.src_ip_addr.ip.v4addr.s_addr)) {
     // Ignores errors (why?)
-    (void)ConfigSrcIpMacMapTableEntry(client, ip_info, p4info, insert_entry);
+    (void)WriteSrcIpMacMapTableEntry(client, ip_info, p4info, insert_entry);
   }
 
 try_dstip:
@@ -1095,7 +1096,7 @@ try_dstip:
 
   if (ValidIpAddr(ip_info.src_ip_addr.ip.v4addr.s_addr)) {
     // Ignores errors (why?)
-    (void)ConfigDstIpMacMapTableEntry(client, ip_info, p4info, insert_entry);
+    (void)WriteDstIpMacMapTableEntry(client, ip_info, p4info, insert_entry);
   }
   return absl::OkStatus();
 }

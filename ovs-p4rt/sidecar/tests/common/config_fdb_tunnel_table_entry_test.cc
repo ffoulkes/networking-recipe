@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for ConfigFdbTunnelTableEntry().
+// Unit test for WriteFdbTunnelTableEntry().
 
 // Core functionality is handled by PrepareFdbTableEntryforV4VxlanTunnel()
 // or PrepareFdbTableEntryforV4GeneveTunnel, which are tested separately.
@@ -53,7 +53,7 @@ TEST_F(ConfigFdbTunnelTableEntryTest, configFdbTunnelEntryFailure) {
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
   auto status =
-      ConfigFdbTunnelTableEntry(client, learn_info, p4info, INSERT_ENTRY);
+      WriteFdbTunnelTableEntry(client, learn_info, p4info, INSERT_ENTRY);
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
@@ -73,7 +73,7 @@ TEST_F(ConfigFdbTunnelTableEntryTest, configFdbTunnelEntrySuccess) {
   EXPECT_CALL(client, sendWriteRequest).WillOnce(Return(absl::OkStatus()));
 
   auto status =
-      ConfigFdbTunnelTableEntry(client, learn_info, p4info, INSERT_ENTRY);
+      WriteFdbTunnelTableEntry(client, learn_info, p4info, INSERT_ENTRY);
 
   ASSERT_TRUE(status.ok()) << status;
 }

@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for ConfigVlanPushTableEntry().
+// Unit test for WriteVlanPushTableEntry().
 
 // Core functionality is handled by PrepareVlanPushTableEntry(),
 // which is tested separately. This is a test of the non-core
@@ -40,7 +40,7 @@ TEST_F(ConfigVlanPushTableEntryTest, configVlanPushEntryFailure) {
   EXPECT_CALL(client, sendWriteRequest)
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
-  auto status = ConfigVlanPushTableEntry(client, VLAN_ID, p4info, INSERT_ENTRY);
+  auto status = WriteVlanPushTableEntry(client, VLAN_ID, p4info, INSERT_ENTRY);
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
@@ -56,7 +56,7 @@ TEST_F(ConfigVlanPushTableEntryTest, configVlanPushEntrySuccess) {
   TestClientMock client;
   EXPECT_CALL(client, sendWriteRequest).WillOnce(Return(absl::OkStatus()));
 
-  auto status = ConfigVlanPushTableEntry(client, VLAN_ID, p4info, INSERT_ENTRY);
+  auto status = WriteVlanPushTableEntry(client, VLAN_ID, p4info, INSERT_ENTRY);
 
   ASSERT_TRUE(status.ok()) << status;
 }
