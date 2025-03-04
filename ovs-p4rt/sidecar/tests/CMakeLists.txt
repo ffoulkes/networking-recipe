@@ -1,6 +1,7 @@
 # CMake build file for ovs-p4rt/sidecar/tests
 #
 # Copyright 2024 Intel Corporation
+# Copyright 2025 Derek Foster
 # SPDX-License-Identifier: Apache-2.0
 #
 
@@ -76,21 +77,6 @@ macro(define_ovsp4rt_basic_test TARGET)
 
   list(APPEND UNIT_TEST_NAMES ${TARGET})
 endmacro()
-
-#-----------------------------------------------------------------------
-# encode_host_port_value_test
-#-----------------------------------------------------------------------
-add_executable(encode_host_port_value_test
-  encode_host_port_value_test.cc
-)
-
-set_test_properties(encode_host_port_value_test)
-
-target_link_libraries(encode_host_port_value_test PUBLIC
-  GTest::gtest_main
-)
-
-list(APPEND UNIT_TEST_NAMES encode_host_port_value_test)
 
 #-----------------------------------------------------------------------
 # base_mac_learn_info_test
@@ -217,6 +203,11 @@ macro(define_tunnel_info_test TARGET)
 
   list(APPEND UNIT_TEST_NAMES ${TARGET})
 endmacro()
+
+#-----------------------------------------------------------------------
+# Common tests
+#-----------------------------------------------------------------------
+add_subdirectory(common)
 
 #-----------------------------------------------------------------------
 # Target-specific unit tests

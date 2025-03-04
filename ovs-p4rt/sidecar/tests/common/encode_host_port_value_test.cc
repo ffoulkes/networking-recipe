@@ -3,11 +3,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #include <arpa/inet.h>
+#include <gtest/gtest.h>
 #include <stdarg.h>
 
 #include <string>
 
-#include "gtest/gtest.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_util_int.h"
 
