@@ -69,6 +69,10 @@ extern absl::Status ConfigSrcIpMacMapTableEntry(
     ClientInterface& client, const struct ip_mac_map_info& ip_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
+extern absl::Status ConfigTunnelSrcPortEntry(
+    ClientInterface& client, const struct src_port_info& tnl_sp,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry);
+
 extern absl::Status ConfigVlanPopTableEntry(
     ClientInterface& client, const uint16_t vlan_id,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
