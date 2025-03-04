@@ -41,8 +41,8 @@ TEST_F(Es2kConfigRxTunnelPortEntryTest, configRxTunnelEntryFailure) {
   EXPECT_CALL(client, sendWriteRequest)
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
-  auto status = WriteRxTunnelSrcPortTableEntry(client, tunnel_info, p4info,
-                                                INSERT_ENTRY);
+  auto status =
+      WriteRxTunnelSrcPortTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
@@ -60,8 +60,8 @@ TEST_F(Es2kConfigRxTunnelPortEntryTest, configRxTunnelEntrySuccess) {
   TestClientMock client;
   EXPECT_CALL(client, sendWriteRequest).WillOnce(Return(absl::OkStatus()));
 
-  auto status = WriteRxTunnelSrcPortTableEntry(client, tunnel_info, p4info,
-                                                INSERT_ENTRY);
+  auto status =
+      WriteRxTunnelSrcPortTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
 
   ASSERT_TRUE(status.ok()) << status;
 }
