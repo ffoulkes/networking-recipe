@@ -113,6 +113,28 @@ target_link_libraries(ovsp4rt_tunnel_info_test PUBLIC
 add_library(ovsp4rt::tunnel_info_test ALIAS ovsp4rt_tunnel_info_test)
 
 #-----------------------------------------------------------------------
+# define_ovsp4rt_tunnel_info_test()
+#-----------------------------------------------------------------------
+macro(define_ovsp4rt_tunnel_info_test TARGET)
+  add_executable(${TARGET}
+    ${TARGET}.cc
+    $<TARGET_OBJECTS:ovsp4rt_test_client_o>
+  )
+
+  set_test_properties(${TARGET})
+
+  target_include_directories(${TARGET} PUBLIC
+    ${TESTS_SOURCE_DIR}
+  )
+
+  target_link_libraries(${TARGET} PUBLIC
+    ovsp4rt::tunnel_info_test
+  )
+
+  list(APPEND UNIT_TEST_NAMES ${TARGET})
+endmacro()
+
+#-----------------------------------------------------------------------
 # Target-specific unit tests
 #-----------------------------------------------------------------------
 if(ES2K_TARGET)

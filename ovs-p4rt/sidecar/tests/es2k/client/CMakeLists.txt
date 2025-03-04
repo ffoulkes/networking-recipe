@@ -23,5 +23,17 @@ define_ovsp4rt_basic_test(do_config_vlan_entry_test)
 define_ovsp4rt_basic_test(es2k_update_src_port_test)
 define_ovsp4rt_basic_test(es2k_update_tunnel_info_test)
 
+#-----------------------------------------------------------------------
+# tunnel_info tests
+#-----------------------------------------------------------------------
+define_ovsp4rt_tunnel_info_test(config_decap_table_entry_test)
+define_ovsp4rt_tunnel_info_test(config_encap_table_entry_test)
+define_ovsp4rt_tunnel_info_test(config_tunnel_term_entry_test)
+define_ovsp4rt_tunnel_info_test(es2k_config_rx_tunnel_port_entry_test)
+define_ovsp4rt_tunnel_info_test(es2k_prep_decap_table_test)
+define_ovsp4rt_tunnel_info_test(es2k_prep_encap_table_test)
+define_ovsp4rt_tunnel_info_test(es2k_prep_rx_tunnel_src_port_test)
+define_ovsp4rt_tunnel_info_test(es2k_prep_tunnel_term_entry_test)
+
 # Export list of unit tests.
 set(UNIT_TEST_NAMES "${UNIT_TEST_NAMES}" PARENT_SCOPE)
