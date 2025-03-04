@@ -135,6 +135,26 @@ macro(define_mac_learn_info_test TARGET)
 endmacro()
 
 #-----------------------------------------------------------------------
+# base_mac_map_info_test
+#-----------------------------------------------------------------------
+add_library(base_mac_map_info_test STATIC
+  base_mac_map_info_test.cc
+  base_mac_map_info_test.h
+)
+
+target_include_directories(base_mac_map_info_test PUBLIC
+  ${OVSP4RT_INCLUDE_DIR}
+  ${SIDECAR_SOURCE_DIR}
+  ${TESTS_SOURCE_DIR}
+)
+
+target_link_libraries(base_mac_map_info_test PUBLIC
+  ovsp4rt::basic_test
+)
+
+add_library(ovsp4rt::mac_map_info_test ALIAS base_mac_map_info_test)
+
+#-----------------------------------------------------------------------
 # base_tunnel_info_test
 #-----------------------------------------------------------------------
 add_library(base_tunnel_info_test STATIC
