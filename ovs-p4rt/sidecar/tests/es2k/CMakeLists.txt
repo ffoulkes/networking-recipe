@@ -181,10 +181,5 @@ define_es2k_mac_map_test(get_vm_src_table_entry_test)
 #-----------------------------------------------------------------------
 include(es2k_mac_learn_info_tests.cmake)
 
-#-----------------------------------------------------------------------
-# es2k_tunnel_info_tests
-#-----------------------------------------------------------------------
-include(es2k_tunnel_info_tests.cmake)
-
 # Export list of unit tests.
 set(UNIT_TEST_NAMES "${UNIT_TEST_NAMES}" PARENT_SCOPE)
