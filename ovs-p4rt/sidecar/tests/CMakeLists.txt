@@ -57,9 +57,9 @@ target_link_libraries(ovsp4rt_basic_test PUBLIC
 add_library(ovsp4rt::basic_test ALIAS ovsp4rt_basic_test)
 
 #-----------------------------------------------------------------------
-# define_ovsp4rt_basic_test()
+# define_basic_test()
 #-----------------------------------------------------------------------
-macro(define_ovsp4rt_basic_test TARGET)
+macro(define_basic_test TARGET)
   add_executable(${TARGET}
     ${TARGET}.cc
     $<TARGET_OBJECTS:ovsp4rt_test_client_o>

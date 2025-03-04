@@ -55,7 +55,7 @@ TEST_F(ConfigFdbTxVlanTableEntryTest, configFdbTxVlanEntryFailure) {
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
-      << status.message();
+      << status;
 }
 
 TEST_F(ConfigFdbTxVlanTableEntryTest, configFdbTxVlanEntrySuccess) {
