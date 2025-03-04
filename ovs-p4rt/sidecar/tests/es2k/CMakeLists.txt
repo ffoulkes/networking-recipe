@@ -126,36 +126,5 @@ if(BUILD_CLIENT)
   add_subdirectory(client)
 endif()
 
-#-----------------------------------------------------------------------
-# define_es2k_config_test()
-#-----------------------------------------------------------------------
-macro(define_es2k_config_test TARGET)
-  add_executable(${TARGET}
-    ${TARGET}.cc
-    $<TARGET_OBJECTS:ovsp4rt_test_client_o>
-  )
-
-  set_test_properties(${TARGET})
-
-  target_link_libraries(${TARGET} PUBLIC
-    tunnel_test_utils
-  )
-
-  list(APPEND UNIT_TEST_NAMES ${TARGET})
-endmacro()
-
-#-----------------------------------------------------------------------
-# define_es2k_mac_map_test()
-#-----------------------------------------------------------------------
-macro(define_es2k_mac_map_test TARGET)
-  define_es2k_config_test(${TARGET})
-  target_link_libraries(${TARGET} PRIVATE base_mac_map_info_test)
-endmacro()
-
-define_es2k_mac_map_test(es2k_config_dst_ip_mac_map_test)
-define_es2k_mac_map_test(es2k_config_src_ip_mac_map_test)
-define_es2k_mac_map_test(get_vm_dst_table_entry_test)
-define_es2k_mac_map_test(get_vm_src_table_entry_test)
-
 # Export list of unit tests.
 set(UNIT_TEST_NAMES "${UNIT_TEST_NAMES}" PARENT_SCOPE)

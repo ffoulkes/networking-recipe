@@ -36,6 +36,14 @@ define_mac_learn_info_test(get_fdb_vlan_entry_test)
 define_mac_learn_info_test(get_l2_to_tunnel_v6_entry_test)
 
 #-----------------------------------------------------------------------
+# mac_map_info tests
+#-----------------------------------------------------------------------
+define_mac_map_info_test(es2k_config_dst_ip_mac_map_test)
+define_mac_map_info_test(es2k_config_src_ip_mac_map_test)
+define_mac_map_info_test(get_vm_dst_table_entry_test)
+define_mac_map_info_test(get_vm_src_table_entry_test)
+
+#-----------------------------------------------------------------------
 # tunnel_info tests
 #-----------------------------------------------------------------------
 define_tunnel_info_test(config_decap_table_entry_test)
