@@ -5,6 +5,7 @@
 # basic tests
 #-----------------------------------------------------------------------
 define_basic_test(config_fdb_smac_table_entry_test)
+define_basic_test(config_tunnel_src_port_entry_test)
 define_basic_test(config_vlan_pop_table_entry_test)
 define_basic_test(config_vlan_push_table_entry_test)
 define_basic_test(config_vsi_src_port_entry_test)
