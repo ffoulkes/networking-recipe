@@ -155,6 +155,28 @@ target_link_libraries(base_mac_map_info_test PUBLIC
 add_library(ovsp4rt::mac_map_info_test ALIAS base_mac_map_info_test)
 
 #-----------------------------------------------------------------------
+# define_mac_map_info_test()
+#-----------------------------------------------------------------------
+macro(define_mac_map_info_test TARGET)
+  add_executable(${TARGET}
+    ${TARGET}.cc
+    $<TARGET_OBJECTS:ovsp4rt_test_client_o>
+  )
+
+  set_test_properties(${TARGET})
+
+  target_include_directories(${TARGET} PUBLIC
+    ${TESTS_SOURCE_DIR}
+  )
+
+  target_link_libraries(${TARGET} PUBLIC
+    ovsp4rt::mac_map_info_test
+  )
+
+  list(APPEND UNIT_TEST_NAMES ${TARGET})
+endmacro()
+
+#-----------------------------------------------------------------------
 # base_tunnel_info_test
 #-----------------------------------------------------------------------
 add_library(base_tunnel_info_test STATIC
