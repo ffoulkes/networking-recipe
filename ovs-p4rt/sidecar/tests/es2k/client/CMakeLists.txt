@@ -24,6 +24,18 @@ define_ovsp4rt_basic_test(es2k_update_src_port_test)
 define_ovsp4rt_basic_test(es2k_update_tunnel_info_test)
 
 #-----------------------------------------------------------------------
+# mac_learn_info tests
+#-----------------------------------------------------------------------
+define_mac_learn_info_test(config_fdb_tunnel_table_entry_test)
+define_mac_learn_info_test(es2k_config_l2_tunnel_table_entry_test)
+define_mac_learn_info_test(es2k_prep_l2_tunnel_table_entry)
+define_mac_learn_info_test(es2k_prep_fdb_table_v4_tunnel_test)
+define_mac_learn_info_test(es2k_prep_fdb_tunnel_table_test)
+define_mac_learn_info_test(get_fdb_tunnel_entry_test)
+define_mac_learn_info_test(get_fdb_vlan_entry_test)
+define_mac_learn_info_test(get_l2_to_tunnel_v6_entry_test)
+
+#-----------------------------------------------------------------------
 # tunnel_info tests
 #-----------------------------------------------------------------------
 define_tunnel_info_test(config_decap_table_entry_test)
