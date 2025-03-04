@@ -11,6 +11,10 @@ coverage/
 install/
 private/
 
+# Environment variables
+/dpdk.env
+/es2k.env
+
 # CMake preload scripts
 /dpdk.cmake
 /es2k.cmake
