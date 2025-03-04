@@ -16,5 +16,18 @@ target_link_libraries(encode_host_port_value_test PUBLIC
 
 list(APPEND UNIT_TEST_NAMES encode_host_port_value_test)
 
+#-----------------------------------------------------------------------
+# Client-mode tests
+#-----------------------------------------------------------------------
+if(BUILD_CLIENT)
+
+define_basic_test(config_fdb_rx_vlan_table_entry_test)
+define_basic_test(config_fdb_tx_vlan_table_entry_test)
+
+define_tunnel_info_test(config_encap_table_entry_test)
+define_tunnel_info_test(config_tunnel_term_entry_test)
+
+endif(BUILD_CLIENT)
+
 # Export list of unit tests.
 set(UNIT_TEST_NAMES "${UNIT_TEST_NAMES}" PARENT_SCOPE)

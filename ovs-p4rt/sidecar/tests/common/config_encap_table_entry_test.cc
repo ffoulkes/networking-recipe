@@ -48,7 +48,7 @@ TEST_F(ConfigEncapTableEntryTest, configEncapTableEntryFailure) {
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
-      << status.message();
+      << status;
 }
 
 TEST_F(ConfigEncapTableEntryTest, configEncapTableEntrySuccess) {
