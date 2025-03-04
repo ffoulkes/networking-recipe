@@ -93,29 +93,71 @@ target_link_libraries(encode_host_port_value_test PUBLIC
 list(APPEND UNIT_TEST_NAMES encode_host_port_value_test)
 
 #-----------------------------------------------------------------------
-# ovsp4rt_tunnel_info_test
+# base_mac_learn_info_test
 #-----------------------------------------------------------------------
-add_library(ovsp4rt_tunnel_info_test STATIC
-  base_tunnel_info_test.cc
-  base_tunnel_info_test.h
+add_library(base_mac_learn_info_test STATIC
+  base_mac_learn_info_test.cc
+  base_mac_learn_info_test.h
 )
 
-target_include_directories(ovsp4rt_tunnel_info_test PUBLIC
+target_include_directories(base_mac_learn_info_test PUBLIC
   ${OVSP4RT_INCLUDE_DIR}
   ${SIDECAR_SOURCE_DIR}
   ${TESTS_SOURCE_DIR}
 )
 
-target_link_libraries(ovsp4rt_tunnel_info_test PUBLIC
+target_link_libraries(base_mac_learn_info_test PUBLIC
   ovsp4rt::basic_test
 )
 
-add_library(ovsp4rt::tunnel_info_test ALIAS ovsp4rt_tunnel_info_test)
+add_library(ovsp4rt::mac_learn_info_test ALIAS base_mac_learn_info_test)
 
 #-----------------------------------------------------------------------
-# define_ovsp4rt_tunnel_info_test()
+# define_mac_learn_info_test()
 #-----------------------------------------------------------------------
-macro(define_ovsp4rt_tunnel_info_test TARGET)
+macro(define_mac_learn_info_test TARGET)
+  add_executable(${TARGET}
+    ${TARGET}.cc
+    $<TARGET_OBJECTS:ovsp4rt_test_client_o>
+  )
+
+  set_test_properties(${TARGET})
+
+  target_include_directories(${TARGET} PUBLIC
+    ${TESTS_SOURCE_DIR}
+  )
+
+  target_link_libraries(${TARGET} PUBLIC
+    ovsp4rt::mac_learn_info_test
+  )
+
+  list(APPEND UNIT_TEST_NAMES ${TARGET})
+endmacro()
+
+#-----------------------------------------------------------------------
+# base_tunnel_info_test
+#-----------------------------------------------------------------------
+add_library(base_tunnel_info_test STATIC
+  base_tunnel_info_test.cc
+  base_tunnel_info_test.h
+)
+
+target_include_directories(base_tunnel_info_test PUBLIC
+  ${OVSP4RT_INCLUDE_DIR}
+  ${SIDECAR_SOURCE_DIR}
+  ${TESTS_SOURCE_DIR}
+)
+
+target_link_libraries(base_tunnel_info_test PUBLIC
+  ovsp4rt::basic_test
+)
+
+add_library(ovsp4rt::tunnel_info_test ALIAS base_tunnel_info_test)
+
+#-----------------------------------------------------------------------
+# define_tunnel_info_test()
+#-----------------------------------------------------------------------
+macro(define_tunnel_info_test TARGET)
   add_executable(${TARGET}
     ${TARGET}.cc
     $<TARGET_OBJECTS:ovsp4rt_test_client_o>

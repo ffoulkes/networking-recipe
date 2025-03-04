@@ -10,8 +10,6 @@
 
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_util_int.h"
-#include "p4info_text.h"
-#include "stratum/lib/utils.h"
 
 namespace ovsp4rt {
 
@@ -133,12 +131,6 @@ void BaseMacLearnInfoTest::InitGeneveUntagged(
   fdb_info.tnl_info.tunnel_type = OVS_TUNNEL_GENEVE;
   fdb_info.tnl_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_UNTAGGED;
   fdb_info.tnl_info.vni = 0x1984;
-}
-
-void BaseMacLearnInfoTest::InitP4Info(::p4::config::v1::P4Info* p4info) {
-  auto status = stratum::ParseProtoFromString(P4INFO_TEXT, p4info);
-  EXPECT_TRUE(status.ok()) << "ParseProtoFromString: "
-                           << status.error_message();
 }
 
 void BaseMacLearnInfoTest::AssertTableId(const p4::v1::TableEntry& table_entry,
