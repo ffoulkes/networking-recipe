@@ -6,16 +6,14 @@
 
 #include <gtest/gtest.h>
 
+#include "basic_test.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "p4/config/v1/p4info.pb.h"
 #include "p4/v1/p4runtime.pb.h"
 
 namespace ovsp4rt {
 
-constexpr bool INSERT_ENTRY = true;
-constexpr bool REMOVE_ENTRY = false;
-
-class BaseMacLearnInfoTest : public ::testing::Test {
+class BaseMacLearnInfoTest : public BasicTest {
  protected:
   BaseMacLearnInfoTest() {}
   virtual ~BaseMacLearnInfoTest() = default;
@@ -32,8 +30,6 @@ class BaseMacLearnInfoTest : public ::testing::Test {
   static void InitVxlanUntagged(struct mac_learning_info& fdb_info);
   static void InitGeneveTagged(struct mac_learning_info& fdb_info);
   static void InitGeneveUntagged(struct mac_learning_info& fdb_info);
-
-  static void InitP4Info(::p4::config::v1::P4Info* p4info);
 
   static void AssertTableId(const p4::v1::TableEntry& table_entry,
                             const ::p4::config::v1::P4Info& p4info,
