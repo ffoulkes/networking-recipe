@@ -1,6 +1,7 @@
 # Import host Protobuf compiler.
 #
 # Copyright 2022-2023 Intel Corporation
+# Copyright 2025 Derek Foster
 # SPDX-License-Identifier: Apache 2.0
 #
 
@@ -16,6 +17,8 @@ mark_as_advanced(HOST_PROTOC_COMMAND)
 if(NOT HOST_PROTOC_COMMAND)
   message(FATAL_ERROR "protoc not found")
 endif()
+
+set(HostProtoc_FOUND TRUE)
 
 #-----------------------------------------------------------------------
 # Get compiler version number.
