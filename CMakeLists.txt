@@ -16,6 +16,7 @@ include(CMakePrintHelpers)
 include(CompilerSettings)
 include(CTest)
 include(ExternalProject)
+#include(FeatureSummary)
 include(FindPkgConfig)
 include(GNUInstallDirs)
 
@@ -188,11 +189,11 @@ mark_as_advanced(OpenSSL_DIR)
 
 # P4 SDE for the target system.
 if(DPDK_TARGET)
-    find_package(DpdkDriver)
+    find_package(DpdkDriver REQUIRED)
 elseif(ES2K_TARGET)
-    find_package(Es2kDriver)
+    find_package(Es2kDriver REQUIRED)
 elseif(TOFINO_TARGET)
-    find_package(TofinoDriver)
+    find_package(TofinoDriver REQUIRED)
 endif()
 
 # Open vSwitch.
@@ -245,3 +246,5 @@ add_subdirectory(stratum)
 add_subdirectory(infrap4d)
 add_subdirectory(clients)
 add_subdirectory(scripts)
+
+#feature_summary(WHAT ALL)

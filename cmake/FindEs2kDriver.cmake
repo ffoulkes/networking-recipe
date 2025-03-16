@@ -1,6 +1,7 @@
 # FindEs2kDriver.cmake - import ES2K P4 Driver (SDE).
 #
 # Copyright 2023 Intel Corporation
+# Copyright 2025 Derek Foster
 # SPDX-License-Identifier: Apache 2.0
 #
 
@@ -23,6 +24,8 @@ if(NOT SDE_INCLUDE_DIR)
   message(FATAL_ERROR "ES2K SDE setup failed")
 endif()
 mark_as_advanced(SDE_INCLUDE_DIR)
+
+set(Es2kDriver_FOUND TRUE)
 
 #-----------------------------------------------------------------------
 # Add SDE install directory to search path
