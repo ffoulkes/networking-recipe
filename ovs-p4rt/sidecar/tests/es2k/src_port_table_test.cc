@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareSrcPortTableEntry()
+// Unit test for EncodeSrcPortTableEntry()
 
 #define DUMP_JSON
 
@@ -135,7 +135,7 @@ class SrcPortTableTest : public BaseTableTest {
 };
 
 //----------------------------------------------------------------------
-// PrepareSrcPortTableEntry()
+// EncodeSrcPortTableEntry()
 //----------------------------------------------------------------------
 
 TEST_F(SrcPortTableTest, remove_entry) {
@@ -143,7 +143,7 @@ TEST_F(SrcPortTableTest, remove_entry) {
   InitMapInfo();
 
   // Act
-  PrepareSrcPortTableEntry(&table_entry, port_info, p4info, REMOVE_ENTRY);
+  EncodeSrcPortTableEntry(&table_entry, port_info, p4info, REMOVE_ENTRY);
 
   // Assert
   CheckTableEntry();
@@ -157,7 +157,7 @@ TEST_F(SrcPortTableTest, insert_entry) {
   InitAction();
 
   // Act
-  PrepareSrcPortTableEntry(&table_entry, port_info, p4info, INSERT_ENTRY);
+  EncodeSrcPortTableEntry(&table_entry, port_info, p4info, INSERT_ENTRY);
   DumpTableEntry();
 
   // Assert

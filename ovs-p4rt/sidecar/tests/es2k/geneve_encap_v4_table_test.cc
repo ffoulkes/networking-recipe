@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareGeneveEncapTableEntry().
+// Unit test for EncodeGeneveEncapTableEntry().
 
 #include <stdint.h>
 
@@ -151,7 +151,7 @@ class GeneveEncapV4TableTest : public IpTunnelTest {
 };
 
 //----------------------------------------------------------------------
-// Test PrepareGeneveEncapTableEntry()
+// Test EncodeGeneveEncapTableEntry()
 //----------------------------------------------------------------------
 
 TEST_F(GeneveEncapV4TableTest, remove_entry) {
@@ -159,7 +159,7 @@ TEST_F(GeneveEncapV4TableTest, remove_entry) {
   InitV4TunnelInfo(OVS_TUNNEL_GENEVE);
 
   // Act
-  PrepareGeneveEncapTableEntry(&table_entry, tunnel_info, p4info, REMOVE_ENTRY);
+  EncodeGeneveEncapTableEntry(&table_entry, tunnel_info, p4info, REMOVE_ENTRY);
   DumpTableEntry();
 
   // Assert
@@ -174,7 +174,7 @@ TEST_F(GeneveEncapV4TableTest, insert_entry) {
   InitAction();
 
   // Act
-  PrepareGeneveEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
+  EncodeGeneveEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
   DumpTableEntry();
 
   // Assert
@@ -191,7 +191,7 @@ TEST_F(GeneveEncapV4TableTest, insert_entry_with_24_bit_vni) {
   InitAction();
 
   // Act
-  PrepareGeneveEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
+  EncodeGeneveEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
   DumpTableEntry();
 
   // Assert

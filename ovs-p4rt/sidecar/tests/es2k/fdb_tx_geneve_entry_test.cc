@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareFdbTableEntryforV4GeneveTunnel().
+// Unit test for EncodeFdbTableEntryforV4GeneveTunnel().
 
 #include <stdint.h>
 
@@ -192,8 +192,8 @@ TEST_F(FdbTxGeneveEntryTest, remove_v4_tagged_entry) {
   InitV4NativeTagged(SET_GENEVE_UNDERLAY_V4);
 
   // Act
-  PrepareFdbTableEntryforV4GeneveTunnel(&table_entry, learn_info, p4info,
-                                        REMOVE_ENTRY, detail);
+  EncodeFdbTableEntryforV4GeneveTunnel(&table_entry, learn_info, p4info,
+                                       REMOVE_ENTRY, detail);
 
   // Assert
   CheckDetail();
@@ -208,8 +208,8 @@ TEST_F(FdbTxGeneveEntryTest, insert_v4_tagged_entry) {
   InitV4NativeTagged(SET_GENEVE_UNDERLAY_V4);
 
   // Act
-  PrepareFdbTableEntryforV4GeneveTunnel(&table_entry, learn_info, p4info,
-                                        INSERT_ENTRY, detail);
+  EncodeFdbTableEntryforV4GeneveTunnel(&table_entry, learn_info, p4info,
+                                       INSERT_ENTRY, detail);
 
   // Assert
   CheckTableEntry();
@@ -222,8 +222,8 @@ TEST_F(FdbTxGeneveEntryTest, insert_v4_untagged_entry) {
   InitV4NativeUntagged(POP_VLAN_SET_GENEVE_UNDERLAY_V4);
 
   // Act
-  PrepareFdbTableEntryforV4GeneveTunnel(&table_entry, learn_info, p4info,
-                                        INSERT_ENTRY, detail);
+  EncodeFdbTableEntryforV4GeneveTunnel(&table_entry, learn_info, p4info,
+                                       INSERT_ENTRY, detail);
 
   // Assert
   CheckTableEntry();
@@ -236,8 +236,8 @@ TEST_F(FdbTxGeneveEntryTest, insert_v6_tagged_entry) {
   InitV6NativeTagged(SET_GENEVE_UNDERLAY_V6);
 
   // Act
-  PrepareFdbTableEntryforV4GeneveTunnel(&table_entry, learn_info, p4info,
-                                        INSERT_ENTRY, detail);
+  EncodeFdbTableEntryforV4GeneveTunnel(&table_entry, learn_info, p4info,
+                                       INSERT_ENTRY, detail);
 
   // Assert
   CheckTableEntry();
@@ -250,8 +250,8 @@ TEST_F(FdbTxGeneveEntryTest, insert_v6_untagged_entry) {
   InitV6NativeUntagged(POP_VLAN_SET_GENEVE_UNDERLAY_V6);
 
   // Act
-  PrepareFdbTableEntryforV4GeneveTunnel(&table_entry, learn_info, p4info,
-                                        INSERT_ENTRY, detail);
+  EncodeFdbTableEntryforV4GeneveTunnel(&table_entry, learn_info, p4info,
+                                       INSERT_ENTRY, detail);
 
   // Assert
   CheckTableEntry();
@@ -267,8 +267,8 @@ TEST_F(FdbTxGeneveEntryTest, insert_v6_untagged_entry_20_bit_vni) {
   learn_info.tnl_info.vni = 0xFACED;
 
   // Act
-  PrepareFdbTableEntryforV4GeneveTunnel(&table_entry, learn_info, p4info,
-                                        INSERT_ENTRY, detail);
+  EncodeFdbTableEntryforV4GeneveTunnel(&table_entry, learn_info, p4info,
+                                       INSERT_ENTRY, detail);
 
   // Assert
   CheckTableEntry();

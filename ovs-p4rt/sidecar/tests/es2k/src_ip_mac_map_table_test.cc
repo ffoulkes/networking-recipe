@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareSrcIpMacMapTableEntry()
+// Unit test for EncodeSrcIpMacMapTableEntry()
 
 #include <arpa/inet.h>
 #include <stdint.h>
@@ -157,8 +157,8 @@ TEST_F(SrcIpMacMapTableTest, remove_entry) {
   InitMapInfo();
 
   // Act
-  PrepareSrcIpMacMapTableEntry(&table_entry, map_info, p4info, REMOVE_ENTRY,
-                               detail);
+  EncodeSrcIpMacMapTableEntry(&table_entry, map_info, p4info, REMOVE_ENTRY,
+                              detail);
 
   // Assert
   CheckDetail();
@@ -173,8 +173,8 @@ TEST_F(SrcIpMacMapTableTest, insert_entry) {
   InitAction();
 
   // Act
-  PrepareSrcIpMacMapTableEntry(&table_entry, map_info, p4info, INSERT_ENTRY,
-                               detail);
+  EncodeSrcIpMacMapTableEntry(&table_entry, map_info, p4info, INSERT_ENTRY,
+                              detail);
 
   // Assert
   CheckTableEntry();

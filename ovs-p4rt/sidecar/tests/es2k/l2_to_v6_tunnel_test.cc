@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareL2ToTunnelV6().
+// Unit test for EncodeL2ToTunnelV6().
 
 #include <iostream>
 #include <string>
@@ -115,7 +115,7 @@ TEST_F(L2ToV6TunnelTest, remove_entry) {
   InitFdbInfo();
 
   // Act
-  PrepareL2ToTunnelV6(&table_entry, fdb_info, p4info, REMOVE_ENTRY, detail);
+  EncodeL2ToTunnelV6(&table_entry, fdb_info, p4info, REMOVE_ENTRY, detail);
   DumpTableEntry();
 
   // Assert
@@ -130,7 +130,7 @@ TEST_F(L2ToV6TunnelTest, insert_entry) {
   InitFdbInfo();
 
   // Act
-  PrepareL2ToTunnelV6(&table_entry, fdb_info, p4info, INSERT_ENTRY, detail);
+  EncodeL2ToTunnelV6(&table_entry, fdb_info, p4info, INSERT_ENTRY, detail);
   DumpTableEntry();
 
   // Assert

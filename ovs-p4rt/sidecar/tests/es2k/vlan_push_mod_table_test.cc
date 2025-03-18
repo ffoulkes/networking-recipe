@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareVlanPushTableEntry().
+// Unit test for EncodeVlanPushTableEntry().
 
 #include <stdint.h>
 
@@ -24,14 +24,14 @@ class VlanPushModTableTest : public BaseTableTest {
   void InitAction() { SelectAction("vlan_push"); }
 
   void InitPushInfo() {
-    // These values are hard-coded in PrepareVlanPushTableEntry();
+    // These values are hard-coded in EncodeVlanPushTableEntry();
     constexpr uint16_t PCP = 1;
     constexpr uint16_t DEI = 0;
 
     push_info.pcp = PCP;
     push_info.dei = DEI;
 
-    // PrepareVlanPushTableEntry() encodes the value as a single byte.
+    // EncodeVlanPushTableEntry() encodes the value as a single byte.
     push_info.vlan_id = 0xAC;
   }
 
@@ -120,7 +120,7 @@ class VlanPushModTableTest : public BaseTableTest {
   }
 
   void CheckModBlobPtrMatch(const ::p4::v1::FieldMatch& match) const {
-    // TODO(derek): PrepareVlanPushTableEntry() encodes the mod_blob_ptr
+    // TODO(derek): EncodeVlanPushTableEntry() encodes the mod_blob_ptr
     // value as a single byte, which doesn't make sense. The input is
     // a vlan_id, which is bit<12>. The mod_blob ptr value is bit<24>.
     constexpr int MOD_BLOB_PTR_SIZE = 1;
@@ -163,8 +163,8 @@ TEST_F(VlanPushModTableTest, remove_entry) {
   InitPushInfo();
 
   // Act
-  PrepareVlanPushTableEntry(&table_entry, push_info.vlan_id, p4info,
-                            REMOVE_ENTRY);
+  EncodeVlanPushTableEntry(&table_entry, push_info.vlan_id, p4info,
+                           REMOVE_ENTRY);
 
   // Assert
   CheckTableEntry();
@@ -178,8 +178,8 @@ TEST_F(VlanPushModTableTest, insert_entry) {
   InitAction();
 
   // Act
-  PrepareVlanPushTableEntry(&table_entry, push_info.vlan_id, p4info,
-                            INSERT_ENTRY);
+  EncodeVlanPushTableEntry(&table_entry, push_info.vlan_id, p4info,
+                           INSERT_ENTRY);
 
   // Assert
   CheckTableEntry();

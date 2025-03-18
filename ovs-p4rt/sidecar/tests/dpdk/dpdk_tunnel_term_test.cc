@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareTunnelTermTableEntry().
+// Unit test for EncodeTunnelTermTableEntry().
 // DPDK edition.
 
 #define DUMP_JSON
@@ -182,7 +182,7 @@ TEST_F(DpdkTunnelTermTest, vxlan_remove_entry) {
   InitTunnelInfo();
 
   // Act
-  PrepareTunnelTermTableEntry(&table_entry, tunnel_info, p4info, REMOVE_ENTRY);
+  EncodeTunnelTermTableEntry(&table_entry, tunnel_info, p4info, REMOVE_ENTRY);
 
   // Assert
   CheckTableEntry();
@@ -196,7 +196,7 @@ TEST_F(DpdkTunnelTermTest, vxlan_insert_entry) {
   InitAction();
 
   // Act
-  PrepareTunnelTermTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
+  EncodeTunnelTermTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
   DumpTableEntry();
 
   // Assert

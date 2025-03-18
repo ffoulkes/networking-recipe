@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareFdbTxVlanTableEntry()
+// Unit test for EncodeFdbTxVlanTableEntry()
 //
 // TODO(derek): port and vlan_ptr parameter values are truncated to
 // 8 bits. Need to fix or document why this is correct.
@@ -205,7 +205,7 @@ class FdbTxVlanEntryTest : public BaseTableTest {
 };
 
 //----------------------------------------------------------------------
-// PrepareFdbTxVlanTableEntry()
+// EncodeFdbTxVlanTableEntry()
 //----------------------------------------------------------------------
 
 TEST_F(FdbTxVlanEntryTest, remove_entry) {
@@ -213,8 +213,8 @@ TEST_F(FdbTxVlanEntryTest, remove_entry) {
   InitFdbInfo();
 
   // Act
-  PrepareFdbTxVlanTableEntry(&table_entry, fdb_info, p4info, REMOVE_ENTRY,
-                             detail);
+  EncodeFdbTxVlanTableEntry(&table_entry, fdb_info, p4info, REMOVE_ENTRY,
+                            detail);
 
   // Assert
   CheckDetail();
@@ -229,8 +229,8 @@ TEST_F(FdbTxVlanEntryTest, insert_untagged_entry) {
   InitUntagged();
 
   // Act
-  PrepareFdbTxVlanTableEntry(&table_entry, fdb_info, p4info, INSERT_ENTRY,
-                             detail);
+  EncodeFdbTxVlanTableEntry(&table_entry, fdb_info, p4info, INSERT_ENTRY,
+                            detail);
 
   // Assert
   CheckTableEntry();
@@ -243,8 +243,8 @@ TEST_F(FdbTxVlanEntryTest, insert_tagged_entry) {
   InitTagged();
 
   // Act
-  PrepareFdbTxVlanTableEntry(&table_entry, fdb_info, p4info, INSERT_ENTRY,
-                             detail);
+  EncodeFdbTxVlanTableEntry(&table_entry, fdb_info, p4info, INSERT_ENTRY,
+                            detail);
 
   // Assert
   CheckTableEntry();

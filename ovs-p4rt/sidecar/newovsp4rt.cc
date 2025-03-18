@@ -42,8 +42,8 @@ absl::Status WriteFdbSmacTableEntry(ClientInterface& client,
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  PrepareFdbSmacTableEntry(table_entry, learn_info, p4info, insert_entry,
-                           detail);
+  EncodeFdbSmacTableEntry(table_entry, learn_info, p4info, insert_entry,
+                          detail);
 
   auto status = client.sendWriteRequest(write_request);
   if (!status.ok()) {
@@ -60,9 +60,9 @@ void PrepareL2TunnelTableEntry(p4::v1::TableEntry* table_entry,
                                bool insert_entry, DiagDetail& detail) {
   if (learn_info.tnl_info.local_ip.family == AF_INET6 &&
       learn_info.tnl_info.remote_ip.family == AF_INET6) {
-    PrepareL2ToTunnelV6(table_entry, learn_info, p4info, insert_entry, detail);
+    EncodeL2ToTunnelV6(table_entry, learn_info, p4info, insert_entry, detail);
   } else {
-    PrepareL2ToTunnelV4(table_entry, learn_info, p4info, insert_entry, detail);
+    EncodeL2ToTunnelV4(table_entry, learn_info, p4info, insert_entry, detail);
   }
 }
 
@@ -99,8 +99,8 @@ absl::Status WriteFdbTxVlanTableEntry(
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  PrepareFdbTxVlanTableEntry(table_entry, learn_info, p4info, insert_entry,
-                             detail);
+  EncodeFdbTxVlanTableEntry(table_entry, learn_info, p4info, insert_entry,
+                            detail);
 
   auto status = client.sendWriteRequest(write_request);
   if (!status.ok()) {
@@ -120,8 +120,8 @@ absl::Status WriteFdbRxVlanTableEntry(
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  PrepareFdbRxVlanTableEntry(table_entry, learn_info, p4info, insert_entry,
-                             detail);
+  EncodeFdbRxVlanTableEntry(table_entry, learn_info, p4info, insert_entry,
+                            detail);
 
   auto status = client.sendWriteRequest(write_request);
   if (!status.ok()) {
@@ -138,17 +138,17 @@ void Es2kPrepareFdbTunnelTableEntry(p4::v1::TableEntry* table_entry,
                                     const ::p4::config::v1::P4Info& p4info,
                                     bool insert_entry, DiagDetail& detail) {
   if (learn_info.tnl_info.tunnel_type == OVS_TUNNEL_VXLAN) {
-    PrepareFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info,
-                                         insert_entry, detail);
+    EncodeFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info,
+                                        insert_entry, detail);
   } else if (learn_info.tnl_info.tunnel_type == OVS_TUNNEL_GENEVE) {
-    PrepareFdbTableEntryforV4GeneveTunnel(table_entry, learn_info, p4info,
-                                          insert_entry, detail);
+    EncodeFdbTableEntryforV4GeneveTunnel(table_entry, learn_info, p4info,
+                                         insert_entry, detail);
   } else {
     if (!insert_entry) {
       // Tunnel type doesn't matter for delete. So calling one of the functions
       // to prepare the entry
-      PrepareFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info,
-                                           insert_entry, detail);
+      EncodeFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info,
+                                          insert_entry, detail);
     }
   }
 }
@@ -164,8 +164,8 @@ absl::Status WriteFdbTunnelTableEntry(
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
 #if defined(DPDK_TARGET)
-  PrepareFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info,
-                                       insert_entry, detail);
+  EncodeFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info,
+                                      insert_entry, detail);
 #elif defined(ES2K_TARGET)
   Es2kPrepareFdbTunnelTableEntry(table_entry, learn_info, p4info, insert_entry,
                                  detail);
@@ -187,13 +187,12 @@ void PrepareEncapTableEntry(p4::v1::TableEntry* table_entry,
                             const ::p4::config::v1::P4Info& p4info,
                             bool insert_entry) {
 #if defined(DPDK_TARGET)
-  PrepareVxlanEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+  EncodeVxlanEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
 #elif defined(ES2K_TARGET)
   if (tunnel_info.tunnel_type == OVS_TUNNEL_VXLAN) {
-    PrepareVxlanEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+    EncodeVxlanEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
   } else if (tunnel_info.tunnel_type == OVS_TUNNEL_GENEVE) {
-    PrepareGeneveEncapTableEntry(table_entry, tunnel_info, p4info,
-                                 insert_entry);
+    EncodeGeneveEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
   } else {
     std::cout << "ERROR: Unsupported tunnel type" << std::endl;
   }
@@ -208,11 +207,11 @@ void PrepareV6EncapTableEntry(p4::v1::TableEntry* table_entry,
                               const ::p4::config::v1::P4Info& p4info,
                               bool insert_entry) {
   if (tunnel_info.tunnel_type == OVS_TUNNEL_VXLAN) {
-    PrepareV6VxlanEncapTableEntry(table_entry, tunnel_info, p4info,
-                                  insert_entry);
+    EncodeV6VxlanEncapTableEntry(table_entry, tunnel_info, p4info,
+                                 insert_entry);
   } else if (tunnel_info.tunnel_type == OVS_TUNNEL_GENEVE) {
-    PrepareV6GeneveEncapTableEntry(table_entry, tunnel_info, p4info,
-                                   insert_entry);
+    EncodeV6GeneveEncapTableEntry(table_entry, tunnel_info, p4info,
+                                  insert_entry);
   } else {
     std::cout << "ERROR: Unsupported tunnel type" << std::endl;
   }
@@ -224,11 +223,11 @@ void PrepareEncapAndVlanPopTableEntry(p4::v1::TableEntry* table_entry,
                                       const ::p4::config::v1::P4Info& p4info,
                                       bool insert_entry) {
   if (tunnel_info.tunnel_type == OVS_TUNNEL_VXLAN) {
-    PrepareVxlanEncapAndVlanPopTableEntry(table_entry, tunnel_info, p4info,
-                                          insert_entry);
+    EncodeVxlanEncapAndVlanPopTableEntry(table_entry, tunnel_info, p4info,
+                                         insert_entry);
   } else if (tunnel_info.tunnel_type == OVS_TUNNEL_GENEVE) {
-    PrepareGeneveEncapAndVlanPopTableEntry(table_entry, tunnel_info, p4info,
-                                           insert_entry);
+    EncodeGeneveEncapAndVlanPopTableEntry(table_entry, tunnel_info, p4info,
+                                          insert_entry);
   } else {
     std::cout << "ERROR: Unsupported tunnel type" << std::endl;
   }
@@ -240,11 +239,11 @@ void PrepareV6EncapAndVlanPopTableEntry(p4::v1::TableEntry* table_entry,
                                         const ::p4::config::v1::P4Info& p4info,
                                         bool insert_entry) {
   if (tunnel_info.tunnel_type == OVS_TUNNEL_VXLAN) {
-    PrepareV6VxlanEncapAndVlanPopTableEntry(table_entry, tunnel_info, p4info,
-                                            insert_entry);
+    EncodeV6VxlanEncapAndVlanPopTableEntry(table_entry, tunnel_info, p4info,
+                                           insert_entry);
   } else if (tunnel_info.tunnel_type == OVS_TUNNEL_GENEVE) {
-    PrepareV6GeneveEncapAndVlanPopTableEntry(table_entry, tunnel_info, p4info,
-                                             insert_entry);
+    EncodeV6GeneveEncapAndVlanPopTableEntry(table_entry, tunnel_info, p4info,
+                                            insert_entry);
   } else {
     std::cout << "ERROR: Unsupported tunnel type" << std::endl;
   }
@@ -308,11 +307,11 @@ void PrepareDecapModTableEntry(p4::v1::TableEntry* table_entry,
                                const ::p4::config::v1::P4Info& p4info,
                                bool insert_entry) {
   if (tunnel_info.tunnel_type == OVS_TUNNEL_VXLAN) {
-    PrepareVxlanDecapModTableEntry(table_entry, tunnel_info, p4info,
-                                   insert_entry);
+    EncodeVxlanDecapModTableEntry(table_entry, tunnel_info, p4info,
+                                  insert_entry);
   } else if (tunnel_info.tunnel_type == OVS_TUNNEL_GENEVE) {
-    PrepareGeneveDecapModTableEntry(table_entry, tunnel_info, p4info,
-                                    insert_entry);
+    EncodeGeneveDecapModTableEntry(table_entry, tunnel_info, p4info,
+                                   insert_entry);
   } else {
     std::cout << "ERROR: Unsupported tunnel type" << std::endl;
   }
@@ -324,11 +323,11 @@ void PrepareDecapModAndVlanPushTableEntry(
     p4::v1::TableEntry* table_entry, const struct tunnel_info& tunnel_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry) {
   if (tunnel_info.tunnel_type == OVS_TUNNEL_VXLAN) {
-    PrepareVxlanDecapModAndVlanPushTableEntry(table_entry, tunnel_info, p4info,
-                                              insert_entry);
+    EncodeVxlanDecapModAndVlanPushTableEntry(table_entry, tunnel_info, p4info,
+                                             insert_entry);
   } else if (tunnel_info.tunnel_type == OVS_TUNNEL_GENEVE) {
-    PrepareGeneveDecapModAndVlanPushTableEntry(table_entry, tunnel_info, p4info,
-                                               insert_entry);
+    EncodeGeneveDecapModAndVlanPushTableEntry(table_entry, tunnel_info, p4info,
+                                              insert_entry);
   } else {
     std::cout << "ERROR: Unsupported tunnel type" << std::endl;
   }
@@ -372,7 +371,7 @@ absl::Status WriteVlanPushTableEntry(ClientInterface& client,
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  PrepareVlanPushTableEntry(table_entry, vlan_id, p4info, insert_entry);
+  EncodeVlanPushTableEntry(table_entry, vlan_id, p4info, insert_entry);
 
   return client.sendWriteRequest(write_request);
 }
@@ -387,7 +386,7 @@ absl::Status WriteVlanPopTableEntry(ClientInterface& client,
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  PrepareVlanPopTableEntry(table_entry, vlan_id, p4info, insert_entry);
+  EncodeVlanPopTableEntry(table_entry, vlan_id, p4info, insert_entry);
 
   return client.sendWriteRequest(write_request);
 }
@@ -401,7 +400,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV4TableEntry(
 
   table_entry = client.initReadRequest(&read_request);
 
-  PrepareL2ToTunnelV4(table_entry, learn_info, p4info, false, detail);
+  EncodeL2ToTunnelV4(table_entry, learn_info, p4info, false, detail);
 
   return client.sendReadRequest(read_request);
 }
@@ -415,7 +414,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV6TableEntry(
 
   table_entry = client.initReadRequest(&read_request);
 
-  PrepareL2ToTunnelV6(table_entry, learn_info, p4info, false, detail);
+  EncodeL2ToTunnelV6(table_entry, learn_info, p4info, false, detail);
 
   return client.sendReadRequest(read_request);
 }
@@ -433,11 +432,11 @@ void PrepareFdbTableV4TunnelEntry(p4::v1::TableEntry* table_entry,
   // The optional 'testing' parameter (which defaults to 'false') allows
   // the unit test to override this behavior.
   if (learn_info.tnl_info.tunnel_type == OVS_TUNNEL_VXLAN) {
-    PrepareFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info,
-                                         testing, detail);
+    EncodeFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info,
+                                        testing, detail);
   } else if (learn_info.tnl_info.tunnel_type == OVS_TUNNEL_GENEVE) {
-    PrepareFdbTableEntryforV4GeneveTunnel(table_entry, learn_info, p4info,
-                                          testing, detail);
+    EncodeFdbTableEntryforV4GeneveTunnel(table_entry, learn_info, p4info,
+                                         testing, detail);
   }
 }
 
@@ -451,8 +450,8 @@ absl::StatusOr<::p4::v1::ReadResponse> GetFdbTunnelTableEntry(
   table_entry = client.initReadRequest(&read_request);
 
 #if defined(DPDK_TARGET)
-  PrepareFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info, false,
-                                       detail);
+  EncodeFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info, false,
+                                      detail);
 #elif defined(ES2K_TARGET)
   PrepareFdbTableV4TunnelEntry(table_entry, learn_info, p4info, false, detail);
 #else
@@ -471,7 +470,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetFdbVlanTableEntry(
 
   table_entry = client.initReadRequest(&read_request);
 
-  PrepareFdbTxVlanTableEntry(table_entry, learn_info, p4info, false, detail);
+  EncodeFdbTxVlanTableEntry(table_entry, learn_info, p4info, false, detail);
 
   return client.sendReadRequest(read_request);
 }
@@ -486,7 +485,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetVmSrcTableEntry(
 
   table_entry = client.initReadRequest(&read_request);
 
-  PrepareSrcIpMacMapTableEntry(table_entry, ip_info, p4info, false, detail);
+  EncodeSrcIpMacMapTableEntry(table_entry, ip_info, p4info, false, detail);
 
   return client.sendReadRequest(read_request);
 }
@@ -501,7 +500,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetVmDstTableEntry(
 
   table_entry = client.initReadRequest(&read_request);
 
-  PrepareDstIpMacMapTableEntry(table_entry, ip_info, p4info, false, detail);
+  EncodeDstIpMacMapTableEntry(table_entry, ip_info, p4info, false, detail);
 
   return client.sendReadRequest(read_request);
 }
@@ -515,7 +514,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetTxAccVsiTableEntry(
 
   table_entry = client.initReadRequest(&read_request);
 
-  PrepareTxAccVsiTableEntry(table_entry, sp, p4info);
+  EncodeTxAccVsiTableEntry(table_entry, sp, p4info);
 
   return client.sendReadRequest(read_request);
 }
@@ -530,7 +529,7 @@ absl::Status WriteVsiSrcPortTableEntry(ClientInterface& client,
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  PrepareSrcPortTableEntry(table_entry, sp, p4info, insert_entry);
+  EncodeSrcPortTableEntry(table_entry, sp, p4info, insert_entry);
 
   return client.sendWriteRequest(write_request);
 }
@@ -542,10 +541,10 @@ void PrepareRxTunnelSrcPortTableEntry(p4::v1::TableEntry* table_entry,
                                       bool insert_entry) {
   if (tunnel_info.local_ip.family == AF_INET &&
       tunnel_info.remote_ip.family == AF_INET) {
-    PrepareRxTunnelTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+    EncodeRxTunnelTableEntry(table_entry, tunnel_info, p4info, insert_entry);
   } else if (tunnel_info.local_ip.family == AF_INET6 &&
              tunnel_info.remote_ip.family == AF_INET6) {
-    PrepareV6RxTunnelTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+    EncodeV6RxTunnelTableEntry(table_entry, tunnel_info, p4info, insert_entry);
   }
 }
 
@@ -571,11 +570,11 @@ void Es2kPrepareTunnelTermTableEntry(p4::v1::TableEntry* table_entry,
                                      bool insert_entry) {
   if (tunnel_info.local_ip.family == AF_INET &&
       tunnel_info.remote_ip.family == AF_INET) {
-    PrepareTunnelTermTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+    EncodeTunnelTermTableEntry(table_entry, tunnel_info, p4info, insert_entry);
   } else if (tunnel_info.local_ip.family == AF_INET6 &&
              tunnel_info.remote_ip.family == AF_INET6) {
-    PrepareV6TunnelTermTableEntry(table_entry, tunnel_info, p4info,
-                                  insert_entry);
+    EncodeV6TunnelTermTableEntry(table_entry, tunnel_info, p4info,
+                                 insert_entry);
   }
 }
 
@@ -592,7 +591,7 @@ absl::Status WriteTunnelTermTableEntry(ClientInterface& client,
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
 #if defined(DPDK_TARGET)
-  PrepareTunnelTermTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+  EncodeTunnelTermTableEntry(table_entry, tunnel_info, p4info, insert_entry);
 #elif defined(ES2K_TARGET)
   Es2kPrepareTunnelTermTableEntry(table_entry, tunnel_info, p4info,
                                   insert_entry);
@@ -616,8 +615,8 @@ absl::Status WriteDstIpMacMapTableEntry(ClientInterface& client,
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  PrepareDstIpMacMapTableEntry(table_entry, ip_info, p4info, insert_entry,
-                               detail);
+  EncodeDstIpMacMapTableEntry(table_entry, ip_info, p4info, insert_entry,
+                              detail);
 
   auto status = client.sendWriteRequest(write_request);
   if (!status.ok()) {
@@ -637,8 +636,8 @@ absl::Status WriteSrcIpMacMapTableEntry(ClientInterface& client,
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  PrepareSrcIpMacMapTableEntry(table_entry, ip_info, p4info, insert_entry,
-                               detail);
+  EncodeSrcIpMacMapTableEntry(table_entry, ip_info, p4info, insert_entry,
+                              detail);
 
   auto status = client.sendWriteRequest(write_request);
   if (!status.ok()) {
@@ -854,7 +853,7 @@ absl::Status WriteTunnelSrcPortEntry(ClientInterface& client,
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  PrepareSrcPortTableEntry(table_entry, tnl_sp, p4info, insert_entry);
+  EncodeSrcPortTableEntry(table_entry, tnl_sp, p4info, insert_entry);
 
   return client.sendWriteRequest(write_request);
 }

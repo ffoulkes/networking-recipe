@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareL2ToTunnelV4().
+// Unit test for EncodeL2ToTunnelV4().
 
 #define DUMP_JSON
 
@@ -154,7 +154,7 @@ TEST_F(L2ToV4TunnelTest, remove_entry) {
   InitTunnelInfo();
 
   // Act
-  PrepareL2ToTunnelV4(&table_entry, fdb_info, p4info, REMOVE_ENTRY, detail);
+  EncodeL2ToTunnelV4(&table_entry, fdb_info, p4info, REMOVE_ENTRY, detail);
   DumpTableEntry();
 
   // Assert
@@ -170,7 +170,7 @@ TEST_F(L2ToV4TunnelTest, insert_entry) {
   InitTunnelInfo();
 
   // Act
-  PrepareL2ToTunnelV4(&table_entry, fdb_info, p4info, INSERT_ENTRY, detail);
+  EncodeL2ToTunnelV4(&table_entry, fdb_info, p4info, INSERT_ENTRY, detail);
   DumpTableEntry();
 
   // Assert

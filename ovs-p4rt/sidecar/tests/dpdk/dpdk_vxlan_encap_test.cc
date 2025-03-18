@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareVxlanEncapTableEntry().
+// Unit test for EncodeVxlanEncapTableEntry().
 // DPDK edition.
 
 #define DUMP_JSON
@@ -189,7 +189,7 @@ TEST_F(DpdkVxlanEncapTest, remove_entry) {
   InitTunnelInfo(OVS_TUNNEL_VXLAN);
 
   // Act
-  PrepareVxlanEncapTableEntry(&table_entry, tunnel_info, p4info, REMOVE_ENTRY);
+  EncodeVxlanEncapTableEntry(&table_entry, tunnel_info, p4info, REMOVE_ENTRY);
   DumpTableEntry();
 
   // Assert
@@ -204,7 +204,7 @@ TEST_F(DpdkVxlanEncapTest, insert_entry) {
   InitAction();
 
   // Act
-  PrepareVxlanEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
+  EncodeVxlanEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
   DumpTableEntry();
 
   // Assert

@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareV6RxTunnelTableEntry().
+// Unit test for EncodeV6RxTunnelTableEntry().
 
 #include <arpa/inet.h>
 #include <stdint.h>
@@ -166,7 +166,7 @@ class RxTunnelPortV6TableTest : public BaseTableTest {
 };
 
 //----------------------------------------------------------------------
-// PrepareV6RxTunnelTableEntry()
+// EncodeV6RxTunnelTableEntry()
 //----------------------------------------------------------------------
 
 TEST_F(RxTunnelPortV6TableTest, remove_entry) {
@@ -174,7 +174,7 @@ TEST_F(RxTunnelPortV6TableTest, remove_entry) {
   InitTunnelInfo();
 
   // Act
-  PrepareV6RxTunnelTableEntry(&table_entry, tunnel_info, p4info, REMOVE_ENTRY);
+  EncodeV6RxTunnelTableEntry(&table_entry, tunnel_info, p4info, REMOVE_ENTRY);
 
   // Assert
   CheckTableEntry();
@@ -188,7 +188,7 @@ TEST_F(RxTunnelPortV6TableTest, insert_entry) {
   InitAction();
 
   // Act
-  PrepareV6RxTunnelTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
+  EncodeV6RxTunnelTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
   // Assert
   CheckAction();
