@@ -1,11 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for WriteVlanPopTableEntry().
-
-// Core functionality is handled by EncodeSrcPortTableEntry(),
-// which is tested separately. This is a test of the non-core
-// functionality.
+// Unit test for WriteVsiSrcPortTableEntry().
 
 #include <absl/status/status.h>
 
@@ -23,10 +19,10 @@ using ::testing::Return;
 
 namespace ovsp4rt {
 
-class ConfigVsiSrcPortEntryTest : public BasicTest {
+class WriteVsiSrcPortEntryTest : public BasicTest {
  public:
-  ConfigVsiSrcPortEntryTest() {}
-  virtual ~ConfigVsiSrcPortEntryTest() = default;
+  WriteVsiSrcPortEntryTest() {}
+  virtual ~WriteVsiSrcPortEntryTest() = default;
 
   static void InitPortInfo(struct src_port_info& port_info) {
     port_info.bridge_id = 42;
@@ -35,7 +31,7 @@ class ConfigVsiSrcPortEntryTest : public BasicTest {
   }
 };
 
-TEST_F(ConfigVsiSrcPortEntryTest, configVsiSrcPortEntryFailure) {
+TEST_F(WriteVsiSrcPortEntryTest, writeVsiSrcPortEntryFailure) {
   constexpr char ERROR_MESSAGE[] = "sendWriteRequest failed";
 
   struct src_port_info port_info = {0};
@@ -56,7 +52,7 @@ TEST_F(ConfigVsiSrcPortEntryTest, configVsiSrcPortEntryFailure) {
       << status.message();
 }
 
-TEST_F(ConfigVsiSrcPortEntryTest, configVsiSrcPortEntrySuccess) {
+TEST_F(WriteVsiSrcPortEntryTest, writeVsiSrcPortEntrySuccess) {
   struct src_port_info port_info = {0};
   InitPortInfo(port_info);
 

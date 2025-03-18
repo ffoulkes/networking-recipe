@@ -32,10 +32,6 @@ extern absl::Status WriteFdbTxVlanTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
-extern absl::Status WriteL2TunnelTableEntry(
-    ClientInterface& client, const struct mac_learning_info& learn_info,
-    const ::p4::config::v1::P4Info& p4info, bool insert_entry);
-
 extern absl::Status WriteTunnelTermTableEntry(
     ClientInterface& client, const struct tunnel_info& tunnel_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
@@ -62,6 +58,10 @@ extern absl::Status ConfigFdbUpdateSrcPort(
 extern void ConfigFdbUpdateTunnelInfo(ClientInterface& client,
                                       struct mac_learning_info& learn_info,
                                       const ::p4::config::v1::P4Info& p4info);
+
+extern absl::Status WriteL2TunnelTableEntry(
+    ClientInterface& client, const struct mac_learning_info& learn_info,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
 extern absl::Status WriteRxTunnelSrcPortTableEntry(
     ClientInterface& client, const struct tunnel_info& tunnel_info,

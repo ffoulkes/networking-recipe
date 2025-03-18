@@ -21,13 +21,13 @@ list(APPEND UNIT_TEST_NAMES encode_host_port_value_test)
 #-----------------------------------------------------------------------
 if(BUILD_CLIENT)
 
-define_basic_test(config_fdb_rx_vlan_table_entry_test)
-define_basic_test(config_fdb_tx_vlan_table_entry_test)
+define_basic_test(write_fdb_rx_vlan_table_entry_test)
+define_basic_test(write_fdb_tx_vlan_table_entry_test)
 
-define_mac_learn_info_test(config_fdb_tunnel_table_entry_test)
+define_mac_learn_info_test(write_fdb_tunnel_table_entry_test)
 
-define_tunnel_info_test(config_encap_table_entry_test)
-define_tunnel_info_test(config_tunnel_term_entry_test)
+define_tunnel_info_test(write_encap_table_entry_test)
+define_tunnel_info_test(write_tunnel_term_entry_test)
 
 endif(BUILD_CLIENT)
 

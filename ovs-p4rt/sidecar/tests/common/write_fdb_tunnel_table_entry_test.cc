@@ -1,11 +1,11 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for WriteFdbSmacTableEntry().
+// Unit test for WriteFdbTunnelTableEntry().
 
-// Core functionality is handled by EncodeFdbSmacTableEntry(),
-// which is tested separately. This is a test of the non-core
-// functionality.
+// Core functionality is handled by EncodeFdbTableEntryforV4VxlanTunnel()
+// or EncodeFdbTableEntryforV4GeneveTunnel, which are tested separately.
+// This is a test of the non-core functionality.
 
 #include <absl/status/status.h>
 
@@ -14,7 +14,7 @@
 #include <gmock/gmock.h>
 // clang-format on
 
-#include "basic_test.h"
+#include "base_mac_learn_info_test.h"
 #include "client/ovsp4rt_test_client_mock.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_config_int.h"
@@ -23,12 +23,12 @@ using ::testing::Return;
 
 namespace ovsp4rt {
 
-class ConfigFdbSmacTableEntryTest : public BasicTest {
+class WriteFdbTunnelTableEntryTest : public BaseMacLearnInfoTest {
  public:
-  ConfigFdbSmacTableEntryTest() {}
-  virtual ~ConfigFdbSmacTableEntryTest() = default;
+  WriteFdbTunnelTableEntryTest() {}
+  virtual ~WriteFdbTunnelTableEntryTest() = default;
 
-  static void InitFdbInfo(struct mac_learning_info& fdb_info) {
+  static void InitLearnInfo(struct mac_learning_info& fdb_info) {
     constexpr uint8_t MAC_ADDR[] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66};
     constexpr uint8_t BRIDGE_ID = 42;
 
@@ -37,11 +37,13 @@ class ConfigFdbSmacTableEntryTest : public BasicTest {
   }
 };
 
-TEST_F(ConfigFdbSmacTableEntryTest, configFdbSmacEntryFailure) {
+TEST_F(WriteFdbTunnelTableEntryTest, writeFdbTunnelEntryFailure) {
   constexpr char ERROR_MESSAGE[] = "sendWriteRequest failed";
 
   struct mac_learning_info learn_info = {0};
-  InitFdbInfo(learn_info);
+  InitLearnInfo(learn_info);
+  InitV4NativeTagged(learn_info);
+  learn_info.tnl_info.tunnel_type = OVS_TUNNEL_VXLAN;
 
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
@@ -51,16 +53,18 @@ TEST_F(ConfigFdbSmacTableEntryTest, configFdbSmacEntryFailure) {
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
   auto status =
-      WriteFdbSmacTableEntry(client, learn_info, p4info, INSERT_ENTRY);
+      WriteFdbTunnelTableEntry(client, learn_info, p4info, INSERT_ENTRY);
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
       << status.message();
 }
 
-TEST_F(ConfigFdbSmacTableEntryTest, configFdbSmacEntrySuccess) {
+TEST_F(WriteFdbTunnelTableEntryTest, writeFdbTunnelEntrySuccess) {
   struct mac_learning_info learn_info = {0};
-  InitFdbInfo(learn_info);
+  InitLearnInfo(learn_info);
+  InitV4NativeTagged(learn_info);
+  learn_info.tnl_info.tunnel_type = OVS_TUNNEL_VXLAN;
 
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
@@ -69,7 +73,7 @@ TEST_F(ConfigFdbSmacTableEntryTest, configFdbSmacEntrySuccess) {
   EXPECT_CALL(client, sendWriteRequest).WillOnce(Return(absl::OkStatus()));
 
   auto status =
-      WriteFdbSmacTableEntry(client, learn_info, p4info, INSERT_ENTRY);
+      WriteFdbTunnelTableEntry(client, learn_info, p4info, INSERT_ENTRY);
 
   ASSERT_TRUE(status.ok()) << status;
 }
