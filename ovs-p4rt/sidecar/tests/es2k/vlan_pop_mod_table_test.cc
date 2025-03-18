@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareVlanPopTableEntry()
+// Unit test for EncodeVlanPopTableEntry()
 
 #include <stdint.h>
 
@@ -93,7 +93,7 @@ TEST_F(VlanPopTableTest, remove_entry) {
   InitVlanInfo();
 
   // Act
-  PrepareVlanPopTableEntry(&table_entry, vlan_id, p4info, REMOVE_ENTRY);
+  EncodeVlanPopTableEntry(&table_entry, vlan_id, p4info, REMOVE_ENTRY);
 
   // Assert
   CheckTableEntry();
@@ -107,7 +107,7 @@ TEST_F(VlanPopTableTest, insert_entry) {
   InitAction();
 
   // Act
-  PrepareVlanPopTableEntry(&table_entry, vlan_id, p4info, INSERT_ENTRY);
+  EncodeVlanPopTableEntry(&table_entry, vlan_id, p4info, INSERT_ENTRY);
 
   // Assert
   CheckTableEntry();

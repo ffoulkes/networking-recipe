@@ -3,7 +3,7 @@
 
 // Unit test for GetVmSrcTableEntry().
 
-// Core functionality is handled by PrepareSrcIpMacMapTableEntry(),
+// Core functionality is handled by EncodeSrcIpMacMapTableEntry(),
 // which is tested separately. This is a test of the non-core
 // functionality.
 

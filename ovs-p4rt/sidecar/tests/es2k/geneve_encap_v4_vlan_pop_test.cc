@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareGeneveEncapAndVlanPopTableEntry().
+// Unit test for EncodeGeneveEncapAndVlanPopTableEntry().
 
 #define DUMP_JSON
 
@@ -168,8 +168,8 @@ TEST_F(GeneveEncapV4VlanPopTest, remove_entry) {
   InitV4TunnelInfo(OVS_TUNNEL_GENEVE);
 
   // Act
-  PrepareGeneveEncapAndVlanPopTableEntry(&table_entry, tunnel_info, p4info,
-                                         REMOVE_ENTRY);
+  EncodeGeneveEncapAndVlanPopTableEntry(&table_entry, tunnel_info, p4info,
+                                        REMOVE_ENTRY);
   DumpTableEntry();
 
   // Assert
@@ -184,8 +184,8 @@ TEST_F(GeneveEncapV4VlanPopTest, insert_entry) {
   InitAction();
 
   // Act
-  PrepareGeneveEncapAndVlanPopTableEntry(&table_entry, tunnel_info, p4info,
-                                         INSERT_ENTRY);
+  EncodeGeneveEncapAndVlanPopTableEntry(&table_entry, tunnel_info, p4info,
+                                        INSERT_ENTRY);
   DumpTableEntry();
 
   // Assert

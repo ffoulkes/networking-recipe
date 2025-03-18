@@ -220,7 +220,7 @@ class TunnelTermV6TableTest : public BaseTableTest {
 };
 
 //----------------------------------------------------------------------
-// PrepareV6TunnelTermTableEntry() - vxlan
+// EncodeV6TunnelTermTableEntry() - vxlan
 //----------------------------------------------------------------------
 
 TEST_F(TunnelTermV6TableTest, remove_vxlan_untagged_entry) {
@@ -229,8 +229,7 @@ TEST_F(TunnelTermV6TableTest, remove_vxlan_untagged_entry) {
   InitVxlanUntagged();
 
   // Act
-  PrepareV6TunnelTermTableEntry(&table_entry, tunnel_info, p4info,
-                                REMOVE_ENTRY);
+  EncodeV6TunnelTermTableEntry(&table_entry, tunnel_info, p4info, REMOVE_ENTRY);
 
   // Assert
   CheckTableEntry();
@@ -244,8 +243,7 @@ TEST_F(TunnelTermV6TableTest, insert_vxlan_untagged_entry) {
   InitVxlanUntagged();
 
   // Act
-  PrepareV6TunnelTermTableEntry(&table_entry, tunnel_info, p4info,
-                                INSERT_ENTRY);
+  EncodeV6TunnelTermTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
   // Assert
   CheckAction();
@@ -257,8 +255,7 @@ TEST_F(TunnelTermV6TableTest, remove_vxlan_tagged_entry) {
   InitVxlanTagged();
 
   // Act
-  PrepareV6TunnelTermTableEntry(&table_entry, tunnel_info, p4info,
-                                REMOVE_ENTRY);
+  EncodeV6TunnelTermTableEntry(&table_entry, tunnel_info, p4info, REMOVE_ENTRY);
 
   // Assert
   CheckTableEntry();
@@ -272,15 +269,14 @@ TEST_F(TunnelTermV6TableTest, insert_vxlan_tagged_entry) {
   InitVxlanTagged();
 
   // Act
-  PrepareV6TunnelTermTableEntry(&table_entry, tunnel_info, p4info,
-                                INSERT_ENTRY);
+  EncodeV6TunnelTermTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
   // Assert
   CheckAction();
 }
 
 //----------------------------------------------------------------------
-// PrepareV6TunnelTermTableEntry() - geneve
+// EncodeV6TunnelTermTableEntry() - geneve
 //----------------------------------------------------------------------
 
 TEST_F(TunnelTermV6TableTest, remove_geneve_untagged_entry) {
@@ -289,8 +285,7 @@ TEST_F(TunnelTermV6TableTest, remove_geneve_untagged_entry) {
   InitGeneveUntagged();
 
   // Act
-  PrepareV6TunnelTermTableEntry(&table_entry, tunnel_info, p4info,
-                                REMOVE_ENTRY);
+  EncodeV6TunnelTermTableEntry(&table_entry, tunnel_info, p4info, REMOVE_ENTRY);
 
   // Assert
   CheckTableEntry();
@@ -304,8 +299,7 @@ TEST_F(TunnelTermV6TableTest, insert_geneve_untagged_entry) {
   InitGeneveUntagged();
 
   // Act
-  PrepareV6TunnelTermTableEntry(&table_entry, tunnel_info, p4info,
-                                INSERT_ENTRY);
+  EncodeV6TunnelTermTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
   // Assert
   CheckAction();
@@ -317,8 +311,7 @@ TEST_F(TunnelTermV6TableTest, remove_geneve_tagged_entry) {
   InitGeneveTagged();
 
   // Act
-  PrepareV6TunnelTermTableEntry(&table_entry, tunnel_info, p4info,
-                                REMOVE_ENTRY);
+  EncodeV6TunnelTermTableEntry(&table_entry, tunnel_info, p4info, REMOVE_ENTRY);
 
   // Assert
   CheckTableEntry();
@@ -332,8 +325,7 @@ TEST_F(TunnelTermV6TableTest, insert_geneve_tagged_entry) {
   InitGeneveTagged();
 
   // Act
-  PrepareV6TunnelTermTableEntry(&table_entry, tunnel_info, p4info,
-                                INSERT_ENTRY);
+  EncodeV6TunnelTermTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
   DumpTableEntry();
 
   // Assert

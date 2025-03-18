@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareFdbTableEntryforV4VxlanTunnel().
+// Unit test for EncodeFdbTableEntryforV4VxlanTunnel().
 // DPDK version.
 
 #include <arpa/inet.h>
@@ -171,8 +171,8 @@ TEST_F(DpdkFdbTxVxlanTest, remove_entry) {
   InitFdbInfo(OVS_TUNNEL_VXLAN);
 
   // Act
-  PrepareFdbTableEntryforV4VxlanTunnel(&table_entry, fdb_info, p4info,
-                                       REMOVE_ENTRY, detail);
+  EncodeFdbTableEntryforV4VxlanTunnel(&table_entry, fdb_info, p4info,
+                                      REMOVE_ENTRY, detail);
 
   // Assert
   CheckDetail();
@@ -187,8 +187,8 @@ TEST_F(DpdkFdbTxVxlanTest, insert_entry) {
   InitAction();
 
   // Act
-  PrepareFdbTableEntryforV4VxlanTunnel(&table_entry, fdb_info, p4info,
-                                       INSERT_ENTRY, detail);
+  EncodeFdbTableEntryforV4VxlanTunnel(&table_entry, fdb_info, p4info,
+                                      INSERT_ENTRY, detail);
 
   // Assert
   CheckTableEntry();

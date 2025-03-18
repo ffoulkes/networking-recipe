@@ -3,7 +3,7 @@
 
 // Unit test for GetL2ToTunnelV6TableEntry().
 
-// Core functionality is handled by PrepareL2ToTunnelV6(),
+// Core functionality is handled by EncodeL2ToTunnelV6(),
 // which is tested separately. This is a test of the non-core
 // functionality.
 

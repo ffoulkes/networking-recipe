@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareGeneveDecapModAndVlanPushTableEntry().
+// Unit test for EncodeGeneveDecapModAndVlanPushTableEntry().
 
 #include <stdint.h>
 
@@ -159,8 +159,8 @@ TEST_F(GeneveDecapModVlanPushTest, remove_entry) {
   InitTunnelInfo();
 
   // Act
-  PrepareGeneveDecapModAndVlanPushTableEntry(&table_entry, tunnel_info, p4info,
-                                             REMOVE_ENTRY);
+  EncodeGeneveDecapModAndVlanPushTableEntry(&table_entry, tunnel_info, p4info,
+                                            REMOVE_ENTRY);
 
   // Assert
   CheckTableEntry();
@@ -174,8 +174,8 @@ TEST_F(GeneveDecapModVlanPushTest, insert_entry) {
   InitAction();
 
   // Act
-  PrepareGeneveDecapModAndVlanPushTableEntry(&table_entry, tunnel_info, p4info,
-                                             INSERT_ENTRY);
+  EncodeGeneveDecapModAndVlanPushTableEntry(&table_entry, tunnel_info, p4info,
+                                            INSERT_ENTRY);
 
   // Assert
   CheckTableEntry();
@@ -189,8 +189,8 @@ TEST_F(GeneveDecapModVlanPushTest, insert_entry_with_24_bit_vni) {
   InitAction();
 
   // Act
-  PrepareGeneveDecapModAndVlanPushTableEntry(&table_entry, tunnel_info, p4info,
-                                             INSERT_ENTRY);
+  EncodeGeneveDecapModAndVlanPushTableEntry(&table_entry, tunnel_info, p4info,
+                                            INSERT_ENTRY);
 
   // Assert
   CheckTableEntry();

@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareVxlanEncapAndVlanPopTableEntry().
+// Unit test for EncodeVxlanEncapAndVlanPopTableEntry().
 
 #define DUMP_JSON
 
@@ -168,8 +168,8 @@ TEST_F(VxlanEncapV4VlanPopTest, remove_entry) {
   InitV4TunnelInfo(OVS_TUNNEL_VXLAN);
 
   // Act
-  PrepareVxlanEncapAndVlanPopTableEntry(&table_entry, tunnel_info, p4info,
-                                        REMOVE_ENTRY);
+  EncodeVxlanEncapAndVlanPopTableEntry(&table_entry, tunnel_info, p4info,
+                                       REMOVE_ENTRY);
   DumpTableEntry();
 
   // Assert
@@ -184,8 +184,8 @@ TEST_F(VxlanEncapV4VlanPopTest, insert_entry) {
   InitAction();
 
   // Act
-  PrepareVxlanEncapAndVlanPopTableEntry(&table_entry, tunnel_info, p4info,
-                                        INSERT_ENTRY);
+  EncodeVxlanEncapAndVlanPopTableEntry(&table_entry, tunnel_info, p4info,
+                                       INSERT_ENTRY);
   DumpTableEntry();
 
   // Assert
@@ -200,8 +200,8 @@ TEST_F(VxlanEncapV4VlanPopTest, insert_entry_24_bit_vni) {
   tunnel_info.vni = 0x95054;
 
   // Act
-  PrepareVxlanEncapAndVlanPopTableEntry(&table_entry, tunnel_info, p4info,
-                                        INSERT_ENTRY);
+  EncodeVxlanEncapAndVlanPopTableEntry(&table_entry, tunnel_info, p4info,
+                                       INSERT_ENTRY);
   DumpTableEntry();
 
   // Assert

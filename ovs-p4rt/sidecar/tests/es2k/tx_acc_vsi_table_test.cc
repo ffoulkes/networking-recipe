@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareTxAccVsiTableEntry()
+// Unit test for EncodeTxAccVsiTableEntry()
 
 #include <stdint.h>
 
@@ -84,7 +84,7 @@ TEST_F(TxAccVsiTableTest, sp_8_bits) {
   info_sp = 42;
 
   // Act
-  PrepareTxAccVsiTableEntry(&table_entry, info_sp, p4info);
+  EncodeTxAccVsiTableEntry(&table_entry, info_sp, p4info);
 
   // Assert
   CheckTableEntry();
@@ -99,7 +99,7 @@ TEST_F(TxAccVsiTableTest, sp_11_bits) {
   info_sp = 0x765;
 
   // Act
-  PrepareTxAccVsiTableEntry(&table_entry, info_sp, p4info);
+  EncodeTxAccVsiTableEntry(&table_entry, info_sp, p4info);
 
   // Assert
   CheckTableEntry();

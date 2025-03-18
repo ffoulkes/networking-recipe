@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for PrepareV6GeneveEncapTableEntry().
+// Unit test for EncodeV6GeneveEncapTableEntry().
 
 #define DUMP_JSON
 
@@ -174,8 +174,8 @@ TEST_F(GeneveEncapV6TableTest, remove_entry) {
   InitV6TunnelInfo(OVS_TUNNEL_GENEVE);
 
   // Act
-  PrepareV6GeneveEncapTableEntry(&table_entry, tunnel_info, p4info,
-                                 REMOVE_ENTRY);
+  EncodeV6GeneveEncapTableEntry(&table_entry, tunnel_info, p4info,
+                                REMOVE_ENTRY);
   DumpTableEntry();
 
   // Assert
@@ -190,8 +190,8 @@ TEST_F(GeneveEncapV6TableTest, insert_entry) {
   InitAction();
 
   // Act
-  PrepareV6GeneveEncapTableEntry(&table_entry, tunnel_info, p4info,
-                                 INSERT_ENTRY);
+  EncodeV6GeneveEncapTableEntry(&table_entry, tunnel_info, p4info,
+                                INSERT_ENTRY);
   DumpTableEntry();
 
   // Assert
