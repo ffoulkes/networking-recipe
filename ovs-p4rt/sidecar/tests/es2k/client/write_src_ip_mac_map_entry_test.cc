@@ -20,13 +20,13 @@ using ::testing::Return;
 
 namespace ovsp4rt {
 
-class Es2kConfigSrcIpMacMapTest : public BaseMacMapInfoTest {
+class WriteSrcIpMacMapEntryTest : public BaseMacMapInfoTest {
  protected:
-  Es2kConfigSrcIpMacMapTest() {}
-  virtual ~Es2kConfigSrcIpMacMapTest() = default;
+  WriteSrcIpMacMapEntryTest() {}
+  virtual ~WriteSrcIpMacMapEntryTest() = default;
 };
 
-TEST_F(Es2kConfigSrcIpMacMapTest, configSrcIpMacMapWriteFailure) {
+TEST_F(WriteSrcIpMacMapEntryTest, writeSrcIpMacMapWriteFailure) {
   constexpr char ERROR_MESSAGE[] = "sendWriteRequest failed";
 
   struct ip_mac_map_info map_info = {0};
@@ -47,7 +47,7 @@ TEST_F(Es2kConfigSrcIpMacMapTest, configSrcIpMacMapWriteFailure) {
       << status;
 }
 
-TEST_F(Es2kConfigSrcIpMacMapTest, configSrcIpMacMapWriteSuccess) {
+TEST_F(WriteSrcIpMacMapEntryTest, writeSrcIpMacMapWriteSuccess) {
   struct ip_mac_map_info map_info = {0};
   InitIpv4MapInfo(map_info);
 

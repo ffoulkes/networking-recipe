@@ -23,13 +23,13 @@ using ::testing::Return;
 
 namespace ovsp4rt {
 
-class ConfigVlanPushTableEntryTest : public BasicTest {
+class WriteVlanPushTableEntryTest : public BasicTest {
  public:
-  ConfigVlanPushTableEntryTest() {}
-  virtual ~ConfigVlanPushTableEntryTest() = default;
+  WriteVlanPushTableEntryTest() {}
+  virtual ~WriteVlanPushTableEntryTest() = default;
 };
 
-TEST_F(ConfigVlanPushTableEntryTest, configVlanPushEntryFailure) {
+TEST_F(WriteVlanPushTableEntryTest, writeVlanPushEntryFailure) {
   constexpr char ERROR_MESSAGE[] = "sendWriteRequest failed";
   constexpr uint16_t VLAN_ID = 0x1776;
 
@@ -47,7 +47,7 @@ TEST_F(ConfigVlanPushTableEntryTest, configVlanPushEntryFailure) {
       << status.message();
 }
 
-TEST_F(ConfigVlanPushTableEntryTest, configVlanPushEntrySuccess) {
+TEST_F(WriteVlanPushTableEntryTest, writeVlanPushEntrySuccess) {
   constexpr uint16_t VLAN_ID = 0x1492;
 
   ::p4::config::v1::P4Info p4info;

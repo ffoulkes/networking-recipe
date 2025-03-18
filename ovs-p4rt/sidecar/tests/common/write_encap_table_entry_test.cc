@@ -23,13 +23,13 @@ using ::testing::Return;
 
 namespace ovsp4rt {
 
-class ConfigEncapTableEntryTest : public BaseTunnelInfoTest {
+class WriteEncapTableEntryTest : public BaseTunnelInfoTest {
  public:
-  ConfigEncapTableEntryTest() {}
-  virtual ~ConfigEncapTableEntryTest() = default;
+  WriteEncapTableEntryTest() {}
+  virtual ~WriteEncapTableEntryTest() = default;
 };
 
-TEST_F(ConfigEncapTableEntryTest, configEncapTableEntryFailure) {
+TEST_F(WriteEncapTableEntryTest, writeEncapTableEntryFailure) {
   constexpr char ERROR_MESSAGE[] = "sendWriteRequest failed";
 
   struct tunnel_info tunnel_info = {0};
@@ -50,7 +50,7 @@ TEST_F(ConfigEncapTableEntryTest, configEncapTableEntryFailure) {
       << status;
 }
 
-TEST_F(ConfigEncapTableEntryTest, configEncapTableEntrySuccess) {
+TEST_F(WriteEncapTableEntryTest, writeEncapTableEntrySuccess) {
   struct tunnel_info tunnel_info = {0};
   InitV4TunnelInfo(tunnel_info);
   InitVxlanTagged(tunnel_info);

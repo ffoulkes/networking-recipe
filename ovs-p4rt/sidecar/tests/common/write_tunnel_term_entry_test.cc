@@ -1,9 +1,9 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for WriteRxTunnelSrcPortTableEntry().
+// Unit test for WriteTunnelTermTableEntry (common)
 
-// Core functionality is handled by PrepareRxTunnelSrcPortTableEntry(),
+// Core functionality is handled by EncodeL2ToTunnelV4(),
 // which is tested separately. This is a test of the non-core
 // functionality.
 
@@ -22,13 +22,13 @@ using ::testing::Return;
 
 namespace ovsp4rt {
 
-class Es2kConfigRxTunnelPortEntryTest : public BaseTunnelInfoTest {
+class WriteTunnelTermEntryTest : public BaseTunnelInfoTest {
  public:
-  Es2kConfigRxTunnelPortEntryTest() {}
-  virtual ~Es2kConfigRxTunnelPortEntryTest() = default;
+  WriteTunnelTermEntryTest() {}
+  virtual ~WriteTunnelTermEntryTest() = default;
 };
 
-TEST_F(Es2kConfigRxTunnelPortEntryTest, configRxTunnelEntryFailure) {
+TEST_F(WriteTunnelTermEntryTest, writeTunnelTermEntryFailure) {
   constexpr char ERROR_MESSAGE[] = "sendWriteRequest failed";
   struct tunnel_info tunnel_info = {0};
   InitV4TunnelInfo(tunnel_info);
@@ -42,14 +42,14 @@ TEST_F(Es2kConfigRxTunnelPortEntryTest, configRxTunnelEntryFailure) {
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
   auto status =
-      WriteRxTunnelSrcPortTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
+      WriteTunnelTermTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
       << status;
 }
 
-TEST_F(Es2kConfigRxTunnelPortEntryTest, configRxTunnelEntrySuccess) {
+TEST_F(WriteTunnelTermEntryTest, writeTunnelTermEntrySuccess) {
   struct tunnel_info tunnel_info = {0};
   InitV4TunnelInfo(tunnel_info);
   InitVxlanTagged(tunnel_info);
@@ -61,7 +61,7 @@ TEST_F(Es2kConfigRxTunnelPortEntryTest, configRxTunnelEntrySuccess) {
   EXPECT_CALL(client, sendWriteRequest).WillOnce(Return(absl::OkStatus()));
 
   auto status =
-      WriteRxTunnelSrcPortTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
+      WriteTunnelTermTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
 
   ASSERT_TRUE(status.ok()) << status;
 }

@@ -1,11 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for WriteTunnelTermTableEntry (common)
-
-// Core functionality is handled by EncodeL2ToTunnelV4(),
-// which is tested separately. This is a test of the non-core
-// functionality.
+// Unit test for WriteTunnelSrcPortEntry().
 
 #include <absl/status/status.h>
 
@@ -14,25 +10,35 @@
 #include <gmock/gmock.h>
 // clang-format on
 
-#include "base_tunnel_info_test.h"
+#include "basic_test.h"
 #include "client/ovsp4rt_test_client_mock.h"
+#include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_config_int.h"
+#include "p4/config/v1/p4info.pb.h"
 
 using ::testing::Return;
 
 namespace ovsp4rt {
 
-class ConfigTunnelTermEntryTest : public BaseTunnelInfoTest {
- public:
-  ConfigTunnelTermEntryTest() {}
-  virtual ~ConfigTunnelTermEntryTest() = default;
+constexpr char GRPC_ADDR[] = "172.54.19.3:5678";
+
+class WriteTunnelSrcPortTest : public BasicTest {
+ protected:
+  WriteTunnelSrcPortTest() {}
+  ~WriteTunnelSrcPortTest() = default;
+
+  void InitPortInfo(struct src_port_info& port_info) {
+    port_info.bridge_id = 42;
+    port_info.vlan_id = 0x123;
+    port_info.src_port = 0x1066;
+  }
 };
 
-TEST_F(ConfigTunnelTermEntryTest, configTunnelTermEntryFailure) {
+TEST_F(WriteTunnelSrcPortTest, writeTunnelSrcPortFailure) {
   constexpr char ERROR_MESSAGE[] = "sendWriteRequest failed";
-  struct tunnel_info tunnel_info = {0};
-  InitV4TunnelInfo(tunnel_info);
-  InitVxlanUntagged(tunnel_info);
+
+  struct src_port_info port_info = {0};
+  InitPortInfo(port_info);
 
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
@@ -42,17 +48,16 @@ TEST_F(ConfigTunnelTermEntryTest, configTunnelTermEntryFailure) {
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
   auto status =
-      WriteTunnelTermTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
+      WriteTunnelSrcPortEntry(client, port_info, p4info, INSERT_ENTRY);
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
       << status;
 }
 
-TEST_F(ConfigTunnelTermEntryTest, configTunnelTermEntrySuccess) {
-  struct tunnel_info tunnel_info = {0};
-  InitV4TunnelInfo(tunnel_info);
-  InitVxlanTagged(tunnel_info);
+TEST_F(WriteTunnelSrcPortTest, writeTunnelSrcPortSuccess) {
+  struct src_port_info port_info = {0};
+  InitPortInfo(port_info);
 
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
@@ -61,7 +66,7 @@ TEST_F(ConfigTunnelTermEntryTest, configTunnelTermEntrySuccess) {
   EXPECT_CALL(client, sendWriteRequest).WillOnce(Return(absl::OkStatus()));
 
   auto status =
-      WriteTunnelTermTableEntry(client, tunnel_info, p4info, INSERT_ENTRY);
+      WriteTunnelSrcPortEntry(client, port_info, p4info, INSERT_ENTRY);
 
   ASSERT_TRUE(status.ok()) << status;
 }

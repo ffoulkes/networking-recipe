@@ -1,9 +1,9 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for WriteFdbRxVlanTableEntry().
+// Unit test for WriteFdbSmacTableEntry().
 
-// Core functionality is handled by EncodeFdbRxVlanTableEntry(),
+// Core functionality is handled by EncodeFdbSmacTableEntry(),
 // which is tested separately. This is a test of the non-core
 // functionality.
 
@@ -23,21 +23,21 @@ using ::testing::Return;
 
 namespace ovsp4rt {
 
-class ConfigFdbRxVlanTableEntryTest : public BasicTest {
+class WriteFdbSmacTableEntryTest : public BasicTest {
  public:
-  ConfigFdbRxVlanTableEntryTest() {}
-  virtual ~ConfigFdbRxVlanTableEntryTest() = default;
+  WriteFdbSmacTableEntryTest() {}
+  virtual ~WriteFdbSmacTableEntryTest() = default;
 
   static void InitFdbInfo(struct mac_learning_info& fdb_info) {
     constexpr uint8_t MAC_ADDR[] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66};
-    constexpr uint8_t BRIDGE_ID = 86;
+    constexpr uint8_t BRIDGE_ID = 42;
 
     memcpy(fdb_info.mac_addr, MAC_ADDR, sizeof(fdb_info.mac_addr));
     fdb_info.bridge_id = BRIDGE_ID;
   }
 };
 
-TEST_F(ConfigFdbRxVlanTableEntryTest, configFdbRxVlanEntryFailure) {
+TEST_F(WriteFdbSmacTableEntryTest, writeFdbSmacEntryFailure) {
   constexpr char ERROR_MESSAGE[] = "sendWriteRequest failed";
 
   struct mac_learning_info learn_info = {0};
@@ -51,14 +51,14 @@ TEST_F(ConfigFdbRxVlanTableEntryTest, configFdbRxVlanEntryFailure) {
       .WillOnce(Return(absl::InternalError(ERROR_MESSAGE)));
 
   auto status =
-      WriteFdbRxVlanTableEntry(client, learn_info, p4info, INSERT_ENTRY);
+      WriteFdbSmacTableEntry(client, learn_info, p4info, INSERT_ENTRY);
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsInternal(status) && status.message() == ERROR_MESSAGE)
-      << status;
+      << status.message();
 }
 
-TEST_F(ConfigFdbRxVlanTableEntryTest, configFdbRxVlanEntrySuccess) {
+TEST_F(WriteFdbSmacTableEntryTest, writeFdbSmacEntrySuccess) {
   struct mac_learning_info learn_info = {0};
   InitFdbInfo(learn_info);
 
@@ -69,7 +69,7 @@ TEST_F(ConfigFdbRxVlanTableEntryTest, configFdbRxVlanEntrySuccess) {
   EXPECT_CALL(client, sendWriteRequest).WillOnce(Return(absl::OkStatus()));
 
   auto status =
-      WriteFdbRxVlanTableEntry(client, learn_info, p4info, INSERT_ENTRY);
+      WriteFdbSmacTableEntry(client, learn_info, p4info, INSERT_ENTRY);
 
   ASSERT_TRUE(status.ok()) << status;
 }
