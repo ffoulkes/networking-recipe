@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for ConfigFdbUpdateTunnelInfo() [ES2K]
+// Unit test for UpdateFdbTunnelInfo() [ES2K]
 
 #include <absl/status/status.h>
 
@@ -23,10 +23,10 @@ namespace ovsp4rt {
 
 constexpr char GRPC_ADDR[] = "1.2.3.4:5678";
 
-class Es2kUpdateTunnelInfoTest : public BasicTest {
+class UpdateFdbTunnelInfoTest : public BasicTest {
  protected:
-  Es2kUpdateTunnelInfoTest() {}
-  virtual ~Es2kUpdateTunnelInfoTest() = default;
+  UpdateFdbTunnelInfoTest() {}
+  virtual ~UpdateFdbTunnelInfoTest() = default;
 
   // The UUT is called when deleting an entry.
   // The only field required is the mac address.
@@ -46,7 +46,7 @@ class Es2kUpdateTunnelInfoTest : public BasicTest {
 /**
  * Entry is in the IPv4 tunnel table.
  */
-TEST_F(Es2kUpdateTunnelInfoTest, EntryInIpv4TunnelTable) {
+TEST_F(UpdateFdbTunnelInfoTest, entryInIpv4TunnelTable) {
   struct mac_learning_info learn_info = {0};
   InitLearnInfo(learn_info);
 
@@ -57,7 +57,7 @@ TEST_F(Es2kUpdateTunnelInfoTest, EntryInIpv4TunnelTable) {
   EXPECT_CALL(client, sendReadRequest)
       .WillOnce(InvokeWithoutArgs(ReturnReadResponse));
 
-  ConfigFdbUpdateTunnelInfo(client, learn_info, expected_p4info);
+  UpdateFdbTunnelInfo(client, learn_info, expected_p4info);
 
   ASSERT_TRUE(learn_info.is_tunnel);
 }
@@ -65,7 +65,7 @@ TEST_F(Es2kUpdateTunnelInfoTest, EntryInIpv4TunnelTable) {
 /**
  * Entry is in the IPv6 tunnel table.
  */
-TEST_F(Es2kUpdateTunnelInfoTest, EntryInIpv6TunnelTable) {
+TEST_F(UpdateFdbTunnelInfoTest, entryInIpv6TunnelTable) {
   struct mac_learning_info learn_info = {0};
   InitLearnInfo(learn_info);
 
@@ -77,7 +77,7 @@ TEST_F(Es2kUpdateTunnelInfoTest, EntryInIpv6TunnelTable) {
       .WillOnce(Return(absl::NotFoundError("not in IPv4 tunnel table")))
       .WillOnce(InvokeWithoutArgs(ReturnReadResponse));
 
-  ConfigFdbUpdateTunnelInfo(client, learn_info, expected_p4info);
+  UpdateFdbTunnelInfo(client, learn_info, expected_p4info);
 
   ASSERT_TRUE(learn_info.is_tunnel);
 }
@@ -85,7 +85,7 @@ TEST_F(Es2kUpdateTunnelInfoTest, EntryInIpv6TunnelTable) {
 /**
  * Entry is not in either tunnel table.
  */
-TEST_F(Es2kUpdateTunnelInfoTest, EntryNotInTunnelTables) {
+TEST_F(UpdateFdbTunnelInfoTest, entryNotInTunnelTables) {
   struct mac_learning_info learn_info = {0};
   InitLearnInfo(learn_info);
 
@@ -97,7 +97,7 @@ TEST_F(Es2kUpdateTunnelInfoTest, EntryNotInTunnelTables) {
       .WillOnce(Return(absl::NotFoundError("not in IPv4 tunnel table")))
       .WillOnce(Return(absl::NotFoundError("not in IPv6 tunnel table")));
 
-  ConfigFdbUpdateTunnelInfo(client, learn_info, expected_p4info);
+  UpdateFdbTunnelInfo(client, learn_info, expected_p4info);
 
   ASSERT_FALSE(learn_info.is_tunnel);
 }

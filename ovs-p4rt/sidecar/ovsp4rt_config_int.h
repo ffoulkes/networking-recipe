@@ -15,6 +15,38 @@
 
 namespace ovsp4rt {
 
+extern absl::StatusOr<::p4::v1::ReadResponse> GetFdbTunnelTableEntry(
+    ClientInterface& client, const struct mac_learning_info& learn_info,
+    const ::p4::config::v1::P4Info& p4info, bool adding = false);
+
+extern absl::StatusOr<::p4::v1::ReadResponse> GetFdbVlanTableEntry(
+    ClientInterface& client, const struct mac_learning_info& learn_info,
+    const ::p4::config::v1::P4Info& p4info, bool adding = false);
+
+extern absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV4TableEntry(
+    ClientInterface& client, const struct mac_learning_info& learn_info,
+    const ::p4::config::v1::P4Info& p4info);
+
+extern absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV6TableEntry(
+    ClientInterface& client, const struct mac_learning_info& learn_info,
+    const ::p4::config::v1::P4Info& p4info);
+
+extern absl::StatusOr<::p4::v1::ReadResponse> GetVmDstTableEntry(
+    ClientInterface& client, const struct ip_mac_map_info& ip_info,
+    const ::p4::config::v1::P4Info& p4info);
+
+extern absl::StatusOr<::p4::v1::ReadResponse> GetVmSrcTableEntry(
+    ClientInterface& client, struct ip_mac_map_info ip_info,
+    const ::p4::config::v1::P4Info& p4info);
+
+extern absl::Status UpdateFdbSrcPortInfo(
+    ClientInterface& client, struct mac_learning_info& learn_info,
+    const ::p4::config::v1::P4Info& p4info);
+
+extern void UpdateFdbTunnelInfo(ClientInterface& client,
+                                struct mac_learning_info& learn_info,
+                                const ::p4::config::v1::P4Info& p4info);
+
 extern absl::Status WriteEncapTableEntry(ClientInterface& client,
                                          const struct tunnel_info& tunnel_info,
                                          const ::p4::config::v1::P4Info& p4info,
@@ -51,14 +83,6 @@ extern absl::Status WriteFdbSmacTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
-extern absl::Status ConfigFdbUpdateSrcPort(
-    ClientInterface& client, struct mac_learning_info& learn_info,
-    const ::p4::config::v1::P4Info& p4info);
-
-extern void ConfigFdbUpdateTunnelInfo(ClientInterface& client,
-                                      struct mac_learning_info& learn_info,
-                                      const ::p4::config::v1::P4Info& p4info);
-
 extern absl::Status WriteL2TunnelTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
@@ -86,30 +110,6 @@ extern absl::Status WriteVlanPushTableEntry(
 extern absl::Status WriteVsiSrcPortTableEntry(
     ClientInterface& client, const struct src_port_info& sp,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
-
-extern absl::StatusOr<::p4::v1::ReadResponse> GetFdbTunnelTableEntry(
-    ClientInterface& client, const struct mac_learning_info& learn_info,
-    const ::p4::config::v1::P4Info& p4info, bool adding = false);
-
-extern absl::StatusOr<::p4::v1::ReadResponse> GetFdbVlanTableEntry(
-    ClientInterface& client, const struct mac_learning_info& learn_info,
-    const ::p4::config::v1::P4Info& p4info, bool adding = false);
-
-extern absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV4TableEntry(
-    ClientInterface& client, const struct mac_learning_info& learn_info,
-    const ::p4::config::v1::P4Info& p4info);
-
-extern absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV6TableEntry(
-    ClientInterface& client, const struct mac_learning_info& learn_info,
-    const ::p4::config::v1::P4Info& p4info);
-
-extern absl::StatusOr<::p4::v1::ReadResponse> GetVmDstTableEntry(
-    ClientInterface& client, const struct ip_mac_map_info& ip_info,
-    const ::p4::config::v1::P4Info& p4info);
-
-extern absl::StatusOr<::p4::v1::ReadResponse> GetVmSrcTableEntry(
-    ClientInterface& client, struct ip_mac_map_info ip_info,
-    const ::p4::config::v1::P4Info& p4info);
 
 #endif  // ES2K_TARGET
 

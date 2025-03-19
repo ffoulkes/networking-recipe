@@ -505,7 +505,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetVmDstTableEntry(
   return client.sendReadRequest(read_request);
 }
 
-// called-by: DoConfigSrcPortEntry, ConfigFdbUpdateSrcPort
+// called-by: DoConfigSrcPortEntry, UpdateFdbSrcPortInfo
 absl::StatusOr<::p4::v1::ReadResponse> GetTxAccVsiTableEntry(
     ClientInterface& client, uint32_t sp,
     const ::p4::config::v1::P4Info& p4info) {
@@ -651,9 +651,9 @@ absl::Status WriteSrcIpMacMapTableEntry(ClientInterface& client,
 // update learn_info accordingly.
 //
 // called-by: DoConfigFdbEntry (es2k)
-void ConfigFdbUpdateTunnelInfo(ClientInterface& client,
-                               struct mac_learning_info& learn_info,
-                               const ::p4::config::v1::P4Info& p4info) {
+void UpdateFdbTunnelInfo(ClientInterface& client,
+                         struct mac_learning_info& learn_info,
+                         const ::p4::config::v1::P4Info& p4info) {
   // Matching entry in IPv4 tunnel table?
   auto status_or_read_response =
       GetL2ToTunnelV4TableEntry(client, learn_info, p4info);
@@ -676,9 +676,9 @@ void ConfigFdbUpdateTunnelInfo(ClientInterface& client,
 }
 
 // called-by: DoConfigFdbEntry (es2k)
-absl::Status ConfigFdbUpdateSrcPort(ClientInterface& client,
-                                    struct mac_learning_info& learn_info,
-                                    const ::p4::config::v1::P4Info& p4info) {
+absl::Status UpdateFdbSrcPortInfo(ClientInterface& client,
+                                  struct mac_learning_info& learn_info,
+                                  const ::p4::config::v1::P4Info& p4info) {
   auto response_or_status =
       GetTxAccVsiTableEntry(client, learn_info.src_port, p4info);
   if (!response_or_status.ok()) {
@@ -756,7 +756,7 @@ absl::Status ConfigFdbVlanEntry(ClientInterface& client,
     // Ignores status (why?)
     (void)WriteFdbRxVlanTableEntry(client, learn_info, p4info, insert_entry);
 
-    status = ConfigFdbUpdateSrcPort(client, learn_info, p4info);
+    status = UpdateFdbSrcPortInfo(client, learn_info, p4info);
     if (!status.ok()) return status;
   }
 
@@ -787,7 +787,7 @@ absl::Status ConfigFdbEntry(ClientInterface& client,
                             bool insert_entry) {
   if (!insert_entry) {
     // updates learn_info
-    ConfigFdbUpdateTunnelInfo(client, learn_info, p4info);
+    UpdateFdbTunnelInfo(client, learn_info, p4info);
   }
 
   if (learn_info.is_tunnel) {
