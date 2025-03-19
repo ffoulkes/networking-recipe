@@ -22,7 +22,9 @@ using ::testing::Return;
 
 namespace ovsp4rt {
 
-constexpr int SRC_PORT = 72;
+constexpr uint32_t PORT8 = 72;
+constexpr uint32_t PORT16 = 0xBED;
+constexpr uint32_t PORT32 = 0xACED;
 
 class UpdateFdbSrcPortInfoTest : public BasicTest {
  protected:
@@ -37,7 +39,8 @@ class UpdateFdbSrcPortInfoTest : public BasicTest {
     fdb_info.is_tunnel = true;
   }
 
-  static absl::StatusOr<::p4::v1::ReadResponse> VsiLookupResponse() {
+  static absl::StatusOr<::p4::v1::ReadResponse> VsiLookupResponse(
+      const uint8_t port[4]) {
     constexpr int TABLE_ID = 42508227;   // tx_acc_vsi
     constexpr int ACTION_ID = 31624713;  // l2_fwd_and_bypass_bridge
     constexpr int PARAM_ID = 1;          // port
@@ -55,9 +58,26 @@ class UpdateFdbSrcPortInfoTest : public BasicTest {
 
     auto param = action->add_params();
     param->set_param_id(PARAM_ID);
-    param->set_value(EncodeByteValue(4, 0, 0, 0, SRC_PORT));
+    param->set_value(EncodeByteValue(4, port[0], port[1], port[2], port[3]));
 
     return response;
+  }
+
+  static absl::StatusOr<::p4::v1::ReadResponse> Port8() {
+    constexpr uint8_t src_port[4] = {0, 0, 0, PORT8};
+    return VsiLookupResponse(src_port);
+  }
+
+  static absl::StatusOr<::p4::v1::ReadResponse> Port16() {
+    constexpr uint8_t src_port[4] = {0, 0, (PORT16 >> 8) & 0xff, PORT16 & 0xff};
+    return VsiLookupResponse(src_port);
+  }
+
+  static absl::StatusOr<::p4::v1::ReadResponse> Port32() {
+    constexpr uint8_t src_port[4] = {(PORT32 >> 24) & 0xff,
+                                     (PORT32 >> 16) & 0xff,
+                                     (PORT32 >> 8) & 0xff, PORT32 & 0xff};
+    return VsiLookupResponse(src_port);
   }
 };
 
@@ -84,9 +104,9 @@ TEST_F(UpdateFdbSrcPortInfoTest, entryNotFoundInTable) {
 }
 
 /**
- * UpdateFdbSrcPortInfo success path.
+ * UpdateFdbSrcPortInfo success (8-bit port number).
  */
-TEST_F(UpdateFdbSrcPortInfoTest, entryFoundInTable) {
+TEST_F(UpdateFdbSrcPortInfoTest, entryFound8Bits) {
   struct mac_learning_info learn_info = {0};
   InitLearnInfo(learn_info);
 
@@ -94,13 +114,50 @@ TEST_F(UpdateFdbSrcPortInfoTest, entryFoundInTable) {
   InitP4Info(&p4info);
 
   TestClientMock client;
-  EXPECT_CALL(client, sendReadRequest)
-      .WillOnce(InvokeWithoutArgs(VsiLookupResponse));
+  EXPECT_CALL(client, sendReadRequest).WillOnce(InvokeWithoutArgs(Port8));
 
   auto status = UpdateFdbSrcPortInfo(client, learn_info, p4info);
 
   ASSERT_TRUE(status.ok()) << status;
-  ASSERT_EQ(learn_info.src_port, SRC_PORT);
+  ASSERT_EQ(learn_info.src_port, PORT8);
+}
+
+/**
+ * UpdateFdbSrcPortInfo success (16-bit port number).
+ */
+TEST_F(UpdateFdbSrcPortInfoTest, entryFound16Bits) {
+  struct mac_learning_info learn_info = {0};
+  InitLearnInfo(learn_info);
+
+  ::p4::config::v1::P4Info p4info;
+  InitP4Info(&p4info);
+
+  TestClientMock client;
+  EXPECT_CALL(client, sendReadRequest).WillOnce(InvokeWithoutArgs(Port16));
+
+  auto status = UpdateFdbSrcPortInfo(client, learn_info, p4info);
+
+  ASSERT_TRUE(status.ok()) << status;
+  ASSERT_EQ(learn_info.src_port, PORT16);
+}
+
+/**
+ * UpdateFdbSrcPortInfo success (32-bit port number).
+ */
+TEST_F(UpdateFdbSrcPortInfoTest, entryFound32Bits) {
+  struct mac_learning_info learn_info = {0};
+  InitLearnInfo(learn_info);
+
+  ::p4::config::v1::P4Info p4info;
+  InitP4Info(&p4info);
+
+  TestClientMock client;
+  EXPECT_CALL(client, sendReadRequest).WillOnce(InvokeWithoutArgs(Port32));
+
+  auto status = UpdateFdbSrcPortInfo(client, learn_info, p4info);
+
+  ASSERT_TRUE(status.ok()) << status;
+  ASSERT_EQ(learn_info.src_port, PORT32);
 }
 
 }  // namespace ovsp4rt
