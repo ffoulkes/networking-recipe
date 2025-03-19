@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for ConfigFdbUpdateSrcPort() [ES2K]
+// Unit test for UpdateFdbSrcPortInfo() [ES2K]
 
 #include <absl/status/status.h>
 
@@ -24,10 +24,10 @@ namespace ovsp4rt {
 
 constexpr int SRC_PORT = 72;
 
-class Es2kUpdateSrcPortTest : public BasicTest {
+class UpdateFdbSrcPortInfoTest : public BasicTest {
  protected:
-  Es2kUpdateSrcPortTest() {}
-  virtual ~Es2kUpdateSrcPortTest() = default;
+  UpdateFdbSrcPortInfoTest() {}
+  virtual ~UpdateFdbSrcPortInfoTest() = default;
 
   void InitLearnInfo(struct mac_learning_info& fdb_info) {
     constexpr uint8_t MAC_ADDR[] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66};
@@ -62,9 +62,9 @@ class Es2kUpdateSrcPortTest : public BasicTest {
 };
 
 /**
- * GetTxAccVsiTableEntry failure path.
+ * UpdateFdbSrcPortInfo failure path.
  */
-TEST_F(Es2kUpdateSrcPortTest, getTxAccVsiEntryFailure) {
+TEST_F(UpdateFdbSrcPortInfoTest, entryNotFoundInTable) {
   constexpr char VSI_LOOKUP_FAILED[] = "Not found in VSI table";
 
   struct mac_learning_info learn_info = {0};
@@ -77,16 +77,16 @@ TEST_F(Es2kUpdateSrcPortTest, getTxAccVsiEntryFailure) {
   EXPECT_CALL(client, sendReadRequest)
       .WillOnce(Return(absl::NotFoundError(VSI_LOOKUP_FAILED)));
 
-  auto status = ConfigFdbUpdateSrcPort(client, learn_info, p4info);
+  auto status = UpdateFdbSrcPortInfo(client, learn_info, p4info);
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsNotFound(status) && status.message() == VSI_LOOKUP_FAILED);
 }
 
 /**
- * GetTxAccVsiTableEntry success path.
+ * UpdateFdbSrcPortInfo success path.
  */
-TEST_F(Es2kUpdateSrcPortTest, getTxAccVsiEntrySuccess) {
+TEST_F(UpdateFdbSrcPortInfoTest, entryFoundInTable) {
   struct mac_learning_info learn_info = {0};
   InitLearnInfo(learn_info);
 
@@ -97,7 +97,7 @@ TEST_F(Es2kUpdateSrcPortTest, getTxAccVsiEntrySuccess) {
   EXPECT_CALL(client, sendReadRequest)
       .WillOnce(InvokeWithoutArgs(VsiLookupResponse));
 
-  auto status = ConfigFdbUpdateSrcPort(client, learn_info, p4info);
+  auto status = UpdateFdbSrcPortInfo(client, learn_info, p4info);
 
   ASSERT_TRUE(status.ok()) << status;
   ASSERT_EQ(learn_info.src_port, SRC_PORT);

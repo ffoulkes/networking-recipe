@@ -19,8 +19,8 @@ define_basic_test(do_config_tunnel_entry_test)
 define_basic_test(do_config_tunnel_src_port_test)
 define_basic_test(do_config_vlan_entry_test)
 
-define_basic_test(es2k_update_src_port_test)
-define_basic_test(es2k_update_tunnel_info_test)
+define_basic_test(update_fdb_src_port_info_test)
+define_basic_test(update_fdb_tunnel_info_test)
 
 #-----------------------------------------------------------------------
 # mac_learn_info tests
