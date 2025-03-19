@@ -95,7 +95,6 @@ define_es2k_tunnel_test(geneve_encap_v6_vlan_pop_test)
 define_es2k_test(src_ip_mac_map_table_test)
 define_es2k_test(dst_ip_mac_map_table_test)
 
-define_es2k_test(l2_fwd_tx_prologue_test)
 define_es2k_test(l2_to_v4_tunnel_test)
 define_es2k_test(l2_to_v6_tunnel_test)
 
@@ -119,6 +118,10 @@ define_es2k_tunnel_test(vxlan_encap_v4_table_test)
 define_es2k_tunnel_test(vxlan_encap_v6_table_test)
 define_es2k_tunnel_test(vxlan_encap_v4_vlan_pop_test)
 define_es2k_tunnel_test(vxlan_encap_v6_vlan_pop_test)
+
+if(BUILD_CLIENT)
+  define_es2k_test(l2_fwd_tx_prologue_test)
+endif()
 
 #-----------------------------------------------------------------------
 # client tests

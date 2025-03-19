@@ -14,7 +14,7 @@
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_config_int.h"
 #include "ovsp4rt_do_config_int.h"
-#include "ovsp4rt_private.h"
+#include "ovsp4rt_encoders.h"
 #include "ovsp4rt_util_int.h"
 
 #if defined(DPDK_TARGET)

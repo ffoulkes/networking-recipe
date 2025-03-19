@@ -10,7 +10,7 @@
 #include "base_table_test.h"
 #include "gtest/gtest.h"
 #include "ovsp4rt/ovs-p4rt.h"
-#include "ovsp4rt_private.h"
+#include "ovsp4rt_encoders.h"
 #include "p4/config/v1/p4info.pb.h"
 
 namespace ovsp4rt {
