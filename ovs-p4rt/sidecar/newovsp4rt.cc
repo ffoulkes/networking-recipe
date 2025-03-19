@@ -697,8 +697,8 @@ absl::Status UpdateFdbSrcPortInfo(ClientInterface& client,
       if (param_id == param.param_id()) {
         const std::string& s1 = param.value();
         std::string s2 = s1;
-        for (int param_bytes = 0; param_bytes < 4; param_bytes++) {
-          host_sp = host_sp << 8 | int(s2[param_bytes]);
+        for (int i = 0; i < 4; i++) {
+          host_sp = (host_sp << 8) | static_cast<uint32_t>(s2[i] & 0xff);
         }
         break;
       }
@@ -906,8 +906,8 @@ absl::Status ConfigSrcPortEntry(ClientInterface& client,
       if (param_id == param.param_id()) {
         const std::string& s1 = param.value();
         std::string s2 = s1;
-        for (int param_bytes = 0; param_bytes < 4; param_bytes++) {
-          host_sp = host_sp << 8 | int(s2[param_bytes]);
+        for (int i = 0; i < 4; i++) {
+          host_sp = (host_sp << 8) | static_cast<uint32_t>(s2[i] & 0xff);
         }
         break;
       }
