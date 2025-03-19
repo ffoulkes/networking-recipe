@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for GetFdbVlanTableEntry().
+// Unit test for ReadFdbVlanTableEntry().
 
 // Core functionality is handled by EncodeFdbTxVlanTableEntry(),
 // which is tested separately. This is a test of the non-core
@@ -26,10 +26,10 @@ using ::testing::Return;
 
 namespace ovsp4rt {
 
-class GetFdbVlanEntryTest : public BaseMacLearnInfoTest {
+class ReadFdbVlanEntryTest : public BaseMacLearnInfoTest {
  public:
-  GetFdbVlanEntryTest() {}
-  virtual ~GetFdbVlanEntryTest() = default;
+  ReadFdbVlanEntryTest() {}
+  virtual ~ReadFdbVlanEntryTest() = default;
 
   static void InitFdbInfo(struct mac_learning_info& fdb_info) {
     constexpr uint8_t MAC_ADDR[] = {0xde, 0xad, 0xbe, 0xef, 0x00, 0xe};
@@ -54,7 +54,7 @@ class GetFdbVlanEntryTest : public BaseMacLearnInfoTest {
   }
 };
 
-TEST_F(GetFdbVlanEntryTest, getFdbVlanTableEntryFailure) {
+TEST_F(ReadFdbVlanEntryTest, readFdbVlanEntryFailure) {
   constexpr char REQUEST_FAILED[] = "sendReadRequest failed";
   struct mac_learning_info learn_info = {0};
   InitFdbInfo(learn_info);
@@ -67,14 +67,14 @@ TEST_F(GetFdbVlanEntryTest, getFdbVlanTableEntryFailure) {
   EXPECT_CALL(client, sendReadRequest)
       .WillOnce(Return(absl::NotFoundError(REQUEST_FAILED)));
 
-  auto response = GetFdbVlanTableEntry(client, learn_info, p4info);
+  auto response = ReadFdbVlanTableEntry(client, learn_info, p4info);
   auto status = response.status();
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsNotFound(status) && status.message() == REQUEST_FAILED);
 }
 
-TEST_F(GetFdbVlanEntryTest, getFdbVlanTableEntrySuccess) {
+TEST_F(ReadFdbVlanEntryTest, readFdbVlanEntrySuccess) {
   struct mac_learning_info learn_info = {0};
   InitFdbInfo(learn_info);
   InitTunnelInfo(learn_info);
@@ -86,7 +86,7 @@ TEST_F(GetFdbVlanEntryTest, getFdbVlanTableEntrySuccess) {
   EXPECT_CALL(client, sendReadRequest)
       .WillOnce(InvokeWithoutArgs(GoodReadResponse));
 
-  auto response = GetFdbVlanTableEntry(client, learn_info, p4info);
+  auto response = ReadFdbVlanTableEntry(client, learn_info, p4info);
 
   ASSERT_TRUE(response.ok()) << response.status();
 }
