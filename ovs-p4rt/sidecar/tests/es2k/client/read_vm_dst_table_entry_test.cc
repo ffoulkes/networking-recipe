@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for GetVmDstTableEntry().
+// Unit test for ReadVmDstTableEntry().
 
 // Core functionality is handled by EncodeDstIpMacMapTableEntry(),
 // which is tested separately. This is a test of the non-core
@@ -26,10 +26,10 @@ using ::testing::Return;
 
 namespace ovsp4rt {
 
-class GetVmDstTableEntryTest : public BaseMacMapInfoTest {
+class ReadVmDstTableEntryTest : public BaseMacMapInfoTest {
  public:
-  GetVmDstTableEntryTest() {}
-  virtual ~GetVmDstTableEntryTest() = default;
+  ReadVmDstTableEntryTest() {}
+  virtual ~ReadVmDstTableEntryTest() = default;
 
   static absl::StatusOr<::p4::v1::ReadResponse> GoodReadResponse() {
     ::p4::v1::ReadResponse response;
@@ -37,7 +37,7 @@ class GetVmDstTableEntryTest : public BaseMacMapInfoTest {
   }
 };
 
-TEST_F(GetVmDstTableEntryTest, getVmDstTableEntryFailure) {
+TEST_F(ReadVmDstTableEntryTest, readVmDstEntryFailure) {
   constexpr char REQUEST_FAILED[] = "sendReadRequest failed";
 
   struct ip_mac_map_info map_info = {0};
@@ -50,14 +50,14 @@ TEST_F(GetVmDstTableEntryTest, getVmDstTableEntryFailure) {
   EXPECT_CALL(client, sendReadRequest)
       .WillOnce(Return(absl::NotFoundError(REQUEST_FAILED)));
 
-  auto response = GetVmDstTableEntry(client, map_info, p4info);
+  auto response = ReadVmDstTableEntry(client, map_info, p4info);
   auto status = response.status();
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsNotFound(status) && status.message() == REQUEST_FAILED);
 }
 
-TEST_F(GetVmDstTableEntryTest, getVmDstTableEntrySuccess) {
+TEST_F(ReadVmDstTableEntryTest, readVmDstEntrySuccess) {
   struct ip_mac_map_info map_info = {0};
   InitIpv4MapInfo(map_info);
 
@@ -68,7 +68,7 @@ TEST_F(GetVmDstTableEntryTest, getVmDstTableEntrySuccess) {
   EXPECT_CALL(client, sendReadRequest)
       .WillOnce(InvokeWithoutArgs(GoodReadResponse));
 
-  auto response = GetVmDstTableEntry(client, map_info, p4info);
+  auto response = ReadVmDstTableEntry(client, map_info, p4info);
 
   ASSERT_TRUE(response.ok()) << response.status();
 }

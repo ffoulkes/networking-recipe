@@ -2030,7 +2030,7 @@ void EncodeTxAccVsiTableEntry(p4::v1::TableEntry* table_entry, uint32_t sp,
 #endif
 }
 
-absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV4TableEntry(
+absl::StatusOr<::p4::v1::ReadResponse> ReadL2ToTunnelV4TableEntry(
     ovsp4rt::OvsP4rtSession* session,
     const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info) {
@@ -2045,7 +2045,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV4TableEntry(
   return ovsp4rt::SendReadRequest(session, read_request);
 }
 
-absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV6TableEntry(
+absl::StatusOr<::p4::v1::ReadResponse> ReadL2ToTunnelV6TableEntry(
     ovsp4rt::OvsP4rtSession* session,
     const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info) {
@@ -2060,7 +2060,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV6TableEntry(
   return ovsp4rt::SendReadRequest(session, read_request);
 }
 
-absl::StatusOr<::p4::v1::ReadResponse> GetFdbTunnelTableEntry(
+absl::StatusOr<::p4::v1::ReadResponse> ReadFdbTunnelTableEntry(
     ovsp4rt::OvsP4rtSession* session,
     const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool adding = false) {
@@ -2095,7 +2095,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetFdbTunnelTableEntry(
   return status;
 }
 
-absl::StatusOr<::p4::v1::ReadResponse> GetFdbVlanTableEntry(
+absl::StatusOr<::p4::v1::ReadResponse> ReadFdbVlanTableEntry(
     ovsp4rt::OvsP4rtSession* session,
     const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool adding = false) {
@@ -2115,7 +2115,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetFdbVlanTableEntry(
   return status;
 }
 
-absl::StatusOr<::p4::v1::ReadResponse> GetVmSrcTableEntry(
+absl::StatusOr<::p4::v1::ReadResponse> ReadVmSrcTableEntry(
     ovsp4rt::OvsP4rtSession* session, struct ip_mac_map_info ip_info,
     const ::p4::config::v1::P4Info& p4info) {
   ::p4::v1::ReadRequest read_request;
@@ -2129,7 +2129,7 @@ absl::StatusOr<::p4::v1::ReadResponse> GetVmSrcTableEntry(
   return ovsp4rt::SendReadRequest(session, read_request);
 }
 
-absl::StatusOr<::p4::v1::ReadResponse> GetVmDstTableEntry(
+absl::StatusOr<::p4::v1::ReadResponse> ReadVmDstTableEntry(
     ovsp4rt::OvsP4rtSession* session, struct ip_mac_map_info ip_info,
     const ::p4::config::v1::P4Info& p4info) {
   ::p4::v1::ReadRequest read_request;
@@ -2332,7 +2332,7 @@ void ovsp4rt_config_fdb_entry(struct mac_learning_info learn_info,
 
   if (!insert_entry) {
     auto status_or_read_response =
-        GetL2ToTunnelV4TableEntry(session.get(), learn_info, p4info);
+        ReadL2ToTunnelV4TableEntry(session.get(), learn_info, p4info);
     if (status_or_read_response.ok()) {
       learn_info.is_tunnel = true;
     }
@@ -2342,7 +2342,7 @@ void ovsp4rt_config_fdb_entry(struct mac_learning_info learn_info,
      */
     if (!learn_info.is_tunnel) {
       status_or_read_response =
-          GetL2ToTunnelV6TableEntry(session.get(), learn_info, p4info);
+          ReadL2ToTunnelV6TableEntry(session.get(), learn_info, p4info);
       if (status_or_read_response.ok()) {
         learn_info.is_tunnel = true;
         learn_info.tnl_info.local_ip.family = AF_INET6;
@@ -2354,7 +2354,7 @@ void ovsp4rt_config_fdb_entry(struct mac_learning_info learn_info,
   if (learn_info.is_tunnel) {
     if (insert_entry) {
       auto status_or_read_response =
-          GetFdbTunnelTableEntry(session.get(), learn_info, p4info, true);
+          ReadFdbTunnelTableEntry(session.get(), learn_info, p4info, true);
       if (status_or_read_response.ok()) {
         // Return if entry already exists.
         return;
@@ -2381,7 +2381,7 @@ void ovsp4rt_config_fdb_entry(struct mac_learning_info learn_info,
   } else {
     if (insert_entry) {
       auto status_or_read_response =
-          GetFdbVlanTableEntry(session.get(), learn_info, p4info, true);
+          ReadFdbVlanTableEntry(session.get(), learn_info, p4info, true);
       if (status_or_read_response.ok()) {
         // Return if entry already exists.
         return;
@@ -2735,7 +2735,7 @@ void ovsp4rt_config_ip_mac_map_entry(struct ip_mac_map_info ip_info,
 
   if (insert_entry) {
     auto status_or_read_response =
-        GetVmSrcTableEntry(session.get(), ip_info, p4info);
+        ReadVmSrcTableEntry(session.get(), ip_info, p4info);
     if (status_or_read_response.ok()) {
       goto try_dstip;
     }
@@ -2752,7 +2752,7 @@ void ovsp4rt_config_ip_mac_map_entry(struct ip_mac_map_info ip_info,
 try_dstip:
   if (insert_entry) {
     auto status_or_read_response =
-        GetVmDstTableEntry(session.get(), ip_info, p4info);
+        ReadVmDstTableEntry(session.get(), ip_info, p4info);
     if (status_or_read_response.ok()) {
       return;
     }

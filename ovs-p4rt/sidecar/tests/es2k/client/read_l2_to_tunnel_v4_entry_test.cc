@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for GetL2ToTunnelV4TableEntry().
+// Unit test for ReadL2ToTunnelV4TableEntry().
 
 // Core functionality is handled by Es2kPrepareTunnelTermTableEntry(),
 // which is tested separately. This is a test of the non-core
@@ -16,7 +16,7 @@
 #include <gmock/gmock.h>
 // clang-format on
 
-#include "base_mac_learn_info_test.h"
+#include "basic_test.h"
 #include "client/ovsp4rt_test_client_mock.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_config_int.h"
@@ -26,10 +26,10 @@ using ::testing::Return;
 
 namespace ovsp4rt {
 
-class GetFdbTunnelEntryTest : public BaseMacLearnInfoTest {
+class ReadL2ToTunnelV4EntryTest : public BasicTest {
  public:
-  GetFdbTunnelEntryTest() {}
-  virtual ~GetFdbTunnelEntryTest() = default;
+  ReadL2ToTunnelV4EntryTest() {}
+  virtual ~ReadL2ToTunnelV4EntryTest() = default;
 
   static void InitFdbInfo(struct mac_learning_info& fdb_info) {
     constexpr uint8_t MAC_ADDR[] = {0xde, 0xad, 0xbe, 0xef, 0x00, 0xe};
@@ -54,7 +54,7 @@ class GetFdbTunnelEntryTest : public BaseMacLearnInfoTest {
   }
 };
 
-TEST_F(GetFdbTunnelEntryTest, getFdbTableEntryFailure) {
+TEST_F(ReadL2ToTunnelV4EntryTest, readL2ToTunnelV4EntryFailure) {
   constexpr char REQUEST_FAILED[] = "sendReadRequest failed";
   struct mac_learning_info learn_info = {0};
   InitFdbInfo(learn_info);
@@ -67,14 +67,14 @@ TEST_F(GetFdbTunnelEntryTest, getFdbTableEntryFailure) {
   EXPECT_CALL(client, sendReadRequest)
       .WillOnce(Return(absl::NotFoundError(REQUEST_FAILED)));
 
-  auto response = GetFdbTunnelTableEntry(client, learn_info, p4info);
+  auto response = ReadL2ToTunnelV4TableEntry(client, learn_info, p4info);
   auto status = response.status();
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsNotFound(status) && status.message() == REQUEST_FAILED);
 }
 
-TEST_F(GetFdbTunnelEntryTest, getFdbTableEntrySuccess) {
+TEST_F(ReadL2ToTunnelV4EntryTest, readL2ToTunnelV4EntrySuccess) {
   struct mac_learning_info learn_info = {0};
   InitFdbInfo(learn_info);
   InitTunnelInfo(learn_info);
@@ -86,7 +86,7 @@ TEST_F(GetFdbTunnelEntryTest, getFdbTableEntrySuccess) {
   EXPECT_CALL(client, sendReadRequest)
       .WillOnce(InvokeWithoutArgs(GoodReadResponse));
 
-  auto response = GetFdbTunnelTableEntry(client, learn_info, p4info);
+  auto response = ReadL2ToTunnelV4TableEntry(client, learn_info, p4info);
 
   ASSERT_TRUE(response.ok()) << response.status();
 }

@@ -4,7 +4,7 @@
 #-----------------------------------------------------------------------
 # basic tests
 #-----------------------------------------------------------------------
-define_basic_test(get_l2_to_tunnel_v4_entry_test)
+define_basic_test(read_l2_to_tunnel_v4_entry_test)
 define_basic_test(write_fdb_smac_table_entry_test)
 define_basic_test(write_tunnel_src_port_entry_test)
 define_basic_test(write_vlan_pop_table_entry_test)
@@ -28,16 +28,16 @@ define_basic_test(update_fdb_tunnel_info_test)
 define_mac_learn_info_test(es2k_prep_fdb_table_v4_tunnel_test)
 define_mac_learn_info_test(es2k_prep_fdb_tunnel_table_test)
 define_mac_learn_info_test(es2k_prep_l2_tunnel_table_entry)
-define_mac_learn_info_test(get_fdb_tunnel_entry_test)
-define_mac_learn_info_test(get_fdb_vlan_entry_test)
-define_mac_learn_info_test(get_l2_to_tunnel_v6_entry_test)
+define_mac_learn_info_test(read_fdb_tunnel_entry_test)
+define_mac_learn_info_test(read_fdb_vlan_entry_test)
+define_mac_learn_info_test(read_l2_to_tunnel_v6_entry_test)
 define_mac_learn_info_test(write_l2_tunnel_table_entry_test)
 
 #-----------------------------------------------------------------------
 # mac_map_info tests
 #-----------------------------------------------------------------------
-define_mac_map_info_test(get_vm_dst_table_entry_test)
-define_mac_map_info_test(get_vm_src_table_entry_test)
+define_mac_map_info_test(read_vm_dst_table_entry_test)
+define_mac_map_info_test(read_vm_src_table_entry_test)
 define_mac_map_info_test(write_dst_ip_mac_map_entry_test)
 define_mac_map_info_test(write_src_ip_mac_map_entry_test)
 

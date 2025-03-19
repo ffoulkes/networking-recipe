@@ -15,27 +15,27 @@
 
 namespace ovsp4rt {
 
-extern absl::StatusOr<::p4::v1::ReadResponse> GetFdbTunnelTableEntry(
+extern absl::StatusOr<::p4::v1::ReadResponse> ReadFdbTunnelTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool adding = false);
 
-extern absl::StatusOr<::p4::v1::ReadResponse> GetFdbVlanTableEntry(
+extern absl::StatusOr<::p4::v1::ReadResponse> ReadFdbVlanTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool adding = false);
 
-extern absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV4TableEntry(
+extern absl::StatusOr<::p4::v1::ReadResponse> ReadL2ToTunnelV4TableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info);
 
-extern absl::StatusOr<::p4::v1::ReadResponse> GetL2ToTunnelV6TableEntry(
+extern absl::StatusOr<::p4::v1::ReadResponse> ReadL2ToTunnelV6TableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info);
 
-extern absl::StatusOr<::p4::v1::ReadResponse> GetVmDstTableEntry(
+extern absl::StatusOr<::p4::v1::ReadResponse> ReadVmDstTableEntry(
     ClientInterface& client, const struct ip_mac_map_info& ip_info,
     const ::p4::config::v1::P4Info& p4info);
 
-extern absl::StatusOr<::p4::v1::ReadResponse> GetVmSrcTableEntry(
+extern absl::StatusOr<::p4::v1::ReadResponse> ReadVmSrcTableEntry(
     ClientInterface& client, struct ip_mac_map_info ip_info,
     const ::p4::config::v1::P4Info& p4info);
 

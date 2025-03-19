@@ -1,9 +1,9 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for GetVmSrcTableEntry().
+// Unit test for ReadL2ToTunnelV6TableEntry().
 
-// Core functionality is handled by EncodeSrcIpMacMapTableEntry(),
+// Core functionality is handled by EncodeL2ToTunnelV6(),
 // which is tested separately. This is a test of the non-core
 // functionality.
 
@@ -16,7 +16,7 @@
 #include <gmock/gmock.h>
 // clang-format on
 
-#include "base_mac_map_info_test.h"
+#include "base_mac_learn_info_test.h"
 #include "client/ovsp4rt_test_client_mock.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_config_int.h"
@@ -26,10 +26,15 @@ using ::testing::Return;
 
 namespace ovsp4rt {
 
-class GetVmSrcTableEntryTest : public BaseMacMapInfoTest {
+class ReadL2ToTunnelV6EntryTest : public BaseMacLearnInfoTest {
  public:
-  GetVmSrcTableEntryTest() {}
-  virtual ~GetVmSrcTableEntryTest() = default;
+  ReadL2ToTunnelV6EntryTest() {}
+  virtual ~ReadL2ToTunnelV6EntryTest() = default;
+
+  static void InitFdbInfo(struct mac_learning_info& fdb_info) {
+    constexpr uint8_t MAC_ADDR[] = {0xde, 0xad, 0xbe, 0xef, 0x00, 0xe};
+    memcpy(fdb_info.mac_addr, MAC_ADDR, sizeof(fdb_info.mac_addr));
+  }
 
   static absl::StatusOr<::p4::v1::ReadResponse> GoodReadResponse() {
     ::p4::v1::ReadResponse response;
@@ -37,11 +42,11 @@ class GetVmSrcTableEntryTest : public BaseMacMapInfoTest {
   }
 };
 
-TEST_F(GetVmSrcTableEntryTest, GetVmSrcTableEntryFailure) {
+TEST_F(ReadL2ToTunnelV6EntryTest, readL2ToTunnelV6EntryFailure) {
   constexpr char REQUEST_FAILED[] = "sendReadRequest failed";
-
-  struct ip_mac_map_info map_info = {0};
-  InitIpv4MapInfo(map_info);
+  struct mac_learning_info learn_info = {0};
+  InitFdbInfo(learn_info);
+  InitV6TunnelInfo(learn_info);
 
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
@@ -50,16 +55,17 @@ TEST_F(GetVmSrcTableEntryTest, GetVmSrcTableEntryFailure) {
   EXPECT_CALL(client, sendReadRequest)
       .WillOnce(Return(absl::NotFoundError(REQUEST_FAILED)));
 
-  auto response = GetVmSrcTableEntry(client, map_info, p4info);
+  auto response = ReadL2ToTunnelV6TableEntry(client, learn_info, p4info);
   auto status = response.status();
 
   ASSERT_FALSE(status.ok());
   ASSERT_TRUE(IsNotFound(status) && status.message() == REQUEST_FAILED);
 }
 
-TEST_F(GetVmSrcTableEntryTest, GetVmSrcTableEntrySuccess) {
-  struct ip_mac_map_info map_info = {0};
-  InitIpv4MapInfo(map_info);
+TEST_F(ReadL2ToTunnelV6EntryTest, readL2ToTunnelV6EntrySuccess) {
+  struct mac_learning_info learn_info = {0};
+  InitFdbInfo(learn_info);
+  InitV6TunnelInfo(learn_info);
 
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
@@ -68,7 +74,7 @@ TEST_F(GetVmSrcTableEntryTest, GetVmSrcTableEntrySuccess) {
   EXPECT_CALL(client, sendReadRequest)
       .WillOnce(InvokeWithoutArgs(GoodReadResponse));
 
-  auto response = GetVmSrcTableEntry(client, map_info, p4info);
+  auto response = ReadL2ToTunnelV6TableEntry(client, learn_info, p4info);
 
   ASSERT_TRUE(response.ok()) << response.status();
 }
