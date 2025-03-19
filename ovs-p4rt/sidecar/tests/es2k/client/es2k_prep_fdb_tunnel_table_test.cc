@@ -52,9 +52,13 @@ class Es2kPrepFdbTunnelTableTest : public BaseMacLearnInfoTest {
     auto action = table_action.action();
     EXPECT_EQ(action.action_id(), expected_action_id);
   }
+
+  static void CheckRemoveAction(const ::p4::v1::TableEntry& table_entry) {
+    EXPECT_FALSE(table_entry.has_action());
+  }
 };
 
-TEST_F(Es2kPrepFdbTunnelTableTest, configV4VxlanTunnelEntry) {
+TEST_F(Es2kPrepFdbTunnelTableTest, insertV4VxlanTunnelEntry) {
   ::p4::v1::TableEntry table_entry;
   DiagDetail detail;
 
@@ -68,11 +72,10 @@ TEST_F(Es2kPrepFdbTunnelTableTest, configV4VxlanTunnelEntry) {
   Es2kPrepareFdbTunnelTableEntry(&table_entry, learn_info, p4info, INSERT_ENTRY,
                                  detail);
 
-  // ASSERT
   CheckActionId(table_entry, p4info, OVS_TUNNEL_VXLAN);
 }
 
-TEST_F(Es2kPrepFdbTunnelTableTest, configV4GeneveTunnelEntry) {
+TEST_F(Es2kPrepFdbTunnelTableTest, insertV4GeneveTunnelEntry) {
   ::p4::v1::TableEntry table_entry;
   DiagDetail detail;
 
@@ -87,6 +90,22 @@ TEST_F(Es2kPrepFdbTunnelTableTest, configV4GeneveTunnelEntry) {
                                  detail);
 
   CheckActionId(table_entry, p4info, OVS_TUNNEL_GENEVE);
+}
+
+TEST_F(Es2kPrepFdbTunnelTableTest, removeV4TunnelEntry) {
+  ::p4::v1::TableEntry table_entry;
+  DiagDetail detail;
+
+  struct mac_learning_info learn_info = {0};
+  InitTunnelLearnInfo(learn_info, OVS_TUNNEL_UNKNOWN);
+
+  ::p4::config::v1::P4Info p4info;
+  InitP4Info(&p4info);
+
+  Es2kPrepareFdbTunnelTableEntry(&table_entry, learn_info, p4info, REMOVE_ENTRY,
+                                 detail);
+
+  CheckRemoveAction(table_entry);
 }
 
 }  // namespace ovsp4rt

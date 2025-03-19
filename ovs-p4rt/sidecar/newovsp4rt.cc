@@ -143,13 +143,9 @@ void Es2kPrepareFdbTunnelTableEntry(p4::v1::TableEntry* table_entry,
   } else if (learn_info.tnl_info.tunnel_type == OVS_TUNNEL_GENEVE) {
     EncodeFdbTableEntryforV4GeneveTunnel(table_entry, learn_info, p4info,
                                          insert_entry, detail);
-  } else {
-    if (!insert_entry) {
-      // Tunnel type doesn't matter for delete. So calling one of the functions
-      // to prepare the entry
-      EncodeFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info,
-                                          insert_entry, detail);
-    }
+  } else if (!insert_entry) {
+    // Just specify the prologue when deleting an entry.
+    EncodeL2FwdTxTablePrologue(table_entry, learn_info, p4info);
   }
 }
 #endif  // ES2K_TARGET
