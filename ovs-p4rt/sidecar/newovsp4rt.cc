@@ -892,9 +892,6 @@ absl::Status ConfigSrcPortEntry(ClientInterface& client,
   if (!response_or_status.ok()) return response_or_status.status();
 
   ::p4::v1::ReadResponse read_response = std::move(response_or_status).value();
-  std::vector<::p4::v1::TableEntry> table_entries;
-
-  table_entries.reserve(read_response.entities().size());
 
   int param_id =
       GetParamId(p4info, TX_ACC_VSI_TABLE_ACTION_L2_FWD_AND_BYPASS_BRIDGE,
