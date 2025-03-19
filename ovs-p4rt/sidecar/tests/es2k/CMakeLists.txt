@@ -76,7 +76,7 @@ macro(define_es2k_tunnel_test TARGET)
 endmacro(define_es2k_tunnel_test)
 
 #-----------------------------------------------------------------------
-# ES2K PrepareTableEntry unit tests
+# ES2K EncodeTableEntry unit tests
 #-----------------------------------------------------------------------
 define_es2k_test(fdb_rx_vlan_entry_test)
 define_es2k_test(fdb_smac_entry_test)
@@ -95,6 +95,7 @@ define_es2k_tunnel_test(geneve_encap_v6_vlan_pop_test)
 define_es2k_test(src_ip_mac_map_table_test)
 define_es2k_test(dst_ip_mac_map_table_test)
 
+define_es2k_test(l2_fwd_tx_prologue_test)
 define_es2k_test(l2_to_v4_tunnel_test)
 define_es2k_test(l2_to_v6_tunnel_test)
 

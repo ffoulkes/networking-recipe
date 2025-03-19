@@ -147,28 +147,38 @@ void EncodeFdbSmacTableEntry(p4::v1::TableEntry* table_entry,
 }
 #endif  // ES2K_TARGET
 
+void EncodeL2FwdTxTablePrologue(p4::v1::TableEntry* table_entry,
+                                const struct mac_learning_info& learn_info,
+                                const ::p4::config::v1::P4Info& p4info) {
+  table_entry->set_table_id(GetTableId(p4info, L2_FWD_TX_TABLE));
+  {
+    // match-key: dst_mac
+    auto match = table_entry->add_match();
+    match->set_field_id(
+        GetMatchFieldId(p4info, L2_FWD_TX_TABLE, L2_FWD_TX_TABLE_KEY_DST_MAC));
+    std::string mac_addr = CanonicalizeMac(learn_info.mac_addr);
+    match->mutable_exact()->set_value(mac_addr);
+  }
+#if defined(ES2K_TARGET)
+  {
+    // match-key: bridge_id
+    auto match = table_entry->add_match();
+    match->set_field_id(GetMatchFieldId(p4info, L2_FWD_TX_TABLE,
+                                        L2_FWD_TX_TABLE_KEY_BRIDGE_ID));
+    match->mutable_exact()->set_value(EncodeByteValue(1, learn_info.bridge_id));
+  }
+#endif
+}
+
 void EncodeFdbTxVlanTableEntry(p4::v1::TableEntry* table_entry,
                                const struct mac_learning_info& learn_info,
                                const ::p4::config::v1::P4Info& p4info,
                                bool insert_entry, DiagDetail& detail) {
   detail.table_id = LOG_L2_FWD_TX_TABLE;
-  table_entry->set_table_id(GetTableId(p4info, L2_FWD_TX_TABLE));
 
-  auto match = table_entry->add_match();
-  match->set_field_id(
-      GetMatchFieldId(p4info, L2_FWD_TX_TABLE, L2_FWD_TX_TABLE_KEY_DST_MAC));
-
-  std::string mac_addr = CanonicalizeMac(learn_info.mac_addr);
-  match->mutable_exact()->set_value(mac_addr);
+  EncodeL2FwdTxTablePrologue(table_entry, learn_info, p4info);
 
 #if defined(ES2K_TARGET)
-  // Based on p4 program for ES2K, we need to provide a match key Bridge ID
-  auto match1 = table_entry->add_match();
-  match1->set_field_id(
-      GetMatchFieldId(p4info, L2_FWD_TX_TABLE, L2_FWD_TX_TABLE_KEY_BRIDGE_ID));
-
-  match1->mutable_exact()->set_value(EncodeByteValue(1, learn_info.bridge_id));
-
   if (insert_entry) {
     /* Action param configured by user in TX_ACC_VSI_TABLE is used as port_id
      * We call GET api to fetch this value and pass it to FDB programming.
@@ -247,11 +257,9 @@ void EncodeFdbRxVlanTableEntry(p4::v1::TableEntry* table_entry,
   std::string mac_addr = CanonicalizeMac(learn_info.mac_addr);
   match->mutable_exact()->set_value(mac_addr);
 
-  // Based on p4 program for ES2K, we need to provide a match key Bridge ID
   auto match1 = table_entry->add_match();
   match1->set_field_id(
       GetMatchFieldId(p4info, L2_FWD_RX_TABLE, L2_FWD_RX_TABLE_KEY_BRIDGE_ID));
-
   match1->mutable_exact()->set_value(EncodeByteValue(1, learn_info.bridge_id));
 
   if (insert_entry) {
@@ -312,21 +320,8 @@ void EncodeFdbTableEntryforV4VxlanTunnel(
     const ::p4::config::v1::P4Info& p4info, bool insert_entry,
     DiagDetail& detail) {
   detail.table_id = LOG_L2_FWD_TX_TABLE;
-  table_entry->set_table_id(GetTableId(p4info, L2_FWD_TX_TABLE));
 
-  auto match = table_entry->add_match();
-  match->set_field_id(
-      GetMatchFieldId(p4info, L2_FWD_TX_TABLE, L2_FWD_TX_TABLE_KEY_DST_MAC));
-  std::string mac_addr = CanonicalizeMac(learn_info.mac_addr);
-  match->mutable_exact()->set_value(mac_addr);
-
-#if defined(ES2K_TARGET)
-  // Based on p4 program for ES2K, we need to provide a match key Bridge ID
-  auto match1 = table_entry->add_match();
-  match1->set_field_id(
-      GetMatchFieldId(p4info, L2_FWD_TX_TABLE, L2_FWD_TX_TABLE_KEY_BRIDGE_ID));
-  match1->mutable_exact()->set_value(EncodeByteValue(1, learn_info.bridge_id));
-#endif
+  EncodeL2FwdTxTablePrologue(table_entry, learn_info, p4info);
 
 #if defined(DPDK_TARGET)
   if (insert_entry) {
@@ -360,6 +355,7 @@ void EncodeFdbTableEntryforV4VxlanTunnel(
     if (learn_info.tnl_info.local_ip.family == AF_INET &&
         learn_info.tnl_info.remote_ip.family == AF_INET) {
       if (learn_info.vlan_info.port_vlan_mode == P4_PORT_VLAN_NATIVE_UNTAGGED) {
+        // IPv4, untagged vlan
         action->set_action_id(GetActionId(
             p4info, L2_FWD_TX_TABLE_ACTION_POP_VLAN_SET_VXLAN_UNDERLAY_V4));
         {
@@ -370,6 +366,7 @@ void EncodeFdbTableEntryforV4VxlanTunnel(
           param->set_value(EncodeTunnelId(learn_info.tnl_info.vni));
         }
       } else {
+        // IPv4, tagged vlan
         action->set_action_id(
             GetActionId(p4info, L2_FWD_TX_TABLE_ACTION_SET_VXLAN_UNDERLAY_V4));
         {
@@ -383,6 +380,7 @@ void EncodeFdbTableEntryforV4VxlanTunnel(
     } else if (learn_info.tnl_info.local_ip.family == AF_INET6 &&
                learn_info.tnl_info.remote_ip.family == AF_INET6) {
       if (learn_info.vlan_info.port_vlan_mode == P4_PORT_VLAN_NATIVE_UNTAGGED) {
+        // IPv6, untagged vlan
         action->set_action_id(GetActionId(
             p4info, L2_FWD_TX_TABLE_ACTION_POP_VLAN_SET_VXLAN_UNDERLAY_V6));
         {
@@ -393,6 +391,7 @@ void EncodeFdbTableEntryforV4VxlanTunnel(
           param->set_value(EncodeTunnelId(learn_info.tnl_info.vni));
         }
       } else {
+        // IPv6, tagged vlan
         action->set_action_id(
             GetActionId(p4info, L2_FWD_TX_TABLE_ACTION_SET_VXLAN_UNDERLAY_V6));
         {
@@ -418,22 +417,8 @@ void EncodeFdbTableEntryforV4GeneveTunnel(
     const ::p4::config::v1::P4Info& p4info, bool insert_entry,
     DiagDetail& detail) {
   detail.table_id = LOG_L2_FWD_TX_TABLE;
-  table_entry->set_table_id(GetTableId(p4info, L2_FWD_TX_TABLE));
 
-  auto match = table_entry->add_match();
-  match->set_field_id(
-      GetMatchFieldId(p4info, L2_FWD_TX_TABLE, L2_FWD_TX_TABLE_KEY_DST_MAC));
-
-  std::string mac_addr = CanonicalizeMac(learn_info.mac_addr);
-  match->mutable_exact()->set_value(mac_addr);
-
-#if defined(ES2K_TARGET)
-  // Based on p4 program for ES2K, we need to provide a match key Bridge ID
-  auto match1 = table_entry->add_match();
-  match1->set_field_id(
-      GetMatchFieldId(p4info, L2_FWD_TX_TABLE, L2_FWD_TX_TABLE_KEY_BRIDGE_ID));
-  match1->mutable_exact()->set_value(EncodeByteValue(1, learn_info.bridge_id));
-#endif
+  EncodeL2FwdTxTablePrologue(table_entry, learn_info, p4info);
 
 #if defined(DPDK_TARGET)
   if (insert_entry) {
@@ -466,6 +451,7 @@ void EncodeFdbTableEntryforV4GeneveTunnel(
     if (learn_info.tnl_info.local_ip.family == AF_INET &&
         learn_info.tnl_info.remote_ip.family == AF_INET) {
       if (learn_info.vlan_info.port_vlan_mode == P4_PORT_VLAN_NATIVE_UNTAGGED) {
+        // IPv4, untagged vlan
         action->set_action_id(GetActionId(
             p4info, L2_FWD_TX_TABLE_ACTION_POP_VLAN_SET_GENEVE_UNDERLAY_V4));
         {
@@ -476,6 +462,7 @@ void EncodeFdbTableEntryforV4GeneveTunnel(
           param->set_value(EncodeTunnelId(learn_info.tnl_info.vni));
         }
       } else {
+        // IPv4, tagged vlan
         action->set_action_id(
             GetActionId(p4info, L2_FWD_TX_TABLE_ACTION_SET_GENEVE_UNDERLAY_V4));
         {
@@ -489,6 +476,7 @@ void EncodeFdbTableEntryforV4GeneveTunnel(
     } else if (learn_info.tnl_info.local_ip.family == AF_INET6 &&
                learn_info.tnl_info.remote_ip.family == AF_INET6) {
       if (learn_info.vlan_info.port_vlan_mode == P4_PORT_VLAN_NATIVE_UNTAGGED) {
+        // IPv6, untagged vlan
         action->set_action_id(GetActionId(
             p4info, L2_FWD_TX_TABLE_ACTION_POP_VLAN_SET_GENEVE_UNDERLAY_V6));
         {
@@ -499,6 +487,7 @@ void EncodeFdbTableEntryforV4GeneveTunnel(
           param->set_value(EncodeTunnelId(learn_info.tnl_info.vni));
         }
       } else {
+        // IPv6, tagged vlan
         action->set_action_id(
             GetActionId(p4info, L2_FWD_TX_TABLE_ACTION_SET_GENEVE_UNDERLAY_V6));
         {
