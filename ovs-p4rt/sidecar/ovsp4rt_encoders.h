@@ -2,8 +2,8 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-#ifndef OVSP4RT_PRIVATE_H_
-#define OVSP4RT_PRIVATE_H_
+#ifndef OVSP4RT_ENCODERS_H_
+#define OVSP4RT_ENCODERS_H_
 
 #include <absl/status/status.h>
 
@@ -15,7 +15,7 @@
 namespace ovsp4rt {
 
 //----------------------------------------------------------------------
-// Common functions
+// Common Encode functions
 //----------------------------------------------------------------------
 
 extern void EncodeFdbRxVlanTableEntry(
@@ -42,12 +42,6 @@ extern void EncodeL2FwdTxTablePrologue(
     p4::v1::TableEntry* table_entry, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info);
 
-// extracted from WriteL2TunnelTableEntry
-extern void PrepareL2TunnelTableEntry(
-    p4::v1::TableEntry* table_entry, const struct mac_learning_info& learn_info,
-    const ::p4::config::v1::P4Info& p4info, bool insert_entry,
-    DiagDetail& detail);
-
 extern void EncodeVxlanEncapTableEntry(p4::v1::TableEntry* table_entry,
                                        const struct tunnel_info& tunnel_info,
                                        const ::p4::config::v1::P4Info& p4info,
@@ -59,34 +53,10 @@ extern void EncodeTunnelTermTableEntry(p4::v1::TableEntry* table_entry,
                                        bool insert_entry);
 
 //----------------------------------------------------------------------
-// ES2K-specific functions
+// ES2K-specific Encode functions
 //----------------------------------------------------------------------
 
 #if defined(ES2K_TARGET)
-
-extern void Es2kPrepareDecapTableEntry(::p4::v1::TableEntry* table_entry,
-                                       const struct tunnel_info& tunnel_info,
-                                       const ::p4::config::v1::P4Info& p4info,
-                                       bool insert_entry);
-
-extern void Es2kPrepareEncapTableEntry(::p4::v1::TableEntry* table_entry,
-                                       const struct tunnel_info& tunnel_info,
-                                       const ::p4::config::v1::P4Info& p4info,
-                                       bool insert_entry);
-
-extern void PrepareFdbTableV4TunnelEntry(
-    p4::v1::TableEntry* table_entry, const struct mac_learning_info& learn_info,
-    const ::p4::config::v1::P4Info& p4info, bool insert_entry,
-    DiagDetail& detail, bool testing = false);
-
-extern void Es2kPrepareFdbTunnelTableEntry(
-    p4::v1::TableEntry* table_entry, const struct mac_learning_info& learn_info,
-    const ::p4::config::v1::P4Info& p4info, bool insert_entry,
-    DiagDetail& detail);
-
-extern void Es2kPrepareTunnelTermTableEntry(
-    p4::v1::TableEntry* table_entry, const struct tunnel_info& tunnel_info,
-    const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
 extern void EncodeDstIpMacMapTableEntry(p4::v1::TableEntry* table_entry,
                                         const struct ip_mac_map_info& ip_info,
@@ -135,10 +105,6 @@ extern void EncodeV6GeneveEncapAndVlanPopTableEntry(
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
 extern void EncodeV6GeneveEncapTableEntry(
-    p4::v1::TableEntry* table_entry, const struct tunnel_info& tunnel_info,
-    const ::p4::config::v1::P4Info& p4info, bool insert_entry);
-
-extern void PrepareRxTunnelSrcPortTableEntry(
     p4::v1::TableEntry* table_entry, const struct tunnel_info& tunnel_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry);
 
@@ -201,4 +167,4 @@ extern void EncodeV6VxlanEncapTableEntry(p4::v1::TableEntry* table_entry,
 
 }  // namespace ovsp4rt
 
-#endif  // OVSP4RT_PRIVATE_H_
+#endif  // OVSP4RT_ENCODERS_H_

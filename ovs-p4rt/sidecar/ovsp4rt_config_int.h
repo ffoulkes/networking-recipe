@@ -9,11 +9,57 @@
 #include <absl/status/statusor.h>
 
 #include "client/ovsp4rt_client_interface.h"
+#include "logging/ovsp4rt_diag_detail.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "p4/config/v1/p4info.pb.h"
 #include "p4/v1/p4runtime.pb.h"
 
 namespace ovsp4rt {
+
+//----------------------------------------------------------------------
+// Prepare functions
+//----------------------------------------------------------------------
+
+extern void PrepareL2TunnelTableEntry(
+    p4::v1::TableEntry* table_entry, const struct mac_learning_info& learn_info,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry,
+    DiagDetail& detail);
+
+#if defined(ES2K_TARGET)
+
+extern void Es2kPrepareDecapTableEntry(::p4::v1::TableEntry* table_entry,
+                                       const struct tunnel_info& tunnel_info,
+                                       const ::p4::config::v1::P4Info& p4info,
+                                       bool insert_entry);
+
+extern void Es2kPrepareEncapTableEntry(::p4::v1::TableEntry* table_entry,
+                                       const struct tunnel_info& tunnel_info,
+                                       const ::p4::config::v1::P4Info& p4info,
+                                       bool insert_entry);
+
+extern void PrepareFdbTableV4TunnelEntry(
+    p4::v1::TableEntry* table_entry, const struct mac_learning_info& learn_info,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry,
+    DiagDetail& detail, bool testing = false);
+
+extern void Es2kPrepareFdbTunnelTableEntry(
+    p4::v1::TableEntry* table_entry, const struct mac_learning_info& learn_info,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry,
+    DiagDetail& detail);
+
+extern void Es2kPrepareTunnelTermTableEntry(
+    p4::v1::TableEntry* table_entry, const struct tunnel_info& tunnel_info,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry);
+
+extern void PrepareRxTunnelSrcPortTableEntry(
+    p4::v1::TableEntry* table_entry, const struct tunnel_info& tunnel_info,
+    const ::p4::config::v1::P4Info& p4info, bool insert_entry);
+
+#endif  // ES2K_TARGET
+
+//----------------------------------------------------------------------
+// Read functions
+//----------------------------------------------------------------------
 
 extern absl::StatusOr<::p4::v1::ReadResponse> ReadFdbTunnelTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
@@ -22,6 +68,8 @@ extern absl::StatusOr<::p4::v1::ReadResponse> ReadFdbTunnelTableEntry(
 extern absl::StatusOr<::p4::v1::ReadResponse> ReadFdbVlanTableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool adding = false);
+
+#if defined(ES2K_TARGET)
 
 extern absl::StatusOr<::p4::v1::ReadResponse> ReadL2ToTunnelV4TableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
@@ -39,6 +87,14 @@ extern absl::StatusOr<::p4::v1::ReadResponse> ReadVmSrcTableEntry(
     ClientInterface& client, struct ip_mac_map_info ip_info,
     const ::p4::config::v1::P4Info& p4info);
 
+#endif  // ES2K_TARGET
+
+//----------------------------------------------------------------------
+// Update functions
+//----------------------------------------------------------------------
+
+#if defined(ES2K_TARGET)
+
 extern absl::Status UpdateFdbSrcPortInfo(
     ClientInterface& client, struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info);
@@ -46,6 +102,12 @@ extern absl::Status UpdateFdbSrcPortInfo(
 extern void UpdateFdbTunnelInfo(ClientInterface& client,
                                 struct mac_learning_info& learn_info,
                                 const ::p4::config::v1::P4Info& p4info);
+
+#endif  // ES2K_TARGET
+
+//----------------------------------------------------------------------
+// Write functions
+//----------------------------------------------------------------------
 
 extern absl::Status WriteEncapTableEntry(ClientInterface& client,
                                          const struct tunnel_info& tunnel_info,

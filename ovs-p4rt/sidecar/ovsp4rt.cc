@@ -11,7 +11,7 @@
 #include "logging/ovsp4rt_logging.h"
 #include "logging/ovsp4rt_logutils.h"
 #include "ovsp4rt/ovs-p4rt.h"
-#include "ovsp4rt_private.h"
+#include "ovsp4rt_encoders.h"
 #include "session/ovsp4rt_credentials.h"
 #include "session/ovsp4rt_session.h"
 
