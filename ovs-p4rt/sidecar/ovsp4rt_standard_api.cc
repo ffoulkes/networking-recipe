@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // Standard implementation of the ovsp4rt C API.
-// *** UNDER CONSTRUCTION ***
 
 #include "client/ovsp4rt_client.h"
 #include "ovsp4rt/ovs-p4rt.h"
