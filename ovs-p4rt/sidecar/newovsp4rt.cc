@@ -503,7 +503,7 @@ absl::StatusOr<::p4::v1::ReadResponse> ReadVmDstTableEntry(
 }
 
 // called-by: DoConfigSrcPortEntry, UpdateFdbSrcPortInfo
-absl::StatusOr<::p4::v1::ReadResponse> GetTxAccVsiTableEntry(
+absl::StatusOr<::p4::v1::ReadResponse> ReadTxAccVsiTableEntry(
     ClientInterface& client, uint32_t sp,
     const ::p4::config::v1::P4Info& p4info) {
   ::p4::v1::ReadRequest read_request;
@@ -514,6 +514,37 @@ absl::StatusOr<::p4::v1::ReadResponse> GetTxAccVsiTableEntry(
   EncodeTxAccVsiTableEntry(table_entry, sp, p4info);
 
   return client.sendReadRequest(read_request);
+}
+
+absl::StatusOr<uint32_t> GetTxAccVsiPort(ClientInterface& client,
+                                         const ::p4::config::v1::P4Info& p4info,
+                                         uint32_t src_port) {
+  auto response_or_status = ReadTxAccVsiTableEntry(client, src_port, p4info);
+  auto status = response_or_status.status();
+  if (!status.ok()) return status;
+
+  ::p4::v1::ReadResponse read_response = std::move(response_or_status).value();
+
+  int param_id =
+      GetParamId(p4info, TX_ACC_VSI_TABLE_ACTION_L2_FWD_AND_BYPASS_BRIDGE,
+                 ACTION_L2_FWD_AND_BYPASS_BRIDGE_PARAM_PORT);
+
+  for (const auto& entity : read_response.entities()) {
+    const p4::v1::TableEntry table_entry = entity.table_entry();
+    const auto& table_action = table_entry.action();
+    const auto& action = table_action.action();
+    for (const auto& param : action.params()) {
+      if (param.param_id() == param_id) {
+        const std::string val = param.value();
+        uint32_t host_sp = 0;
+        for (int i = 0; i < 4; i++) {
+          host_sp = (host_sp << 8) | static_cast<uint32_t>(val[i] & 0xff);
+        }
+        return host_sp;
+      }
+    }
+  }
+  return absl::InternalError("Missing port parameter");
 }
 
 // called-by: DoConfigSrcPortEntry (es2k)
@@ -676,36 +707,9 @@ void UpdateFdbTunnelInfo(ClientInterface& client,
 absl::Status UpdateFdbSrcPortInfo(ClientInterface& client,
                                   struct mac_learning_info& learn_info,
                                   const ::p4::config::v1::P4Info& p4info) {
-  auto response_or_status =
-      GetTxAccVsiTableEntry(client, learn_info.src_port, p4info);
-  if (!response_or_status.ok()) {
-    return response_or_status.status();
-  }
-
-  ::p4::v1::ReadResponse read_response = std::move(response_or_status).value();
-
-  int param_id =
-      GetParamId(p4info, TX_ACC_VSI_TABLE_ACTION_L2_FWD_AND_BYPASS_BRIDGE,
-                 ACTION_L2_FWD_AND_BYPASS_BRIDGE_PARAM_PORT);
-
-  uint32_t host_sp = 0;
-  for (const auto& entity : read_response.entities()) {
-    p4::v1::TableEntry table_entry_1 = entity.table_entry();
-    auto* table_action = table_entry_1.mutable_action();
-    auto* action = table_action->mutable_action();
-    for (const auto& param : action->params()) {
-      if (param_id == param.param_id()) {
-        const std::string& s1 = param.value();
-        std::string s2 = s1;
-        for (int i = 0; i < 4; i++) {
-          host_sp = (host_sp << 8) | static_cast<uint32_t>(s2[i] & 0xff);
-        }
-        break;
-      }
-    }
-  }
-
-  learn_info.src_port = host_sp;
+  auto host_sp = GetTxAccVsiPort(client, p4info, learn_info.src_port);
+  if (!host_sp.ok()) return host_sp.status();
+  learn_info.src_port = host_sp.value();
   return absl::OkStatus();
 }
 
@@ -886,36 +890,9 @@ absl::Status ConfigSrcPortEntry(ClientInterface& client,
                                 struct src_port_info vsi_sp,
                                 const ::p4::config::v1::P4Info& p4info,
                                 bool insert_entry) {
-  // TODO(derek): refactor (extract method)
-  auto response_or_status =
-      GetTxAccVsiTableEntry(client, vsi_sp.src_port, p4info);
-  if (!response_or_status.ok()) return response_or_status.status();
-
-  ::p4::v1::ReadResponse read_response = std::move(response_or_status).value();
-
-  int param_id =
-      GetParamId(p4info, TX_ACC_VSI_TABLE_ACTION_L2_FWD_AND_BYPASS_BRIDGE,
-                 ACTION_L2_FWD_AND_BYPASS_BRIDGE_PARAM_PORT);
-
-  uint32_t host_sp = 0;
-  for (const auto& entity : read_response.entities()) {
-    p4::v1::TableEntry table_entry_1 = entity.table_entry();
-    auto* table_action = table_entry_1.mutable_action();
-    auto* action = table_action->mutable_action();
-    for (const auto& param : action->params()) {
-      if (param_id == param.param_id()) {
-        const std::string& s1 = param.value();
-        std::string s2 = s1;
-        for (int i = 0; i < 4; i++) {
-          host_sp = (host_sp << 8) | static_cast<uint32_t>(s2[i] & 0xff);
-        }
-        break;
-      }
-    }
-  }
-
-  vsi_sp.src_port = host_sp;
-  // end of refactoring
+  auto host_sp = GetTxAccVsiPort(client, p4info, vsi_sp.src_port);
+  if (!host_sp.ok()) return host_sp.status();
+  vsi_sp.src_port = host_sp.value();
 
   return WriteVsiSrcPortTableEntry(client, vsi_sp, p4info, insert_entry);
 }
