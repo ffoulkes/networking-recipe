@@ -1623,19 +1623,10 @@ void EncodeTxAccVsiTableEntry(p4::v1::TableEntry* table_entry, uint32_t sp,
   auto match = table_entry->add_match();
   match->set_field_id(
       GetMatchFieldId(p4info, TX_ACC_VSI_TABLE, TX_ACC_VSI_TABLE_KEY_VSI));
-  // TODO(derek): sp value truncated to 8 bits. [es2k]
+  // TODO(derek): sp value truncated to bit<8>. vsi key is bit<11>.
   // See https://github.com/ipdk-io/networking-recipe/issues/680 for details.
   match->mutable_exact()->set_value(
       EncodeByteValue(1, (sp - ES2K_VPORT_ID_OFFSET)));
-
-#if 0
-  /* unused match key of 0, code is added for reference */
-  auto match1 = table_entry->add_match();
-  match1->set_field_id(
-      GetMatchFieldId(p4info, TX_ACC_VSI_TABLE,
-                      TX_ACC_VSI_TABLE_KEY_ZERO_PADDING));
-  match->mutable_exact()->set_value(EncodeByteValue(1, 0));
-#endif
 }
 
 void EncodeVxlanDecapModTableEntry(p4::v1::TableEntry* table_entry,

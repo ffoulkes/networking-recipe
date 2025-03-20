@@ -2143,7 +2143,7 @@ absl::StatusOr<::p4::v1::ReadResponse> ReadVmDstTableEntry(
   return ovsp4rt::SendReadRequest(session, read_request);
 }
 
-absl::StatusOr<::p4::v1::ReadResponse> GetTxAccVsiTableEntry(
+absl::StatusOr<::p4::v1::ReadResponse> ReadTxAccVsiTableEntry(
     ovsp4rt::OvsP4rtSession* session, uint32_t sp,
     const ::p4::config::v1::P4Info& p4info) {
   ::p4::v1::ReadRequest read_request;
@@ -2395,7 +2395,7 @@ void ovsp4rt_config_fdb_entry(struct mac_learning_info learn_info,
 
       // TODO(derek): refactor (extract method)
       status_or_read_response =
-          GetTxAccVsiTableEntry(session.get(), learn_info.src_port, p4info);
+          ReadTxAccVsiTableEntry(session.get(), learn_info.src_port, p4info);
       if (!status_or_read_response.ok()) {
         return;
       }
@@ -2540,7 +2540,7 @@ void ovsp4rt_config_src_port_entry(struct src_port_info vsi_sp,
 
   // TODO(derek): refactor (extract method)
   auto status_or_read_response =
-      GetTxAccVsiTableEntry(session.get(), vsi_sp.src_port, p4info);
+      ReadTxAccVsiTableEntry(session.get(), vsi_sp.src_port, p4info);
   if (!status_or_read_response.ok()) return;
 
   ::p4::v1::ReadResponse read_response =
