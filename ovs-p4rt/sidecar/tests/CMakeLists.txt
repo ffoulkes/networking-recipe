@@ -36,176 +36,12 @@ add_library(ovsp4rt_test_main_o OBJECT test_main.cc)
 add_library(ovsp4rt::test_main ALIAS ovsp4rt_test_main_o)
 
 #-----------------------------------------------------------------------
-# ovsp4rt::basic_test
+# Library and macro definitions
 #-----------------------------------------------------------------------
-add_library(ovsp4rt_basic_test STATIC
-  basic_test.cc
-  basic_test.h
-)
-
-target_include_directories(ovsp4rt_basic_test PRIVATE
-  ${CURRENT_SOURCE_DIR}
-  ${SIDECAR_SOURCE_DIR}
-  ${STRATUM_SOURCE_DIR}
-)
-
-target_link_libraries(ovsp4rt_basic_test PUBLIC
-  absl::flags_parse
-  ovsp4rt::p4info_text
-  ovsp4rt::test_main
-  p4runtime_proto
-  stratum_utils
-)
-
-add_library(ovsp4rt::basic_test ALIAS ovsp4rt_basic_test)
-
-#-----------------------------------------------------------------------
-# define_basic_test()
-#-----------------------------------------------------------------------
-macro(define_basic_test TARGET)
-  add_executable(${TARGET}
-    ${TARGET}.cc
-  )
-
-  set_test_properties(${TARGET})
-
-  target_include_directories(${TARGET} PUBLIC
-    ${TESTS_SOURCE_DIR}
-  )
-
-  target_link_libraries(${TARGET} PUBLIC
-    ovsp4rt::basic_test
-    ovsp4rt::test_client
-  )
-
-  list(APPEND UNIT_TEST_NAMES ${TARGET})
-endmacro()
-
-#-----------------------------------------------------------------------
-# base_mac_learn_info_test
-#-----------------------------------------------------------------------
-add_library(base_mac_learn_info_test STATIC
-  base_mac_learn_info_test.cc
-  base_mac_learn_info_test.h
-)
-
-target_include_directories(base_mac_learn_info_test PUBLIC
-  ${OVSP4RT_INCLUDE_DIR}
-  ${SIDECAR_SOURCE_DIR}
-  ${TESTS_SOURCE_DIR}
-)
-
-target_link_libraries(base_mac_learn_info_test PUBLIC
-  ovsp4rt::basic_test
-)
-
-add_library(ovsp4rt::mac_learn_info_test ALIAS base_mac_learn_info_test)
-
-#-----------------------------------------------------------------------
-# define_mac_learn_info_test()
-#-----------------------------------------------------------------------
-macro(define_mac_learn_info_test TARGET)
-  add_executable(${TARGET}
-    ${TARGET}.cc
-  )
-
-  set_test_properties(${TARGET})
-
-  target_include_directories(${TARGET} PUBLIC
-    ${TESTS_SOURCE_DIR}
-  )
-
-  target_link_libraries(${TARGET} PUBLIC
-    ovsp4rt::mac_learn_info_test
-    ovsp4rt::test_client
-  )
-
-  list(APPEND UNIT_TEST_NAMES ${TARGET})
-endmacro()
-
-#-----------------------------------------------------------------------
-# base_mac_map_info_test
-#-----------------------------------------------------------------------
-add_library(base_mac_map_info_test STATIC
-  base_mac_map_info_test.cc
-  base_mac_map_info_test.h
-)
-
-target_include_directories(base_mac_map_info_test PUBLIC
-  ${OVSP4RT_INCLUDE_DIR}
-  ${SIDECAR_SOURCE_DIR}
-  ${TESTS_SOURCE_DIR}
-)
-
-target_link_libraries(base_mac_map_info_test PUBLIC
-  ovsp4rt::basic_test
-)
-
-add_library(ovsp4rt::mac_map_info_test ALIAS base_mac_map_info_test)
-
-#-----------------------------------------------------------------------
-# define_mac_map_info_test()
-#-----------------------------------------------------------------------
-macro(define_mac_map_info_test TARGET)
-  add_executable(${TARGET}
-    ${TARGET}.cc
-  )
-
-  set_test_properties(${TARGET})
-
-  target_include_directories(${TARGET} PUBLIC
-    ${TESTS_SOURCE_DIR}
-  )
-
-  target_link_libraries(${TARGET} PUBLIC
-    ovsp4rt::mac_map_info_test
-    ovsp4rt::test_client
-  )
-
-  list(APPEND UNIT_TEST_NAMES ${TARGET})
-endmacro()
-
-#-----------------------------------------------------------------------
-# base_tunnel_info_test
-#-----------------------------------------------------------------------
-add_library(base_tunnel_info_test STATIC
-  base_tunnel_info_test.cc
-  base_tunnel_info_test.h
-)
-
-target_include_directories(base_tunnel_info_test PUBLIC
-  ${OVSP4RT_INCLUDE_DIR}
-  ${SIDECAR_SOURCE_DIR}
-  ${TESTS_SOURCE_DIR}
-)
-
-target_link_libraries(base_tunnel_info_test PUBLIC
-  ovsp4rt::basic_test
-)
-
-add_library(ovsp4rt::tunnel_info_test ALIAS base_tunnel_info_test)
-
-#-----------------------------------------------------------------------
-# define_tunnel_info_test()
-#-----------------------------------------------------------------------
-macro(define_tunnel_info_test TARGET)
-  add_executable(${TARGET}
-    ${TARGET}.cc
-  )
-
-  set_test_properties(${TARGET})
-
-  target_include_directories(${TARGET} PUBLIC
-    ${TESTS_SOURCE_DIR}
-  )
-
-  target_link_libraries(${TARGET} PUBLIC
-    ovsp4rt::test_client
-    ovsp4rt::tunnel_info_test
-  )
-
-  list(APPEND UNIT_TEST_NAMES ${TARGET})
-endmacro()
+include(cmake/basic_test.cmake)
+include(cmake/mac_learn_info_test.cmake)
+include(cmake/mac_map_info_test.cmake)
+include(cmake/tunnel_info_test.cmake)
 
 #-----------------------------------------------------------------------
 # Common tests
@@ -213,7 +49,7 @@ endmacro()
 add_subdirectory(common)
 
 #-----------------------------------------------------------------------
-# Target-specific unit tests
+# Target-specific tests
 #-----------------------------------------------------------------------
 if(ES2K_TARGET)
   add_subdirectory(es2k)
