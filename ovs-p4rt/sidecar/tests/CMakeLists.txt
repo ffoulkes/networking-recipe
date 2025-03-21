@@ -8,7 +8,7 @@
 include(FindGTest)
 mark_as_advanced(GTest_DIR)
 
-include(set_test_properties.cmake)
+include(cmake/set_test_properties.cmake)
 
 option(TEST_COVERAGE OFF "Measure unit test code coverage")
 
