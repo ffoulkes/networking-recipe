@@ -11,7 +11,6 @@
 add_library(dpdk_ovsp4rt_test INTERFACE
   base_table_test.h
   p4info_helper.h
-  p4info_text.h
 )
 
 target_include_directories(dpdk_ovsp4rt_test INTERFACE
@@ -21,6 +20,7 @@ target_include_directories(dpdk_ovsp4rt_test INTERFACE
 
 target_link_libraries(dpdk_ovsp4rt_test INTERFACE
   absl::flags_parse
+  ovsp4rt::p4info_text
   p4runtime_proto
   stratum_utils
 )
@@ -31,13 +31,13 @@ target_link_libraries(dpdk_ovsp4rt_test INTERFACE
 macro(define_dpdk_test TARGET)
   add_executable(${TARGET}
     ${TARGET}.cc
-    test_main.cc
   )
 
   set_test_properties(${TARGET})
 
   target_link_libraries(${TARGET} PUBLIC
     dpdk_ovsp4rt_test
+    ovsp4rt::test_main
   )
 
   list(APPEND UNIT_TEST_NAMES ${TARGET})
@@ -60,14 +60,14 @@ define_dpdk_test(dpdk_vxlan_encap_test)
 macro(define_dpdk_config_test TARGET)
   add_executable(${TARGET}
     ${TARGET}.cc
-    test_main.cc
-    $<TARGET_OBJECTS:ovsp4rt_test_client_o>
   )
 
   set_test_properties(${TARGET})
 
   target_link_libraries(${TARGET} PUBLIC
     absl::flags_parse
+    ovsp4rt::test_client
+    ovsp4rt::test_main
     p4runtime_proto
     stratum_utils
   )

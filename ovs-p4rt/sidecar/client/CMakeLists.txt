@@ -54,7 +54,7 @@ set_target_properties(ovsp4rt_client_so PROPERTIES
 )
 
 #-----------------------------------------------------------------------
-# ovsp4rt_test_client_o
+# ovsp4rt::test_client
 #-----------------------------------------------------------------------
 add_library(ovsp4rt_test_client_o OBJECT
   ovsp4rt_client_flags.h
@@ -75,9 +75,4 @@ target_link_libraries(ovsp4rt_test_client_o PUBLIC
   stratum_utils
 )
 
-#-----------------------------------------------------------------------
-# libovsp4rt_test_client.a
-#-----------------------------------------------------------------------
-add_library(ovsp4rt_test_client STATIC
-  $<TARGET_OBJECTS:ovsp4rt_test_client_o>
-)
+add_library(ovsp4rt::test_client ALIAS ovsp4rt_test_client_o)
