@@ -10,7 +10,6 @@
 #-----------------------------------------------------------------------
 add_library(es2k_ovsp4rt_test INTERFACE
   base_table_test.h
-  p4info_helper.h
 )
 
 target_include_directories(es2k_ovsp4rt_test INTERFACE
@@ -20,6 +19,7 @@ target_include_directories(es2k_ovsp4rt_test INTERFACE
 
 target_link_libraries(es2k_ovsp4rt_test INTERFACE
   absl::flags_parse
+  ovsp4rt::p4info_helper
   ovsp4rt::p4info_text
   p4runtime_proto
   stratum_utils
@@ -37,6 +37,7 @@ macro(define_es2k_test TARGET)
 
   target_link_libraries(${TARGET} PUBLIC
     es2k_ovsp4rt_test
+    ovsp4rt::p4info_helper
     ovsp4rt::test_main
   )
 
@@ -69,6 +70,7 @@ macro(define_es2k_tunnel_test TARGET)
   set_test_properties(${TARGET})
 
   target_link_libraries(${TARGET} PUBLIC
+    ovsp4rt::p4info_helper
     tunnel_test_utils
   )
 
