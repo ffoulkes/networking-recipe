@@ -10,7 +10,6 @@
 #-----------------------------------------------------------------------
 add_library(dpdk_ovsp4rt_test INTERFACE
   base_table_test.h
-  p4info_helper.h
 )
 
 target_include_directories(dpdk_ovsp4rt_test INTERFACE
@@ -20,6 +19,7 @@ target_include_directories(dpdk_ovsp4rt_test INTERFACE
 
 target_link_libraries(dpdk_ovsp4rt_test INTERFACE
   absl::flags_parse
+  ovsp4rt::p4info_helper
   ovsp4rt::p4info_text
   p4runtime_proto
   stratum_utils

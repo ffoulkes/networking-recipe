@@ -19,6 +19,17 @@ set_property(DIRECTORY PROPERTY LABELS ovsp4rt)
 set(TESTS_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 #-----------------------------------------------------------------------
+# ovsp4rt::p4info_helper
+#-----------------------------------------------------------------------
+add_library(ovsp4rt_p4info_helper INTERFACE p4info_helper.h)
+
+target_include_directories(ovsp4rt_p4info_helper INTERFACE
+  ${TESTS_SOURCE_DIR}
+)
+
+add_library(ovsp4rt::p4info_helper ALIAS ovsp4rt_p4info_helper)
+
+#-----------------------------------------------------------------------
 # ovsp4rt::p4info_text
 #-----------------------------------------------------------------------
 if(DPDK_TARGET)
