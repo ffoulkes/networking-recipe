@@ -13,10 +13,10 @@
 
 namespace ovsp4rt {
 
-class BaseMacLearnInfoTest : public BasicTest {
+class MacLearnInfoTest : public BasicTest {
  protected:
-  BaseMacLearnInfoTest() {}
-  virtual ~BaseMacLearnInfoTest() = default;
+  MacLearnInfoTest() {}
+  virtual ~MacLearnInfoTest() = default;
 
   static void InitV4TunnelInfo(struct mac_learning_info& fdb_info);
   static void InitV6TunnelInfo(struct mac_learning_info& fdb_info);

@@ -5,13 +5,13 @@
 
 #include <gtest/gtest.h>
 
-#include "base_tunnel_info_test.h"
 #include "es2k/p4_name_mapping.h"
 #include "ovsp4rt_config_int.h"
+#include "tunnel_info_test.h"
 
 namespace ovsp4rt {
 
-class Es2kPrepTunnelTermEntryTest : public BaseTunnelInfoTest {
+class Es2kPrepTunnelTermEntryTest : public TunnelInfoTest {
  public:
   Es2kPrepTunnelTermEntryTest() {}
   virtual ~Es2kPrepTunnelTermEntryTest() = default;

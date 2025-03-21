@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-#include "base_tunnel_info_test.h"
+#include "tunnel_info_test.h"
 
 #include <arpa/inet.h>
 #include <gtest/gtest.h>
@@ -12,7 +12,7 @@
 
 namespace ovsp4rt {
 
-void BaseTunnelInfoTest::InitV4TunnelInfo(struct tunnel_info& tunnel_info) {
+void TunnelInfoTest::InitV4TunnelInfo(struct tunnel_info& tunnel_info) {
   constexpr char IPV4_SRC_ADDR[] = "10.20.30.40";
   constexpr char IPV4_DST_ADDR[] = "192.168.17.5";
   constexpr int IPV4_PREFIX_LEN = 24;
@@ -40,7 +40,7 @@ void BaseTunnelInfoTest::InitV4TunnelInfo(struct tunnel_info& tunnel_info) {
   tunnel_info.vni = VNI;
 };
 
-void BaseTunnelInfoTest::InitV6TunnelInfo(struct tunnel_info& tunnel_info) {
+void TunnelInfoTest::InitV6TunnelInfo(struct tunnel_info& tunnel_info) {
   constexpr char IPV6_SRC_ADDR[] = "fe80::215:5dff:fefa";
   constexpr char IPV6_DST_ADDR[] = "fe80::215:192.168.17.5";
   constexpr int IPV6_PREFIX_LEN = 64;
@@ -68,33 +68,33 @@ void BaseTunnelInfoTest::InitV6TunnelInfo(struct tunnel_info& tunnel_info) {
   tunnel_info.vni = VNI;
 };
 
-void BaseTunnelInfoTest::InitVxlanTagged(struct tunnel_info& tunnel_info) {
+void TunnelInfoTest::InitVxlanTagged(struct tunnel_info& tunnel_info) {
   tunnel_info.tunnel_type = OVS_TUNNEL_VXLAN;
   tunnel_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_TAGGED;
   tunnel_info.vni = 0x1066;
 }
 
-void BaseTunnelInfoTest::InitVxlanUntagged(struct tunnel_info& tunnel_info) {
+void TunnelInfoTest::InitVxlanUntagged(struct tunnel_info& tunnel_info) {
   tunnel_info.tunnel_type = OVS_TUNNEL_VXLAN;
   tunnel_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_UNTAGGED;
   tunnel_info.vni = 0x1492;
 }
 
-void BaseTunnelInfoTest::InitGeneveTagged(struct tunnel_info& tunnel_info) {
+void TunnelInfoTest::InitGeneveTagged(struct tunnel_info& tunnel_info) {
   tunnel_info.tunnel_type = OVS_TUNNEL_GENEVE;
   tunnel_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_TAGGED;
   tunnel_info.vni = 0x1776;
 }
 
-void BaseTunnelInfoTest::InitGeneveUntagged(struct tunnel_info& tunnel_info) {
+void TunnelInfoTest::InitGeneveUntagged(struct tunnel_info& tunnel_info) {
   tunnel_info.tunnel_type = OVS_TUNNEL_GENEVE;
   tunnel_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_UNTAGGED;
   tunnel_info.vni = 0x1984;
 }
 
-void BaseTunnelInfoTest::AssertTableId(const p4::v1::TableEntry& table_entry,
-                                       const ::p4::config::v1::P4Info& p4info,
-                                       const char* table_name) {
+void TunnelInfoTest::AssertTableId(const p4::v1::TableEntry& table_entry,
+                                   const ::p4::config::v1::P4Info& p4info,
+                                   const char* table_name) {
   auto expected_id = GetTableId(p4info, table_name);
   EXPECT_EQ(table_entry.table_id(), expected_id);
 }

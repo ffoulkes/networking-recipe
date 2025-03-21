@@ -7,22 +7,22 @@
 #-----------------------------------------------------------------------
 # ovsp4rt::tunnel_info_test
 #-----------------------------------------------------------------------
-add_library(base_tunnel_info_test STATIC
-  base_tunnel_info_test.cc
-  base_tunnel_info_test.h
+add_library(tunnel_info_test STATIC
+  tunnel_info_test.cc
+  tunnel_info_test.h
 )
 
-target_include_directories(base_tunnel_info_test PUBLIC
+target_include_directories(tunnel_info_test PUBLIC
   ${OVSP4RT_INCLUDE_DIR}
   ${SIDECAR_SOURCE_DIR}
   ${TESTS_SOURCE_DIR}
 )
 
-target_link_libraries(base_tunnel_info_test PUBLIC
+target_link_libraries(tunnel_info_test PUBLIC
   ovsp4rt::basic_test
 )
 
-add_library(ovsp4rt::tunnel_info_test ALIAS base_tunnel_info_test)
+add_library(ovsp4rt::tunnel_info_test ALIAS tunnel_info_test)
 
 #-----------------------------------------------------------------------
 # define_tunnel_info_test()

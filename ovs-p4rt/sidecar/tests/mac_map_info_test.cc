@@ -2,7 +2,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-#include "base_mac_map_info_test.h"
+#include "mac_map_info_test.h"
 
 #include <arpa/inet.h>
 
@@ -11,7 +11,7 @@
 
 namespace ovsp4rt {
 
-void BaseMacMapInfoTest::InitIpv4MapInfo(struct ip_mac_map_info map_info) {
+void MacMapInfoTest::InitIpv4MapInfo(struct ip_mac_map_info map_info) {
   constexpr uint8_t SRC_MAC[] = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66};
   constexpr char IPV4_SRC_ADDR[] = "10.20.30.40";
   constexpr int IPV4_PREFIX_LEN = 24;

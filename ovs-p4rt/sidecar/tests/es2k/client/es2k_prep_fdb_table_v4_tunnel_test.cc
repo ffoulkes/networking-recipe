@@ -5,8 +5,8 @@
 
 #include <nlohmann/json.hpp>
 
-#include "base_mac_learn_info_test.h"
 #include "es2k/p4_name_mapping.h"
+#include "mac_learn_info_test.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_config_int.h"
 #include "ovsp4rt_util_int.h"  // GetActionId
@@ -15,7 +15,7 @@
 
 namespace ovsp4rt {
 
-class Es2kPrepFdbTableV4TunnelTest : public BaseMacLearnInfoTest {
+class Es2kPrepFdbTableV4TunnelTest : public MacLearnInfoTest {
  public:
   Es2kPrepFdbTableV4TunnelTest() {}
   virtual ~Es2kPrepFdbTableV4TunnelTest() = default;
