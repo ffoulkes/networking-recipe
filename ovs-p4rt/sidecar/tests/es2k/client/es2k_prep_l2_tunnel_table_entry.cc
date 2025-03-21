@@ -1,8 +1,8 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-#include "base_mac_learn_info_test.h"
 #include "es2k/p4_name_mapping.h"
+#include "mac_learn_info_test.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_config_int.h"
 #include "p4/config/v1/p4info.pb.h"
@@ -10,7 +10,7 @@
 
 namespace ovsp4rt {
 
-class Es2kPrepL2TunnelEntryTest : public BaseMacLearnInfoTest {
+class Es2kPrepL2TunnelEntryTest : public MacLearnInfoTest {
  public:
   Es2kPrepL2TunnelEntryTest() {}
   virtual ~Es2kPrepL2TunnelEntryTest() = default;

@@ -13,10 +13,10 @@
 
 namespace ovsp4rt {
 
-class BaseTunnelInfoTest : public BasicTest {
+class TunnelInfoTest : public BasicTest {
  protected:
-  BaseTunnelInfoTest(){};
-  virtual ~BaseTunnelInfoTest() = default;
+  TunnelInfoTest(){};
+  virtual ~TunnelInfoTest() = default;
 
   static void InitV4TunnelInfo(struct tunnel_info& tunnel_info);
   static void InitV6TunnelInfo(struct tunnel_info& tunnel_info);

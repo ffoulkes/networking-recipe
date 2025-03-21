@@ -16,8 +16,8 @@
 #include <gmock/gmock.h>
 // clang-format on
 
-#include "base_mac_learn_info_test.h"
 #include "client/ovsp4rt_test_client_mock.h"
+#include "mac_learn_info_test.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_config_int.h"
 
@@ -26,7 +26,7 @@ using ::testing::Return;
 
 namespace ovsp4rt {
 
-class ReadFdbVlanEntryTest : public BaseMacLearnInfoTest {
+class ReadFdbVlanEntryTest : public MacLearnInfoTest {
  public:
   ReadFdbVlanEntryTest() {}
   virtual ~ReadFdbVlanEntryTest() = default;

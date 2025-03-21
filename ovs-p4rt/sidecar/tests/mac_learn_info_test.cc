@@ -2,7 +2,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-#include "base_mac_learn_info_test.h"
+#include "mac_learn_info_test.h"
 
 #include <absl/status/status.h>
 #include <arpa/inet.h>
@@ -13,8 +13,7 @@
 
 namespace ovsp4rt {
 
-void BaseMacLearnInfoTest::InitV4TunnelInfo(
-    struct mac_learning_info& fdb_info) {
+void MacLearnInfoTest::InitV4TunnelInfo(struct mac_learning_info& fdb_info) {
   constexpr char IPV4_SRC_ADDR[] = "10.20.30.40";
   constexpr char IPV4_DST_ADDR[] = "192.168.17.5";
   constexpr int IPV4_PREFIX_LEN = 24;
@@ -43,8 +42,7 @@ void BaseMacLearnInfoTest::InitV4TunnelInfo(
   tnl_info.vni = VNI;
 };
 
-void BaseMacLearnInfoTest::InitV6TunnelInfo(
-    struct mac_learning_info& fdb_info) {
+void MacLearnInfoTest::InitV6TunnelInfo(struct mac_learning_info& fdb_info) {
   constexpr char IPV6_SRC_ADDR[] = "fe80::215:5dff:fefa";
   constexpr char IPV6_DST_ADDR[] = "fe80::215:192.168.17.5";
   constexpr int IPV6_PREFIX_LEN = 64;
@@ -74,15 +72,14 @@ void BaseMacLearnInfoTest::InitV6TunnelInfo(
   tnl_info.vni = VNI;
 };
 
-void BaseMacLearnInfoTest::InitV4NativeTagged(
-    struct mac_learning_info& fdb_info) {
+void MacLearnInfoTest::InitV4NativeTagged(struct mac_learning_info& fdb_info) {
   fdb_info.tnl_info.local_ip.family = AF_INET;
   fdb_info.tnl_info.remote_ip.family = AF_INET;
   fdb_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_TAGGED;
   fdb_info.tnl_info.vni = 0x1984U;
 }
 
-void BaseMacLearnInfoTest::InitV4NativeUntagged(
+void MacLearnInfoTest::InitV4NativeUntagged(
     struct mac_learning_info& fdb_info) {
   fdb_info.tnl_info.local_ip.family = AF_INET;
   fdb_info.tnl_info.remote_ip.family = AF_INET;
@@ -90,15 +87,14 @@ void BaseMacLearnInfoTest::InitV4NativeUntagged(
   fdb_info.tnl_info.vni = 0x1776U;
 }
 
-void BaseMacLearnInfoTest::InitV6NativeTagged(
-    struct mac_learning_info& fdb_info) {
+void MacLearnInfoTest::InitV6NativeTagged(struct mac_learning_info& fdb_info) {
   fdb_info.tnl_info.local_ip.family = AF_INET6;
   fdb_info.tnl_info.remote_ip.family = AF_INET6;
   fdb_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_TAGGED;
   fdb_info.tnl_info.vni = 0xFACEU;
 }
 
-void BaseMacLearnInfoTest::InitV6NativeUntagged(
+void MacLearnInfoTest::InitV6NativeUntagged(
     struct mac_learning_info& fdb_info) {
   fdb_info.tnl_info.local_ip.family = AF_INET6;
   fdb_info.tnl_info.remote_ip.family = AF_INET6;
@@ -106,36 +102,33 @@ void BaseMacLearnInfoTest::InitV6NativeUntagged(
   fdb_info.tnl_info.vni = 0xCEDEU;
 }
 
-void BaseMacLearnInfoTest::InitVxlanTagged(struct mac_learning_info& fdb_info) {
+void MacLearnInfoTest::InitVxlanTagged(struct mac_learning_info& fdb_info) {
   fdb_info.tnl_info.tunnel_type = OVS_TUNNEL_VXLAN;
   fdb_info.tnl_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_TAGGED;
   fdb_info.tnl_info.vni = 0x1066;
 }
 
-void BaseMacLearnInfoTest::InitVxlanUntagged(
-    struct mac_learning_info& fdb_info) {
+void MacLearnInfoTest::InitVxlanUntagged(struct mac_learning_info& fdb_info) {
   fdb_info.tnl_info.tunnel_type = OVS_TUNNEL_VXLAN;
   fdb_info.tnl_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_UNTAGGED;
   fdb_info.tnl_info.vni = 0x1492;
 }
 
-void BaseMacLearnInfoTest::InitGeneveTagged(
-    struct mac_learning_info& fdb_info) {
+void MacLearnInfoTest::InitGeneveTagged(struct mac_learning_info& fdb_info) {
   fdb_info.tnl_info.tunnel_type = OVS_TUNNEL_GENEVE;
   fdb_info.tnl_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_TAGGED;
   fdb_info.tnl_info.vni = 0x1776;
 }
 
-void BaseMacLearnInfoTest::InitGeneveUntagged(
-    struct mac_learning_info& fdb_info) {
+void MacLearnInfoTest::InitGeneveUntagged(struct mac_learning_info& fdb_info) {
   fdb_info.tnl_info.tunnel_type = OVS_TUNNEL_GENEVE;
   fdb_info.tnl_info.vlan_info.port_vlan_mode = P4_PORT_VLAN_NATIVE_UNTAGGED;
   fdb_info.tnl_info.vni = 0x1984;
 }
 
-void BaseMacLearnInfoTest::AssertTableId(const p4::v1::TableEntry& table_entry,
-                                         const ::p4::config::v1::P4Info& p4info,
-                                         const char* table_name) {
+void MacLearnInfoTest::AssertTableId(const p4::v1::TableEntry& table_entry,
+                                     const ::p4::config::v1::P4Info& p4info,
+                                     const char* table_name) {
   auto expected_id = GetTableId(p4info, table_name);
   EXPECT_EQ(table_entry.table_id(), expected_id);
 }

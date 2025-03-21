@@ -12,10 +12,10 @@
 
 namespace ovsp4rt {
 
-class BaseMacMapInfoTest : public BasicTest {
+class MacMapInfoTest : public BasicTest {
  protected:
-  BaseMacMapInfoTest() {}
-  virtual ~BaseMacMapInfoTest() = default;
+  MacMapInfoTest() {}
+  virtual ~MacMapInfoTest() = default;
 
   static void InitIpv4MapInfo(struct ip_mac_map_info map_info);
 };

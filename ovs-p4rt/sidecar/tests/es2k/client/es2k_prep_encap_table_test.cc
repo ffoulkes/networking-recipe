@@ -1,13 +1,13 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-#include "base_tunnel_info_test.h"
 #include "es2k/p4_name_mapping.h"
 #include "ovsp4rt_config_int.h"
+#include "tunnel_info_test.h"
 
 namespace ovsp4rt {
 
-class Es2kPrepEncapTableTest : public BaseTunnelInfoTest {
+class Es2kPrepEncapTableTest : public TunnelInfoTest {
  public:
   Es2kPrepEncapTableTest() {}
   virtual ~Es2kPrepEncapTableTest() = default;

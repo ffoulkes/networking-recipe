@@ -14,15 +14,15 @@
 #include <gmock/gmock.h>
 // clang-format on
 
-#include "base_tunnel_info_test.h"
 #include "client/ovsp4rt_test_client_mock.h"
 #include "ovsp4rt_config_int.h"
+#include "tunnel_info_test.h"
 
 using ::testing::Return;
 
 namespace ovsp4rt {
 
-class WriteRxTunnelPortEntryTest : public BaseTunnelInfoTest {
+class WriteRxTunnelPortEntryTest : public TunnelInfoTest {
  public:
   WriteRxTunnelPortEntryTest() {}
   virtual ~WriteRxTunnelPortEntryTest() = default;

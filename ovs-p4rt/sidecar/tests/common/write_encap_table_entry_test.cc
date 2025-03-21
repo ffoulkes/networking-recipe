@@ -14,16 +14,16 @@
 #include <gmock/gmock.h>
 // clang-format on
 
-#include "base_tunnel_info_test.h"
 #include "client/ovsp4rt_test_client_mock.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_config_int.h"
+#include "tunnel_info_test.h"
 
 using ::testing::Return;
 
 namespace ovsp4rt {
 
-class WriteEncapTableEntryTest : public BaseTunnelInfoTest {
+class WriteEncapTableEntryTest : public TunnelInfoTest {
  public:
   WriteEncapTableEntryTest() {}
   virtual ~WriteEncapTableEntryTest() = default;
