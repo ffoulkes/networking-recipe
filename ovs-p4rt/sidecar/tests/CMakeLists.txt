@@ -49,6 +49,8 @@ add_library(ovsp4rt::test_main ALIAS ovsp4rt_test_main_o)
 #-----------------------------------------------------------------------
 # Library and macro definitions
 #-----------------------------------------------------------------------
+include(cmake/base_table_test.cmake)
+
 include(cmake/basic_test.cmake)
 include(cmake/mac_learn_info_test.cmake)
 include(cmake/mac_map_info_test.cmake)
