@@ -537,8 +537,8 @@ absl::StatusOr<uint32_t> GetTxAccVsiPort(ClientInterface& client,
       if (param.param_id() == param_id) {
         const std::string val = param.value();
         uint32_t host_sp = 0;
-        for (int i = 0; i < 4; i++) {
-          host_sp = (host_sp << 8) | static_cast<uint32_t>(val[i] & 0xff);
+        for (int i = 0; i < val.size(); i++) {
+          host_sp = ((host_sp << 8) | (val[i] & 0xff));
         }
         return host_sp;
       }
@@ -549,7 +549,7 @@ absl::StatusOr<uint32_t> GetTxAccVsiPort(ClientInterface& client,
 
 // called-by: DoConfigSrcPortEntry (es2k)
 absl::Status WriteVsiSrcPortTableEntry(ClientInterface& client,
-                                       const struct src_port_info& sp,
+                                       const struct src_port_info& port_info,
                                        const ::p4::config::v1::P4Info& p4info,
                                        bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
@@ -557,7 +557,7 @@ absl::Status WriteVsiSrcPortTableEntry(ClientInterface& client,
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  EncodeSrcPortTableEntry(table_entry, sp, p4info, insert_entry);
+  EncodeSrcPortTableEntry(table_entry, port_info, p4info, insert_entry);
 
   return client.sendWriteRequest(write_request);
 }
@@ -846,7 +846,7 @@ absl::Status DoConfigRxTunnelSrcEntry(ClientInterface& client,
 
 // extracted from DoConfigTunnelSrcPortEntry (testable)
 absl::Status WriteTunnelSrcPortEntry(ClientInterface& client,
-                                     const struct src_port_info& tnl_sp,
+                                     const struct src_port_info& port_info,
                                      const ::p4::config::v1::P4Info& p4info,
                                      bool insert_entry) {
   ::p4::v1::WriteRequest write_request;
@@ -854,13 +854,13 @@ absl::Status WriteTunnelSrcPortEntry(ClientInterface& client,
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  EncodeSrcPortTableEntry(table_entry, tnl_sp, p4info, insert_entry);
+  EncodeSrcPortTableEntry(table_entry, port_info, p4info, insert_entry);
 
   return client.sendWriteRequest(write_request);
 }
 
 absl::Status DoConfigTunnelSrcPortEntry(ClientInterface& client,
-                                        const struct src_port_info& tnl_sp,
+                                        const struct src_port_info& port_info,
                                         bool insert_entry,
                                         const char* grpc_addr) {
   absl::Status status;
@@ -875,7 +875,7 @@ absl::Status DoConfigTunnelSrcPortEntry(ClientInterface& client,
   if (!status.ok()) return status;
 
   // Update P4 tables.
-  return WriteTunnelSrcPortEntry(client, tnl_sp, p4info, insert_entry);
+  return WriteTunnelSrcPortEntry(client, port_info, p4info, insert_entry);
 }
 
 //----------------------------------------------------------------------
@@ -887,18 +887,18 @@ absl::Status DoConfigTunnelSrcPortEntry(ClientInterface& client,
 
 // extracted from DoConfigSrcPortEntry (testable)
 absl::Status ConfigSrcPortEntry(ClientInterface& client,
-                                struct src_port_info vsi_sp,
+                                struct src_port_info port_info,
                                 const ::p4::config::v1::P4Info& p4info,
                                 bool insert_entry) {
-  auto host_sp = GetTxAccVsiPort(client, p4info, vsi_sp.src_port);
+  auto host_sp = GetTxAccVsiPort(client, p4info, port_info.src_port);
   if (!host_sp.ok()) return host_sp.status();
-  vsi_sp.src_port = host_sp.value();
+  port_info.src_port = host_sp.value();
 
-  return WriteVsiSrcPortTableEntry(client, vsi_sp, p4info, insert_entry);
+  return WriteVsiSrcPortTableEntry(client, port_info, p4info, insert_entry);
 }
 
 absl::Status DoConfigSrcPortEntry(ClientInterface& client,
-                                  struct src_port_info vsi_sp,
+                                  struct src_port_info port_info,
                                   bool insert_entry, const char* grpc_addr) {
   absl::Status status;
 
@@ -912,7 +912,7 @@ absl::Status DoConfigSrcPortEntry(ClientInterface& client,
   if (!status.ok()) return status;
 
   // Update P4 tables.
-  return ConfigSrcPortEntry(client, vsi_sp, p4info, insert_entry);
+  return ConfigSrcPortEntry(client, port_info, p4info, insert_entry);
 }
 
 //----------------------------------------------------------------------
