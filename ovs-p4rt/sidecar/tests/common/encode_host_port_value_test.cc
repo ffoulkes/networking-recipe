@@ -8,8 +8,8 @@
 
 #include <string>
 
-#include "ovsp4rt/ovs-p4rt.h"
 #include "core/ovsp4rt_util_int.h"
+#include "ovsp4rt/ovs-p4rt.h"
 
 namespace ovsp4rt {
 
