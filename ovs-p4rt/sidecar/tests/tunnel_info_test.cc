@@ -6,8 +6,8 @@
 #include <arpa/inet.h>
 #include <gtest/gtest.h>
 
+#include "core/ovsp4rt_util_int.h"  // GetTableId
 #include "ovsp4rt/ovs-p4rt.h"
-#include "ovsp4rt_util_int.h"  // GetTableId
 #include "p4/config/v1/p4info.pb.h"
 
 namespace ovsp4rt {

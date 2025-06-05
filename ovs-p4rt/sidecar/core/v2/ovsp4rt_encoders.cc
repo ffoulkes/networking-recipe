@@ -2,23 +2,23 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-#include "ovsp4rt_encoders.h"
+#include "core/ovsp4rt_encoders.h"
 
 #include <arpa/inet.h>
 #include <stdint.h>
 
 #include <string>
 
+#include "core/ovsp4rt_util_int.h"
 #include "logging/ovsp4rt_diag_detail.h"
 #include "ovsp4rt/ovs-p4rt.h"
-#include "ovsp4rt_util_int.h"
 #include "p4/config/v1/p4info.pb.h"
 #include "p4/v1/p4runtime.pb.h"
 
 #if defined(DPDK_TARGET)
-#include "dpdk/p4_name_mapping.h"
+#include "core/dpdk/p4_name_mapping.h"
 #elif defined(ES2K_TARGET)
-#include "es2k/p4_name_mapping.h"
+#include "core/es2k/p4_name_mapping.h"
 #endif
 
 namespace ovsp4rt {

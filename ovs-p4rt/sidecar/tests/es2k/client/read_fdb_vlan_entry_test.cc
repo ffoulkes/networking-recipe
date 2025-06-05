@@ -17,9 +17,9 @@
 // clang-format on
 
 #include "client/ovsp4rt_test_client_mock.h"
+#include "core/ovsp4rt_config_int.h"
 #include "mac_learn_info_test.h"
 #include "ovsp4rt/ovs-p4rt.h"
-#include "ovsp4rt_config_int.h"
 
 using ::testing::InvokeWithoutArgs;
 using ::testing::Return;

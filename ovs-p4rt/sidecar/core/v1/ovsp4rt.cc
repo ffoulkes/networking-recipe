@@ -7,18 +7,18 @@
 #include <string>
 
 #include "absl/flags/flag.h"
+#include "core/ovsp4rt_encoders.h"
 #include "logging/ovsp4rt_diag_detail.h"
 #include "logging/ovsp4rt_logging.h"
 #include "logging/ovsp4rt_logutils.h"
 #include "ovsp4rt/ovs-p4rt.h"
-#include "ovsp4rt_encoders.h"
 #include "session/ovsp4rt_credentials.h"
 #include "session/ovsp4rt_session.h"
 
 #if defined(DPDK_TARGET)
-#include "dpdk/p4_name_mapping.h"
+#include "core/dpdk/p4_name_mapping.h"
 #elif defined(ES2K_TARGET)
-#include "es2k/p4_name_mapping.h"
+#include "core/es2k/p4_name_mapping.h"
 #endif
 
 #define DEFAULT_OVS_P4RT_ROLE_NAME "ovs-p4rt"

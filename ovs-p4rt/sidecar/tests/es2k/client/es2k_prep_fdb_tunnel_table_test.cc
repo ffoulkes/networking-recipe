@@ -6,12 +6,12 @@
 #include <absl/status/status.h>
 #include <gtest/gtest.h>
 
-#include "es2k/p4_name_mapping.h"
+#include "core/es2k/p4_name_mapping.h"
+#include "core/ovsp4rt_config_int.h"
+#include "core/ovsp4rt_util_int.h"
 #include "logging/ovsp4rt_diag_detail.h"
 #include "mac_learn_info_test.h"
 #include "ovsp4rt/ovs-p4rt.h"
-#include "ovsp4rt_config_int.h"
-#include "ovsp4rt_util_int.h"
 #include "p4/config/v1/p4info.pb.h"
 
 namespace ovsp4rt {
