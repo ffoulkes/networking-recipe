@@ -2,8 +2,6 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// ovsprt C API functions that do not have a C++ implementation.
-
 #include <string.h>
 
 #include "ovsp4rt/ovs-p4rt.h"

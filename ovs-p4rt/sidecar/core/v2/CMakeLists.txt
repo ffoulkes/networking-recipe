@@ -6,9 +6,9 @@
 
 target_sources(ovs_sidecar_o PRIVATE
     newovsp4rt.cc
-    ovsp4rt_api_utils.cc
     ovsp4rt_do_config_int.h
     ovsp4rt_encoders.cc
+    ovsp4rt_str_to_tunnel_type.cc
 )
 
 if(BUILD_JOURNAL)
