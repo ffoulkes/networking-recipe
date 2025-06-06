@@ -6,6 +6,10 @@
 #ifndef OVSP4RT_SESSION_H_
 #define OVSP4RT_SESSION_H_
 
+#include <absl/status/status.h>
+#include <absl/status/statusor.h>
+#include <absl/time/clock.h>
+#include <absl/time/time.h>
 #include <grpcpp/grpcpp.h>
 
 #include <fstream>
@@ -13,10 +17,6 @@
 #include <sstream>
 #include <string>
 
-#include "absl/status/status.h"
-#include "absl/status/statusor.h"
-#include "absl/time/clock.h"
-#include "absl/time/time.h"
 #include "p4/v1/p4runtime.grpc.pb.h"
 #include "p4/v1/p4runtime.pb.h"
 

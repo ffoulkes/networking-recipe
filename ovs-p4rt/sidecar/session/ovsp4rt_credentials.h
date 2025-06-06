@@ -6,15 +6,13 @@
 #ifndef OVSP4RT_CREDENTIALS_H_
 #define OVSP4RT_CREDENTIALS_H_
 
+#include <absl/status/status.h>
+#include <absl/status/statusor.h>
 #include <grpcpp/grpcpp.h>
+#include <grpcpp/security/server_credentials.h>
+#include <grpcpp/security/tls_credentials_options.h>
 
 #include <string>
-
-#include "absl/status/status.h"
-#include "absl/status/statusor.h"
-#include "grpcpp/grpcpp.h"
-#include "grpcpp/security/server_credentials.h"
-#include "grpcpp/security/tls_credentials_options.h"
 
 #define DEFAULT_CERTS_DIR "/usr/share/stratum/certs/"
 

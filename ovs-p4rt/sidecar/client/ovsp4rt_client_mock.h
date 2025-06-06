@@ -4,7 +4,8 @@
 #ifndef OVSP4RT_CLIENT_MOCK_H_
 #define OVSP4RT_CLIENT_MOCK_H_
 
-#include "gmock/gmock.h"
+#include <gmock/gmock.h>
+
 #include "ovsp4rt_client_interface.h"
 
 namespace ovsp4rt {

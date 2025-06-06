@@ -4,10 +4,9 @@
 #ifndef ENCODE_BASE_TEST_H_
 #define ENCODE_BASE_TEST_H_
 
+#include <absl/flags/flag.h>
+#include <gtest/gtest.h>
 #include <stdbool.h>
-
-#include "absl/flags/flag.h"
-#include "gtest/gtest.h"
 
 ABSL_FLAG(bool, dump_json, false, "Dump JSON output");
 

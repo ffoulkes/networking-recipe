@@ -6,6 +6,7 @@
 // TODO(derek): port and vlan_ptr parameter values are truncated to
 // 8 bits. Need to fix or document why this is correct.
 
+#include <gtest/gtest.h>
 #include <stdint.h>
 
 #include <iostream>
@@ -13,7 +14,6 @@
 
 #include "base_table_test.h"
 #include "core/ovsp4rt_encoders.h"
-#include "gtest/gtest.h"
 #include "logging/ovsp4rt_diag_detail.h"
 #include "ovsp4rt/ovs-p4rt.h"
 

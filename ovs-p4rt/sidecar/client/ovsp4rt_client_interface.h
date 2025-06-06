@@ -4,8 +4,9 @@
 #ifndef OVSP4RT_CLIENT_INTERFACE_H_
 #define OVSP4RT_CLIENT_INTERFACE_H_
 
-#include "absl/status/status.h"
-#include "absl/status/statusor.h"
+#include <absl/status/status.h>
+#include <absl/status/statusor.h>
+
 #include "p4/v1/p4runtime.pb.h"
 
 namespace ovsp4rt {

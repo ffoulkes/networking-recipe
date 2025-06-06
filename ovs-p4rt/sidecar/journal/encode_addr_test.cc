@@ -3,13 +3,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #include <arpa/inet.h>
+#include <gtest/gtest.h>
 #include <stdint.h>
 
 #include <iostream>
 #include <nlohmann/json.hpp>
 
 #include "encode_base_test.h"
-#include "gtest/gtest.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "ovsp4rt_encode_inputs.h"
 

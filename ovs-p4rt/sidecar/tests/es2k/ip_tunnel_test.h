@@ -5,9 +5,9 @@
 #define IP_TUNNEL_TEST_H_
 
 #include <arpa/inet.h>
+#include <gtest/gtest.h>
 
 #include "base_table_test.h"
-#include "gtest/gtest.h"
 #include "ovsp4rt/ovs-p4rt.h"
 
 namespace ovsp4rt {

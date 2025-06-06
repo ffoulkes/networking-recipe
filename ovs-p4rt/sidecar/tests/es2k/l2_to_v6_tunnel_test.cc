@@ -3,12 +3,13 @@
 
 // Unit test for EncodeL2ToTunnelV6().
 
+#include <gtest/gtest.h>
+
 #include <iostream>
 #include <string>
 
 #include "base_table_test.h"
 #include "core/ovsp4rt_encoders.h"
-#include "gtest/gtest.h"
 #include "logging/ovsp4rt_diag_detail.h"
 #include "ovsp4rt/ovs-p4rt.h"
 

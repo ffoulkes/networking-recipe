@@ -4,15 +4,15 @@
 #ifndef TABLE_ENTRY_TEST_H_
 #define TABLE_ENTRY_TEST_H_
 
+#include <absl/flags/flag.h>
+#include <gtest/gtest.h>
 #include <stdbool.h>
 #include <stdint.h>
 
 #include <iostream>
 #include <string>
 
-#include "absl/flags/flag.h"
 #include "google/protobuf/util/json_util.h"
-#include "gtest/gtest.h"
 #include "p4/config/v1/p4info.pb.h"
 #include "p4info_text.h"
 #include "stratum/lib/utils.h"

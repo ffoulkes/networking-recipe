@@ -4,6 +4,7 @@
 
 // Unit test for EncodeL2FwdTxTablePrologue()
 
+#include <gtest/gtest.h>
 #include <stdint.h>
 
 #include <iostream>
@@ -11,7 +12,6 @@
 
 #include "base_table_test.h"
 #include "core/ovsp4rt_encoders.h"
-#include "gtest/gtest.h"
 #include "ovsp4rt/ovs-p4rt.h"
 
 namespace ovsp4rt {

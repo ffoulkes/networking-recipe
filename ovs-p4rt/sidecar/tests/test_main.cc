@@ -1,8 +1,8 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-#include "absl/flags/parse.h"
-#include "gtest/gtest.h"
+#include <absl/flags/parse.h>
+#include <gtest/gtest.h>
 
 int main(int argc, char** argv) {
   // As part of initialization, this function parses the command line,
