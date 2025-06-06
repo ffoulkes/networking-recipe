@@ -14,7 +14,7 @@
 
 #include "basic_test.h"
 #include "client/ovsp4rt_test_client_mock.h"
-#include "core/ovsp4rt_util_int.h"  // EncodeByteValue
+#include "core/common/ovsp4rt_core_utils.h"  // EncodeByteValue
 #include "core/v2/ovsp4rt_do_config_int.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "p4/config/v1/p4info.pb.h"

@@ -8,7 +8,7 @@
 #include <arpa/inet.h>
 #include <gtest/gtest.h>
 
-#include "core/ovsp4rt_util_int.h"
+#include "core/common/ovsp4rt_core_utils.h"
 #include "ovsp4rt/ovs-p4rt.h"
 
 namespace ovsp4rt {

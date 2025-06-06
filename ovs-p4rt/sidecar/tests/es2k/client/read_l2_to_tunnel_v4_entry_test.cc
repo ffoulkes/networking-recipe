@@ -18,7 +18,7 @@
 
 #include "basic_test.h"
 #include "client/ovsp4rt_test_client_mock.h"
-#include "core/ovsp4rt_config_int.h"
+#include "core/common/ovsp4rt_entry_utils.h"
 #include "ovsp4rt/ovs-p4rt.h"
 
 using ::testing::InvokeWithoutArgs;
