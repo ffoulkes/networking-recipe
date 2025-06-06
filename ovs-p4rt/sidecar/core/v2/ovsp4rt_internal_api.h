@@ -5,8 +5,8 @@
 // Defines the internal interface to the C++ DoConfigEntry functions,
 // which are invoked by the C API wrappers.
 
-#ifndef OVSP4RT_DO_CONFIG_INT_H_
-#define OVSP4RT_DO_CONFIG_INT_H_
+#ifndef OVSP4RT_INTERNAL_API_H_
+#define OVSP4RT_INTERNAL_API_H_
 
 #include <absl/status/status.h>
 
@@ -51,4 +51,4 @@ extern absl::Status DoConfigVlanEntry(ClientInterface& client, uint16_t vlan_id,
 
 }  // namespace ovsp4rt
 
-#endif  // OVSP4RT_DO_CONFIG_INT_H_
+#endif  // OVSP4RT_INTERNAL_API_H_

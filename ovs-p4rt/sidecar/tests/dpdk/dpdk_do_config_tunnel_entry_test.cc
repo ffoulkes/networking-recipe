@@ -13,7 +13,7 @@
 // clang-format on
 
 #include "client/ovsp4rt_test_client_mock.h"
-#include "core/v2/ovsp4rt_do_config_int.h"
+#include "core/v2/ovsp4rt_internal_api.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "p4/config/v1/p4info.pb.h"
 #include "p4info_text.h"

@@ -15,7 +15,7 @@
 #include "logging/ovsp4rt_logging.h"
 #include "logging/ovsp4rt_logutils.h"
 #include "ovsp4rt/ovs-p4rt.h"
-#include "ovsp4rt_do_config_int.h"
+#include "ovsp4rt_internal_api.h"
 
 #if defined(DPDK_TARGET)
 #include "core/dpdk/p4_name_mapping.h"
