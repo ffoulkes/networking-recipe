@@ -15,10 +15,11 @@
 #include <string>
 
 #ifdef DUMP_JSON
-#include "absl/flags/flag.h"
-#include "google/protobuf/util/json_util.h"
+#include <absl/flags/flag.h>
+#include <google/protobuf/util/json_util.h>
 #endif
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
+
 #include "p4/config/v1/p4info.pb.h"
 #include "p4/v1/p4runtime.pb.h"
 #include "p4info_helper.h"

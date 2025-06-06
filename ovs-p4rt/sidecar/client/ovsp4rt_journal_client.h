@@ -4,8 +4,9 @@
 #ifndef OVSP4RT_JOURNAL_CLIENT_H_
 #define OVSP4RT_JOURNAL_CLIENT_H_
 
-#include "absl/status/status.h"
-#include "absl/status/statusor.h"
+#include <absl/status/status.h>
+#include <absl/status/statusor.h>
+
 #include "client/ovsp4rt_client.h"
 #include "journal/ovsp4rt_journal.h"
 #include "p4/v1/p4runtime.pb.h"

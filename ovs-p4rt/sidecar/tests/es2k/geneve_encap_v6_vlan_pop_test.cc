@@ -3,13 +3,13 @@
 
 // Unit test for EncodeV6GeneveEncapAndVlanPopTableEntry().
 
+#include <gtest/gtest.h>
 #include <stdint.h>
 
 #include <iostream>
 #include <string>
 
 #include "core/ovsp4rt_encoders.h"
-#include "gtest/gtest.h"
 #include "ip_tunnel_test.h"
 #include "ovsp4rt/ovs-p4rt.h"
 

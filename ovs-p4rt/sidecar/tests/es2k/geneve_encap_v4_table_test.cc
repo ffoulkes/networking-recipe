@@ -3,10 +3,10 @@
 
 // Unit test for EncodeGeneveEncapTableEntry().
 
+#include <gtest/gtest.h>
 #include <stdint.h>
 
 #include "core/ovsp4rt_encoders.h"
-#include "gtest/gtest.h"
 #include "ip_tunnel_test.h"
 #include "ovsp4rt/ovs-p4rt.h"
 

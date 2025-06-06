@@ -2,11 +2,11 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
+#include <absl/flags/flag.h>
 #include <arpa/inet.h>
 
 #include <string>
 
-#include "absl/flags/flag.h"
 #include "core/ovsp4rt_encoders.h"
 #include "logging/ovsp4rt_diag_detail.h"
 #include "logging/ovsp4rt_logging.h"

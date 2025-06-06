@@ -5,12 +5,13 @@
 
 #include "ovsp4rt_session.h"
 
+#include <absl/status/status.h>
+#include <absl/status/statusor.h>
+#include <grpcpp/channel.h>
+#include <grpcpp/create_channel.h>
+
 #include <string>
 
-#include "absl/status/status.h"
-#include "absl/status/statusor.h"
-#include "grpcpp/channel.h"
-#include "grpcpp/create_channel.h"
 #include "p4/v1/p4runtime.grpc.pb.h"
 #include "p4/v1/p4runtime.pb.h"
 #include "stratum/glue/status/status.h"
