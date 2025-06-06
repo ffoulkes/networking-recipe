@@ -5,8 +5,8 @@
 
 #include <gtest/gtest.h>
 
-#include "es2k/p4_name_mapping.h"
-#include "ovsp4rt_config_int.h"
+#include "core/es2k/p4_name_mapping.h"
+#include "core/ovsp4rt_config_int.h"
 #include "tunnel_info_test.h"
 
 namespace ovsp4rt {

@@ -1,6 +1,6 @@
-# CMake build file for ovs-p4rt/dpdk
+# CMake build file for ovs-p4rt/sidecar/core/dpdk
 #
-# Copyright 2022-2024 Intel Corporation
+# Copyright 2022-2025 Intel Corporation
 # SPDX-License-Identifier: Apache 2.0
 
 target_sources(ovs_sidecar_o PRIVATE

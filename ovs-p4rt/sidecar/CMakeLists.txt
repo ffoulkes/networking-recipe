@@ -21,43 +21,15 @@ if(TEST_COVERAGE)
     add_compile_options(-fprofile-arcs -ftest-coverage)
 endif()
 
-if(BUILD_CLIENT)
-  set(CLIENT_SOURCES newovsp4rt.cc ovsp4rt_encoders.cc)
-else()
-  set(CLIENT_SOURCES ovsp4rt.cc)
-endif()
-
 #-----------------------------------------------------------------------
 # ovs_sidecar_o
 #-----------------------------------------------------------------------
 add_library(ovs_sidecar_o OBJECT
-    ${CLIENT_SOURCES}
+    # Public interface header.
     ${OVSP4RT_INCLUDE_DIR}/ovsp4rt/ovs-p4rt.h
-    ovsp4rt_config_int.h
-    ovsp4rt_encoders.h
 )
 
-if(BUILD_CLIENT)
-  if(BUILD_JOURNAL)
-    target_sources(ovs_sidecar_o PRIVATE
-      ovsp4rt_api_utils.cc
-      ovsp4rt_do_config_int.h
-      ovsp4rt_journal_api.cc
-    )
-  else()
-    target_sources(ovs_sidecar_o PRIVATE
-      ovsp4rt_api_utils.cc
-      ovsp4rt_do_config_int.h
-      ovsp4rt_standard_api.cc
-    )
-  endif()
-endif()
-
-if(DPDK_TARGET)
-    add_subdirectory(dpdk)
-elseif(ES2K_TARGET)
-    add_subdirectory(es2k)
-endif()
+add_subdirectory(core)
 
 target_include_directories(ovs_sidecar_o PUBLIC
     ${OVSP4RT_INCLUDE_DIR}
