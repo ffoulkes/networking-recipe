@@ -2,14 +2,14 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-#include "core/ovsp4rt_encoders.h"
+#include "core/common/ovsp4rt_encoders.h"
 
 #include <arpa/inet.h>
 #include <stdint.h>
 
 #include <string>
 
-#include "core/ovsp4rt_util_int.h"
+#include "core/common/ovsp4rt_core_utils.h"
 #include "logging/ovsp4rt_diag_detail.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "p4/config/v1/p4info.pb.h"

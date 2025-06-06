@@ -10,7 +10,7 @@
 #include <stdint.h>
 
 #include "base_table_test.h"
-#include "core/ovsp4rt_encoders.h"
+#include "core/common/ovsp4rt_encoders.h"
 #include "ovsp4rt/ovs-p4rt.h"
 
 namespace ovsp4rt {

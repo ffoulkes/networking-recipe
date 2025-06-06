@@ -10,7 +10,7 @@
 #include <string>
 
 #include "base_table_test.h"
-#include "core/ovsp4rt_encoders.h"
+#include "core/common/ovsp4rt_encoders.h"
 #include "logging/ovsp4rt_diag_detail.h"
 #include "ovsp4rt/ovs-p4rt.h"
 

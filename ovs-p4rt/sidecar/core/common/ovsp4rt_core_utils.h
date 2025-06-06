@@ -2,10 +2,10 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Private utility functions.
+// Core utility functions.
 
-#ifndef OVSP4RT_UTIL_INT_H_
-#define OVSP4RT_UTIL_INT_H_
+#ifndef OVSP4RT_CORE_UTILS_H_
+#define OVSP4RT_CORE_UTILS_H_
 
 #include <stdarg.h>
 
@@ -32,4 +32,4 @@ extern int GetTableId(const ::p4::config::v1::P4Info& p4info,
 
 }  // namespace ovsp4rt
 
-#endif  // OVSP4RT_UTIL_INT_H_
+#endif  // OVSP4RT_CORE_UTILS_H_

@@ -1,15 +1,10 @@
 # CMake build file for ovs-p4rt/sidecar/core
 #
-# Copyright 2025 Intel Corporation
+# Copyright 2025 Derek Foster
 # SPDX-License-Identifier: Apache 2.0
 #
 
-target_sources(ovs_sidecar_o PRIVATE
-    # Internal interface headers.
-    ovsp4rt_config_int.h
-    ovsp4rt_encoders.h
-    ovsp4rt_util_int.h
-)
+add_subdirectory(common)
 
 if(DPDK_TARGET)
     add_subdirectory(dpdk)

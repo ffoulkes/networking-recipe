@@ -2,8 +2,10 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-#ifndef OVSP4RT_CONFIG_INT_H_
-#define OVSP4RT_CONFIG_INT_H_
+// Table entry utility functions.
+
+#ifndef OVSP4RT_ENTRY_UTILS_H_
+#define OVSP4RT_ENTRY_UTILS_H_
 
 #include <absl/status/status.h>
 #include <absl/status/statusor.h>
@@ -177,4 +179,4 @@ extern absl::Status WriteVsiSrcPortTableEntry(
 
 }  // namespace ovsp4rt
 
-#endif  // OVSP4RT_CONFIG_INT_H_
+#endif  // OVSP4RT_ENTRY_UTILS_H_

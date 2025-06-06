@@ -8,9 +8,9 @@
 #include <string>
 
 #include "client/ovsp4rt_client.h"
-#include "core/ovsp4rt_config_int.h"
-#include "core/ovsp4rt_encoders.h"
-#include "core/ovsp4rt_util_int.h"
+#include "core/common/ovsp4rt_core_utils.h"
+#include "core/common/ovsp4rt_encoders.h"
+#include "core/common/ovsp4rt_entry_utils.h"
 #include "logging/ovsp4rt_diag_detail.h"
 #include "logging/ovsp4rt_logging.h"
 #include "logging/ovsp4rt_logutils.h"

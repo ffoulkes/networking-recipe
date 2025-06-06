@@ -1,8 +1,8 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
+#include "core/common/ovsp4rt_entry_utils.h"
 #include "core/es2k/p4_name_mapping.h"
-#include "core/ovsp4rt_config_int.h"
 #include "mac_learn_info_test.h"
 #include "ovsp4rt/ovs-p4rt.h"
 #include "p4/config/v1/p4info.pb.h"

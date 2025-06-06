@@ -9,7 +9,7 @@
 #include <iostream>
 #include <string>
 
-#include "core/ovsp4rt_encoders.h"
+#include "core/common/ovsp4rt_encoders.h"
 #include "ip_tunnel_test.h"
 #include "ovsp4rt/ovs-p4rt.h"
 

@@ -1,6 +1,7 @@
 # CMake build file for ovs-p4rt/sidecar
 #
-# Copyright 2022-2025 Intel Corporation
+# Copyright 2022-2024 Intel Corporation
+# Copyright 2025 Derek Foster
 # SPDX-License-Identifier: Apache 2.0
 #
 
