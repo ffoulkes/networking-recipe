@@ -16,8 +16,7 @@
 
 #ifdef DUMP_JSON
 #include <absl/flags/flag.h>
-
-#include "google/protobuf/util/json_util.h"
+#include <google/protobuf/util/json_util.h>
 #endif
 #include <gtest/gtest.h>
 
