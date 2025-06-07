@@ -502,44 +502,6 @@ absl::Status DoConfigRxTunnelSrcEntry(ClientInterface& client,
                                         insert_entry);
 }
 
-//----------------------------------------------------------------------
-// DoConfigTunnelSrcPortEntry (ES2K)
-//----------------------------------------------------------------------
-
-// extracted from DoConfigTunnelSrcPortEntry (testable)
-absl::Status WriteTunnelSrcPortEntry(ClientInterface& client,
-                                     const struct src_port_info& port_info,
-                                     const ::p4::config::v1::P4Info& p4info,
-                                     bool insert_entry) {
-  ::p4::v1::WriteRequest write_request;
-  ::p4::v1::TableEntry* table_entry;
-
-  table_entry = client.initWriteRequest(&write_request, insert_entry);
-
-  EncodeSrcPortTableEntry(table_entry, port_info, p4info, insert_entry);
-
-  return client.sendWriteRequest(write_request);
-}
-
-absl::Status DoConfigTunnelSrcPortEntry(ClientInterface& client,
-                                        const struct src_port_info& port_info,
-                                        bool insert_entry,
-                                        const char* grpc_addr) {
-  absl::Status status;
-
-  // Start a new client session.
-  status = client.connect(grpc_addr);
-  if (!status.ok()) return status;
-
-  // Fetch P4Info object from server.
-  ::p4::config::v1::P4Info p4info;
-  status = client.getPipelineConfig(&p4info);
-  if (!status.ok()) return status;
-
-  // Update P4 tables.
-  return WriteTunnelSrcPortEntry(client, port_info, p4info, insert_entry);
-}
-
 #elif defined(DPDK_TARGET)
 
 //----------------------------------------------------------------------

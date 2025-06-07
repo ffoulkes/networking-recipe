@@ -14,6 +14,7 @@ if(ES2K_TARGET)
   target_sources(ovs_sidecar_o PRIVATE
       do_config_ip_mac_map_entry.cc
       do_config_src_port_entry.cc
+      do_config_tunnel_src_port_entry.cc
       do_config_vlan_entry.cc
   )
 endif()
