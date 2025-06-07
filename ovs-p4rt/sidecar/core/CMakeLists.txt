@@ -14,6 +14,7 @@ endif()
 
 if(BUILD_CLIENT)
     # Revised (v2) implementation.
+    add_subdirectory(api)
     add_subdirectory(v2)
 else()
     # Original (v1) implementation.
