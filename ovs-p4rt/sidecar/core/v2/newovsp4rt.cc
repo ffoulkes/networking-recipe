@@ -2,12 +2,12 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-#include <absl/flags/flag.h>
 #include <arpa/inet.h>
 
 #include <string>
 
 #include "client/ovsp4rt_client.h"
+#include "core/api/ovsp4rt_internal_api.h"
 #include "core/common/ovsp4rt_core_utils.h"
 #include "core/common/ovsp4rt_encoders.h"
 #include "core/common/ovsp4rt_entry_utils.h"
@@ -15,7 +15,6 @@
 #include "logging/ovsp4rt_logging.h"
 #include "logging/ovsp4rt_logutils.h"
 #include "ovsp4rt/ovs-p4rt.h"
-#include "ovsp4rt_internal_api.h"
 
 #if defined(DPDK_TARGET)
 #include "core/dpdk/p4_name_mapping.h"
