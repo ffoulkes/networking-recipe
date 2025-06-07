@@ -19,18 +19,6 @@
 namespace ovsp4rt {
 
 //----------------------------------------------------------------------
-// Get functions
-//----------------------------------------------------------------------
-
-#if defined(ES2K_TARGET)
-
-extern absl::StatusOr<uint32_t> GetTxAccVsiPort(
-    ClientInterface& client, const ::p4::config::v1::P4Info& p4info,
-    uint32_t src_port);
-
-#endif  // ES2K_TARGET
-
-//----------------------------------------------------------------------
 // Prepare functions
 //----------------------------------------------------------------------
 
@@ -91,10 +79,6 @@ extern absl::StatusOr<::p4::v1::ReadResponse> ReadL2ToTunnelV4TableEntry(
 
 extern absl::StatusOr<::p4::v1::ReadResponse> ReadL2ToTunnelV6TableEntry(
     ClientInterface& client, const struct mac_learning_info& learn_info,
-    const ::p4::config::v1::P4Info& p4info);
-
-extern absl::StatusOr<::p4::v1::ReadResponse> ReadTxAccVsiTableEntry(
-    ClientInterface& client, uint32_t sp,
     const ::p4::config::v1::P4Info& p4info);
 
 extern absl::StatusOr<::p4::v1::ReadResponse> ReadVmDstTableEntry(

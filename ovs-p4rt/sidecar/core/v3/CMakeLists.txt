@@ -17,5 +17,7 @@ if(ES2K_TARGET)
       do_config_src_port_entry.cc
       do_config_tunnel_src_port_entry.cc
       do_config_vlan_entry.cc
+      tx_acc_vsi_table_entry.cc
+      tx_acc_vsi_table_entry.h
   )
 endif()

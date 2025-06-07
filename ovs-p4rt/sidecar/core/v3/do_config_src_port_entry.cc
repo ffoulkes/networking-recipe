@@ -11,8 +11,8 @@
 #include "client/ovsp4rt_client_interface.h"
 #include "core/api/ovsp4rt_internal_api.h"
 #include "core/common/ovsp4rt_encoders.h"
-#include "core/common/ovsp4rt_entry_utils.h"
 #include "ovsp4rt/ovs-p4rt.h"
+#include "tx_acc_vsi_table_entry.h"
 
 namespace ovsp4rt {
 

@@ -15,6 +15,7 @@
 #include "logging/ovsp4rt_logging.h"
 #include "logging/ovsp4rt_logutils.h"
 #include "ovsp4rt/ovs-p4rt.h"
+#include "tx_acc_vsi_table_entry.h"
 
 #if defined(DPDK_TARGET)
 #include "core/dpdk/p4_name_mapping.h"
@@ -258,51 +259,6 @@ absl::StatusOr<::p4::v1::ReadResponse> ReadFdbVlanTableEntry(
   return client.sendReadRequest(read_request);
 }
 
-// called-by: DoConfigSrcPortEntry, UpdateFdbSrcPortInfo
-absl::StatusOr<::p4::v1::ReadResponse> ReadTxAccVsiTableEntry(
-    ClientInterface& client, uint32_t sp,
-    const ::p4::config::v1::P4Info& p4info) {
-  ::p4::v1::ReadRequest read_request;
-  ::p4::v1::TableEntry* table_entry;
-
-  table_entry = client.initReadRequest(&read_request);
-
-  EncodeTxAccVsiTableEntry(table_entry, sp, p4info);
-
-  return client.sendReadRequest(read_request);
-}
-
-absl::StatusOr<uint32_t> GetTxAccVsiPort(ClientInterface& client,
-                                         const ::p4::config::v1::P4Info& p4info,
-                                         uint32_t src_port) {
-  auto response_or_status = ReadTxAccVsiTableEntry(client, src_port, p4info);
-  auto status = response_or_status.status();
-  if (!status.ok()) return status;
-
-  ::p4::v1::ReadResponse read_response = std::move(response_or_status).value();
-
-  int param_id =
-      GetParamId(p4info, TX_ACC_VSI_TABLE_ACTION_L2_FWD_AND_BYPASS_BRIDGE,
-                 ACTION_L2_FWD_AND_BYPASS_BRIDGE_PARAM_PORT);
-
-  for (const auto& entity : read_response.entities()) {
-    const p4::v1::TableEntry table_entry = entity.table_entry();
-    const auto& table_action = table_entry.action();
-    const auto& action = table_action.action();
-    for (const auto& param : action.params()) {
-      if (param.param_id() == param_id) {
-        const std::string val = param.value();
-        uint32_t host_sp = 0;
-        for (int i = 0; i < val.size(); i++) {
-          host_sp = ((host_sp << 8) | (val[i] & 0xff));
-        }
-        return host_sp;
-      }
-    }
-  }
-  return absl::InternalError("Missing port parameter");
-}
-
 #endif  // ES2K_TARGET
 
 #if defined(ES2K_TARGET)
@@ -402,10 +358,6 @@ absl::Status ConfigFdbVlanEntry(ClientInterface& client,
 
   return absl::OkStatus();
 }
-
-//----------------------------------------------------------------------
-// C++ functions that implement the public API.
-//----------------------------------------------------------------------
 
 //----------------------------------------------------------------------
 // DoConfigFdbEntry (ES2K)
