@@ -1,10 +1,11 @@
-# CMake build file for ovs-p4rt/sidecar/core/v2
+# CMake build file for ovs-p4rt/sidecar/core/v3
 #
 # Copyright 2025 Derek Foster
 # SPDX-License-Identifier: Apache 2.0
 #
 
 target_sources(ovs_sidecar_o PRIVATE
+    do_config_ip_mac_map_entry.cc
     ovsp4rt_encoders.cc
-    ovsp4rt_v2.cc
+    ovsp4rt_v3.cc
 )
