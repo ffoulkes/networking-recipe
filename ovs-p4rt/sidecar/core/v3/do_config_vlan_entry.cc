@@ -4,6 +4,10 @@
 
 // Implements DoConfigVlanEntry() (ES2K)
 
+#if !defined(ES2K_TARGET)
+#error "ASSERT: Target type must be ES2K_TARGET"
+#endif
+
 #include "client/ovsp4rt_client_interface.h"
 #include "core/api/ovsp4rt_internal_api.h"
 #include "core/common/ovsp4rt_encoders.h"

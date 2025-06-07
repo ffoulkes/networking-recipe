@@ -5,8 +5,14 @@
 #
 
 target_sources(ovs_sidecar_o PRIVATE
-    do_config_ip_mac_map_entry.cc
-    do_config_vlan_entry.cc
+    do_config_tunnel_entry.cc
     ovsp4rt_encoders.cc
     ovsp4rt_v3.cc
 )
+
+if(ES2K_TARGET)
+  target_sources(ovs_sidecar_o PRIVATE
+      do_config_ip_mac_map_entry.cc
+      do_config_vlan_entry.cc
+  )
+endif()

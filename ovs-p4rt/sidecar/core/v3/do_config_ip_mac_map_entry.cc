@@ -4,6 +4,10 @@
 
 // Implements DoConfigIpMacMapEntry() (ES2K)
 
+#if !defined(ES2K_TARGET)
+#error "ASSERT: Target type must be ES2K_TARGET"
+#endif
+
 #include <absl/status/status.h>
 #include <absl/status/statusor.h>
 #include <arpa/inet.h>
