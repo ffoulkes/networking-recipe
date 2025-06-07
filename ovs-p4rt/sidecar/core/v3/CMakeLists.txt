@@ -6,6 +6,7 @@
 
 target_sources(ovs_sidecar_o PRIVATE
     do_config_ip_mac_map_entry.cc
+    do_config_vlan_entry.cc
     ovsp4rt_encoders.cc
     ovsp4rt_v3.cc
 )
