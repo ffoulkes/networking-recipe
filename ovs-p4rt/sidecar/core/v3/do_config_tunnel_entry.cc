@@ -4,6 +4,8 @@
 
 // Implements DoConfigTunnelEntry() (dpdk, es2k)
 
+#include <arpa/inet.h>
+
 #include "client/ovsp4rt_client_interface.h"
 #include "core/api/ovsp4rt_internal_api.h"
 #include "core/common/ovsp4rt_encoders.h"

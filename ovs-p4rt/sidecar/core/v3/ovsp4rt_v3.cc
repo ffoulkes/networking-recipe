@@ -303,21 +303,6 @@ absl::StatusOr<uint32_t> GetTxAccVsiPort(ClientInterface& client,
   return absl::InternalError("Missing port parameter");
 }
 
-// called-by: DoConfigSrcPortEntry (es2k)
-absl::Status WriteVsiSrcPortTableEntry(ClientInterface& client,
-                                       const struct src_port_info& port_info,
-                                       const ::p4::config::v1::P4Info& p4info,
-                                       bool insert_entry) {
-  ::p4::v1::WriteRequest write_request;
-  ::p4::v1::TableEntry* table_entry;
-
-  table_entry = client.initWriteRequest(&write_request, insert_entry);
-
-  EncodeSrcPortTableEntry(table_entry, port_info, p4info, insert_entry);
-
-  return client.sendWriteRequest(write_request);
-}
-
 // extracted from WriteRxTunnelSrcPortTableEntry
 void PrepareRxTunnelSrcPortTableEntry(p4::v1::TableEntry* table_entry,
                                       const struct tunnel_info& tunnel_info,
@@ -553,43 +538,6 @@ absl::Status DoConfigTunnelSrcPortEntry(ClientInterface& client,
 
   // Update P4 tables.
   return WriteTunnelSrcPortEntry(client, port_info, p4info, insert_entry);
-}
-
-//----------------------------------------------------------------------
-// DoConfigSrcPortEntry (ES2K)
-//
-// vsi_sp is passed by value because this function makes local
-// modifications to it.
-//----------------------------------------------------------------------
-
-// extracted from DoConfigSrcPortEntry (testable)
-absl::Status ConfigSrcPortEntry(ClientInterface& client,
-                                struct src_port_info port_info,
-                                const ::p4::config::v1::P4Info& p4info,
-                                bool insert_entry) {
-  auto host_sp = GetTxAccVsiPort(client, p4info, port_info.src_port);
-  if (!host_sp.ok()) return host_sp.status();
-  port_info.src_port = host_sp.value();
-
-  return WriteVsiSrcPortTableEntry(client, port_info, p4info, insert_entry);
-}
-
-absl::Status DoConfigSrcPortEntry(ClientInterface& client,
-                                  struct src_port_info port_info,
-                                  bool insert_entry, const char* grpc_addr) {
-  absl::Status status;
-
-  // Start a new client session.
-  status = client.connect(grpc_addr);
-  if (!status.ok()) return status;
-
-  // Fetch P4Info object from server.
-  ::p4::config::v1::P4Info p4info;
-  status = client.getPipelineConfig(&p4info);
-  if (!status.ok()) return status;
-
-  // Update P4 tables.
-  return ConfigSrcPortEntry(client, port_info, p4info, insert_entry);
 }
 
 #elif defined(DPDK_TARGET)
