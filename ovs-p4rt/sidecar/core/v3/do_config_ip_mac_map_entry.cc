@@ -127,7 +127,6 @@ try_dstip:
 //----------------------------------------------------------------------
 // DoConfigIpMacMapEntry
 //----------------------------------------------------------------------
-
 absl::Status DoConfigIpMacMapEntry(ClientInterface& client,
                                    const struct ip_mac_map_info& ip_info,
                                    bool insert_entry, const char* grpc_addr) {

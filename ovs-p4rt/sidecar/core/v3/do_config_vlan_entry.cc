@@ -58,7 +58,6 @@ absl::Status ConfigVlanEntry(ClientInterface& client, uint16_t vlan_id,
 //----------------------------------------------------------------------
 // DoConfigVlanEntry
 //----------------------------------------------------------------------
-
 absl::Status DoConfigVlanEntry(ClientInterface& client, uint16_t vlan_id,
                                bool insert_entry, const char* grpc_addr) {
   absl::Status status;

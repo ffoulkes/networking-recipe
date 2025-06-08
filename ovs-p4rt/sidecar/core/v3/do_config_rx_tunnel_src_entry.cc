@@ -48,7 +48,6 @@ absl::Status WriteRxTunnelSrcPortTableEntry(
 //----------------------------------------------------------------------
 // DoConfigRxTunnelSrcEntry
 //----------------------------------------------------------------------
-
 absl::Status DoConfigRxTunnelSrcEntry(ClientInterface& client,
                                       const struct tunnel_info& tunnel_info,
                                       bool insert_entry,

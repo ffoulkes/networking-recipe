@@ -47,7 +47,6 @@ absl::Status ConfigSrcPortEntry(ClientInterface& client,
 // vsi_sp is passed by value because this function makes local
 // modifications to it.
 //----------------------------------------------------------------------
-
 absl::Status DoConfigSrcPortEntry(ClientInterface& client,
                                   struct src_port_info port_info,
                                   bool insert_entry, const char* grpc_addr) {

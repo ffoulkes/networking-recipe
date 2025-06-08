@@ -33,7 +33,6 @@ absl::Status WriteTunnelSrcPortEntry(ClientInterface& client,
 //----------------------------------------------------------------------
 // DoConfigTunnelSrcPortEntry
 //----------------------------------------------------------------------
-
 absl::Status DoConfigTunnelSrcPortEntry(ClientInterface& client,
                                         const struct src_port_info& port_info,
                                         bool insert_entry,
