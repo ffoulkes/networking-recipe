@@ -8,7 +8,7 @@ if(DPDK_TARGET)
     target_sources(ovs_sidecar_o PRIVATE
         dpdk_config_fdb_entry.cc
         dpdk_config_tunnel_entry.cc
-        ovsp4rt_encoders.cc
+        dpdk_encoders.cc
     )
 elseif(ES2K_TARGET)
     target_sources(ovs_sidecar_o PRIVATE
@@ -19,7 +19,7 @@ elseif(ES2K_TARGET)
         do_config_vlan_entry.cc
         es2k_config_fdb_entry.cc
         es2k_config_tunnel_entry.cc
-        ovsp4rt_encoders.cc
+        es2k_encoders.cc
         tx_acc_vsi_table_entry.cc
         tx_acc_vsi_table_entry.h
     )
