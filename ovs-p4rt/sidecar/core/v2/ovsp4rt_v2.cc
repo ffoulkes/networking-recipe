@@ -6,7 +6,7 @@
 
 #include <string>
 
-#include "client/ovsp4rt_client.h"
+#include "client/ovsp4rt_client_interface.h"
 #include "core/api/ovsp4rt_internal_api.h"
 #include "core/common/ovsp4rt_core_utils.h"
 #include "core/common/ovsp4rt_encoders.h"

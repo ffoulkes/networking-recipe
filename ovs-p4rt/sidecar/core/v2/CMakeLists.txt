@@ -5,6 +5,6 @@
 #
 
 target_sources(ovs_sidecar_o PRIVATE
-    newovsp4rt.cc
     ovsp4rt_encoders.cc
+    ovsp4rt_v2.cc
 )
