@@ -5,13 +5,13 @@
 #
 
 if(DPDK_TARGET)
-    target_sources(ovs_sidecar_o PRIVATE
+    target_sources(ovsp4rt_core_o PRIVATE
         dpdk_config_fdb_entry.cc
         dpdk_config_tunnel_entry.cc
         dpdk_encoders.cc
     )
 elseif(ES2K_TARGET)
-    target_sources(ovs_sidecar_o PRIVATE
+    target_sources(ovsp4rt_core_o PRIVATE
         do_config_ip_mac_map_entry.cc
         do_config_rx_tunnel_src_entry.cc
         do_config_src_port_entry.cc

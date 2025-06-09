@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache 2.0
 #
 
-target_sources(ovs_sidecar_o PRIVATE
+target_sources(ovsp4rt_core_o PRIVATE
     ovsp4rt_encoders.cc
     ovsp4rt_v2.cc
 )

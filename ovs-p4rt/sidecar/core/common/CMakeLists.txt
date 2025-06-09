@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache 2.0
 #
 
-target_sources(ovs_sidecar_o PRIVATE
+target_sources(ovsp4rt_core_o PRIVATE
     # Internal interface headers.
     ovsp4rt_core_utils.h
     ovsp4rt_encoders.h
