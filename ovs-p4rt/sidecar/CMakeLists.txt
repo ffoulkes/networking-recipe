@@ -23,29 +23,29 @@ if(TEST_COVERAGE)
 endif()
 
 #-----------------------------------------------------------------------
-# ovs_sidecar_o
+# ovsp4rt_core_o
 #-----------------------------------------------------------------------
-add_library(ovs_sidecar_o OBJECT
+add_library(ovsp4rt_core_o OBJECT
     # Public interface header.
     ${OVSP4RT_INCLUDE_DIR}/ovsp4rt/ovs-p4rt.h
 )
 
 add_subdirectory(core)
 
-target_include_directories(ovs_sidecar_o PUBLIC
+target_include_directories(ovsp4rt_core_o PUBLIC
     ${OVSP4RT_INCLUDE_DIR}
     ${SIDECAR_SOURCE_DIR}
     ${STRATUM_SOURCE_DIR}
 )
 
-target_link_libraries(ovs_sidecar_o PUBLIC
+target_link_libraries(ovsp4rt_core_o PUBLIC
     p4_role_config_proto
     p4runtime_proto
     stratum_utils
 )
 
 #-----------------------------------------------------------------------
-# libovsp4rt_client_o
+# ovsp4rt_client_o
 #-----------------------------------------------------------------------
 if(BUILD_CLIENT)
     add_subdirectory(client)
@@ -53,7 +53,7 @@ if(BUILD_CLIENT)
 endif()
 
 #-----------------------------------------------------------------------
-# libovsp4rt_journal_o
+# ovsp4rt_journal_o
 #-----------------------------------------------------------------------
 if(BUILD_JOURNAL)
     add_subdirectory(journal)
@@ -74,7 +74,7 @@ add_subdirectory(session)
 # libovsp4rt.so
 #-----------------------------------------------------------------------
 add_library(ovsp4rt SHARED
-    $<TARGET_OBJECTS:ovs_sidecar_o>
+    $<TARGET_OBJECTS:ovsp4rt_core_o>
     ${OVSP4RT_CLIENT_OBJECTS}
     ${OVSP4RT_JOURNAL_OBJECTS}
     $<TARGET_OBJECTS:ovsp4rt_logging_o>
@@ -105,7 +105,7 @@ if(TEST_COVERAGE)
 # against libovsp4rt.so.
 #-----------------------------------------------------------------------
 add_library(ovsp4rt_static STATIC
-    $<TARGET_OBJECTS:ovs_sidecar_o>
+    $<TARGET_OBJECTS:ovsp4rt_core_o>
     ${OVSP4RT_CLIENT_OBJECTS}
     ${OVSP4RT_JOURNAL_OBJECTS}
     $<TARGET_OBJECTS:ovsp4rt_logging_o>
