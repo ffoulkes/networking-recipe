@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 Intel Corporation.
+ * Copyright (c) 2024-2025 Intel Corporation.
  * SPDX-License-Identifier: Apache-2.0
  *
  * Test double (spy) for the ovsp4rt_config_fdb_entry API.
@@ -52,8 +52,9 @@ void ovsp4rt_config_fdb_entry(struct mac_learning_info learn_info,
   if (learn_local_ip.family == AF_INET) {
     local_ip["ipv4_addr"] = {learn_local_ip.ip.v4addr.s_addr};
   } else if (learn_local_ip.family == AF_INET6) {
-    const uint32_t* v6addr = &learn_local_ip.ip.v6addr.__in6_u.__u6_addr32[0];
-    local_ip["ipv6_addr"] = {v6addr[0], v6addr[1], v6addr[2], v6addr[3]};
+    const uint16_t* v6addr = &learn_local_ip.ip.v6addr.__in6_u.__u6_addr16[0];
+    local_ip["ipv6_addr"] = {v6addr[0], v6addr[1], v6addr[2], v6addr[3],
+                             v6addr[4], v6addr[5], v6addr[6], v6addr[7]};
   }
 
   // remote ip address
@@ -65,8 +66,9 @@ void ovsp4rt_config_fdb_entry(struct mac_learning_info learn_info,
   if (learn_remote_ip.family == AF_INET) {
     remote_ip["ipv4_addr"] = {learn_remote_ip.ip.v4addr.s_addr};
   } else if (learn_remote_ip.family == AF_INET6) {
-    const uint32_t* v6addr = &learn_remote_ip.ip.v6addr.__in6_u.__u6_addr32[0];
-    remote_ip["ipv6_addr"] = {v6addr[0], v6addr[1], v6addr[2], v6addr[3]};
+    const uint16_t* v6addr = &learn_remote_ip.ip.v6addr.__in6_u.__u6_addr16[0];
+    remote_ip["ipv6_addr"] = {v6addr[0], v6addr[1], v6addr[2], v6addr[3],
+                              v6addr[4], v6addr[5], v6addr[6], v6addr[7]};
   }
 
   json_info["params"]["insert_entry"] = insert_entry;
