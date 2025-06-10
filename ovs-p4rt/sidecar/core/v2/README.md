@@ -72,9 +72,9 @@ sidecar/
 
 ### Revised source tree
 
-When the files moved under the `core` directory for version 3,
-the files were redistributed as follows. A number of them
-were renamed.
+When the v2 files were moved under the `core` directory for
+version 3, they were redistributed as follows.
+A number of them were renamed.
 
 ```text
 sidecar/core/
@@ -92,7 +92,7 @@ sidecar/core/
 │   └── ovsp4rt_v2.cc
 ```
 
-The mapping between the original and revised files is:
+The mappings between the original and revised files are:
 
 | Original file           | Revised file                      |
 |-------------------------|-----------------------------------|
