@@ -1,21 +1,20 @@
 # OVSP4RT Core Logic V2
 
-This version of the ovsp4rt core logic has been refactored to
-make it more testable. Some maintainability improvements have also
-been made.
+This version of the core has been refactored to make it more testable.
+Some maintainability improvements have also been made.
 
-To build ovsp4rt with version 2 of the core logic, set the
-`BUILD_CLIENT` cmake variable to `ON`, `TRUE`, etc.
+To build with this version of the core, set the `BUILD_CLIENT` cmake
+variable to `ON`, `TRUE`, etc.
 
 ## Changes from Version 1
 
 1. Defined `ClientInterface` class to provide an abstract interface
-   to the P4 server. Created a concrete `Client` class to encapsulate
-   the logic to do this using an `OvsP4RtSession` object.
+   to the P4 server. Created a concrete `Client` subclass to encapsulate
+   interactions with the `OvsP4RtSession` object.
 
 2. Split each public API function into an external API and an
-   internal API. Moved the external APIs to a separate file,
-   (`ovsp4rt_standard_api.cc`) to allow substitutions to be made
+   internal API. Moved the external APIs to a separate file
+   (`ovsp4rt_standard_api.cc`), to allow substitutions to be made
    at build time.
 
    - The external API (e.g. `ovsp4rt_config_tunnel_entry`)
@@ -24,18 +23,18 @@ To build ovsp4rt with version 2 of the core logic, set the
    - The internal API (e.g. `DoConfigTunnelEntry`) does the actual
      processing.
 
-3. Replaced the `OvsP4RtSession` object with the `ClientInterface`
-   object throughout the code.
+3. Replaced the `OvsP4RtSession` object with `ClientInterface`
+   throughout the core code.
 
 4. Renamed functions to clarify their purpose.
 
    - Functions that encode a protobuf are now prefixed with `Encode`
      instead of `Prepare`.
 
-   - Functions that call an encoder and then issue a `WriteRequest`
+   - Functions that call an encoder and issue a `WriteRequest`
      are now prefixed with `Write` instead of `Config`.
 
-   - Functions that call an encoder and then issue a `ReadRequest`
+   - Functions that call an encoder and issue a `ReadRequest`
      are now prefixed with `Read` instead of `Get`.
 
 5. Moved the `Encode` functions to a separate source file,
@@ -48,15 +47,15 @@ To build ovsp4rt with version 2 of the core logic, set the
 7. Defined `TestClient` and `TestClientMock` classes to facilitate
    unit testing.
 
-8. Wrote additional unit tests to validate functions that are now
+8. Wrote additional tests to validate functions that are now
    testable.
 
 ## Source Files
 
 ### Original source tree
 
-In the original release of version 2, the core logic files were
-laid out as follows.
+In the original release of version 2, the core files were laid out
+as follows.
 
 ```text
 sidecar/
@@ -73,9 +72,9 @@ sidecar/
 
 ### Revised source tree
 
-When the ovsp4rt core logic was moved under the new `core`
-directory for version 3, the files were redistributed as
-follows, and a number of them were renamed.
+When the v2 files were moved under the `core` directory for
+version 3, they were redistributed as follows.
+A number of them were renamed.
 
 ```text
 sidecar/core/
@@ -93,11 +92,11 @@ sidecar/core/
 │   └── ovsp4rt_v2.cc
 ```
 
-The mapping between the original and revised files is:
+The mappings between the original and revised files are:
 
 | Original file           | Revised file                      |
 |-------------------------|-----------------------------------|
-| ovsp4rt.cc              | core/v2/ovsp4rt_v2.cc             |
+| newovsp4rt.cc           | core/v2/ovsp4rt_v2.cc             |
 | ovsp4rt_api_utils.cc    | core/api/ovsp4rt_str_to_tunnel_type.cc |
 | ovsp4rt_config_int.h    | core/common/ovsp4rt_entry_utils.h |
 | ovsp4rt_do_config_int.h | core/api/ovsp4rt_internal_api.h   |
