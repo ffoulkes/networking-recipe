@@ -3,7 +3,7 @@
 This folder contains the legacy version of the ovsp4rt core,
 corresponding roughly to IPDK release `mev-ts-1.9`.
 
-This is the version that will be built by default.
+This version of the core is built by default.
 
 ## Source Files
 
