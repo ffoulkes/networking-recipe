@@ -1,16 +1,18 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
+// Unit test for PrepareDecapTableEntry().
+
 #include "core/common/ovsp4rt_entry_utils.h"
 #include "core/es2k/p4_name_mapping.h"
 #include "tunnel_info_test.h"
 
 namespace ovsp4rt {
 
-class Es2kPrepDecapTableTest : public TunnelInfoTest {
+class PrepDecapTableEntryTest : public TunnelInfoTest {
  public:
-  Es2kPrepDecapTableTest() {}
-  virtual ~Es2kPrepDecapTableTest() = default;
+  PrepDecapTableEntryTest() {}
+  virtual ~PrepDecapTableEntryTest() = default;
 
   static void AssertV4VxlanTagged(const p4::v1::TableEntry& table_entry,
                                   const ::p4::config::v1::P4Info& p4info) {
@@ -36,7 +38,7 @@ class Es2kPrepDecapTableTest : public TunnelInfoTest {
 // PrepareDecapTableEntry switches on port_vlan_mode.
 // IP version and tunnel type are irrelevant.
 
-TEST_F(Es2kPrepDecapTableTest, prepareDecapIpv4VxlanTagged) {
+TEST_F(PrepDecapTableEntryTest, prepareDecapIpv4VxlanTagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -53,7 +55,7 @@ TEST_F(Es2kPrepDecapTableTest, prepareDecapIpv4VxlanTagged) {
   AssertV4VxlanTagged(table_entry, p4info);
 }
 
-TEST_F(Es2kPrepDecapTableTest, prepareDecapIpv4VxlanUntagged) {
+TEST_F(PrepDecapTableEntryTest, prepareDecapIpv4VxlanUntagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -70,7 +72,7 @@ TEST_F(Es2kPrepDecapTableTest, prepareDecapIpv4VxlanUntagged) {
   AssertV4VxlanUntagged(table_entry, p4info);
 }
 
-TEST_F(Es2kPrepDecapTableTest, prepareDecapGeneveTagged) {
+TEST_F(PrepDecapTableEntryTest, prepareDecapGeneveTagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -87,7 +89,7 @@ TEST_F(Es2kPrepDecapTableTest, prepareDecapGeneveTagged) {
   AssertV4GeneveTagged(table_entry, p4info);
 }
 
-TEST_F(Es2kPrepDecapTableTest, prepareDecapGeneveUntagged) {
+TEST_F(PrepDecapTableEntryTest, prepareDecapGeneveUntagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};

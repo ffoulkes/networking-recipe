@@ -11,10 +11,10 @@
 
 namespace ovsp4rt {
 
-class Es2kPrepTunnelTermEntryTest : public TunnelInfoTest {
+class PrepTunnelTermEntryTest : public TunnelInfoTest {
  public:
-  Es2kPrepTunnelTermEntryTest() {}
-  virtual ~Es2kPrepTunnelTermEntryTest() = default;
+  PrepTunnelTermEntryTest() {}
+  virtual ~PrepTunnelTermEntryTest() = default;
 
   static void AssertV4Tunnel(const p4::v1::TableEntry& table_entry,
                              const ::p4::config::v1::P4Info& p4info) {
@@ -27,7 +27,7 @@ class Es2kPrepTunnelTermEntryTest : public TunnelInfoTest {
   }
 };
 
-TEST_F(Es2kPrepTunnelTermEntryTest, configV4TunnelTermEntry) {
+TEST_F(PrepTunnelTermEntryTest, configV4TunnelTermEntry) {
   ::p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -42,7 +42,7 @@ TEST_F(Es2kPrepTunnelTermEntryTest, configV4TunnelTermEntry) {
   AssertV4Tunnel(table_entry, p4info);
 }
 
-TEST_F(Es2kPrepTunnelTermEntryTest, configV6TunnelTermEntry) {
+TEST_F(PrepTunnelTermEntryTest, configV6TunnelTermEntry) {
   ::p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
