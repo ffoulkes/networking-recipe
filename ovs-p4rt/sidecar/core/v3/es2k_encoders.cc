@@ -22,55 +22,6 @@ static const std::string tunnel_v6_param_name[] = {
     ACTION_SET_TUNNEL_V6_PARAM_IPV6_1, ACTION_SET_TUNNEL_V6_PARAM_IPV6_2,
     ACTION_SET_TUNNEL_V6_PARAM_IPV6_3, ACTION_SET_TUNNEL_V6_PARAM_IPV6_4};
 
-std::string EncodeByteValue(int arg_count...) {
-  std::string byte_value;
-  va_list args;
-  va_start(args, arg_count);
-
-  for (int arg = 0; arg < arg_count; ++arg) {
-    uint8_t byte = va_arg(args, int);
-    byte_value.push_back(byte);
-  }
-
-  va_end(args);
-  return byte_value;
-}
-
-// Encodes tunnel_info.vni as a "tunnel_id" action parameter,
-// which is bit<20> in all cases except set_ipsec_tunnel.
-static inline std::string EncodeTunnelId(uint32_t vni) {
-  return EncodeByteValue(3, (vni >> 16) & 0x0F, (vni >> 8) & 0xFF, vni & 0xFF);
-}
-
-// Encodes tunnel_info.vni as a "vni" or "mod_blob_ptr" match
-// field or action parameter, which are bit<24> in all cases.
-static inline std::string EncodeVniValue(uint32_t vni) {
-  return EncodeByteValue(3, (vni >> 16) & 0xFF, (vni >> 8) & 0xFF, vni & 0xFF);
-}
-
-std::string CanonicalizeIp(const uint32_t ipv4addr) {
-  // note: low-to-high byte order
-  return EncodeByteValue(4, (ipv4addr & 0xff), ((ipv4addr >> 8) & 0xff),
-                         ((ipv4addr >> 16) & 0xff), ((ipv4addr >> 24) & 0xff));
-}
-
-std::string CanonicalizeIpv6(const struct in6_addr ipv6addr) {
-  return EncodeByteValue(
-      16, ipv6addr.__in6_u.__u6_addr8[0], ipv6addr.__in6_u.__u6_addr8[1],
-      ipv6addr.__in6_u.__u6_addr8[2], ipv6addr.__in6_u.__u6_addr8[3],
-      ipv6addr.__in6_u.__u6_addr8[4], ipv6addr.__in6_u.__u6_addr8[5],
-      ipv6addr.__in6_u.__u6_addr8[6], ipv6addr.__in6_u.__u6_addr8[7],
-      ipv6addr.__in6_u.__u6_addr8[8], ipv6addr.__in6_u.__u6_addr8[9],
-      ipv6addr.__in6_u.__u6_addr8[10], ipv6addr.__in6_u.__u6_addr8[11],
-      ipv6addr.__in6_u.__u6_addr8[12], ipv6addr.__in6_u.__u6_addr8[13],
-      ipv6addr.__in6_u.__u6_addr8[14], ipv6addr.__in6_u.__u6_addr8[15]);
-}
-
-std::string CanonicalizeMac(const uint8_t mac[6]) {
-  return EncodeByteValue(6, (mac[0] & 0xff), (mac[1] & 0xff), (mac[2] & 0xff),
-                         (mac[3] & 0xff), (mac[4] & 0xff), (mac[5] & 0xff));
-}
-
 void EncodeFdbSmacTableEntry(p4::v1::TableEntry* table_entry,
                              const struct mac_learning_info& learn_info,
                              const ::p4::config::v1::P4Info& p4info,
