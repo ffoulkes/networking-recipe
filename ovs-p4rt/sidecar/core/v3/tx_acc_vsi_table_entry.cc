@@ -13,8 +13,8 @@
 #include <absl/status/status.h>
 
 #include "client/ovsp4rt_client_interface.h"
-#include "core/common/ovsp4rt_core_utils.h"  // GetParamId
 #include "core/common/ovsp4rt_encoders.h"
+#include "core/common/ovsp4rt_p4info_utils.h"  // GetParamId
 #include "core/es2k/p4_name_mapping.h"
 
 namespace ovsp4rt {
