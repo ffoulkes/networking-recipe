@@ -3,7 +3,7 @@
 
 // Unit test for ReadL2ToTunnelV4TableEntry().
 
-// Core functionality is handled by Es2kPrepareTunnelTermTableEntry(),
+// Core functionality is handled by PrepareTunnelTermTableEntry(),
 // which is tested separately. This is a test of the non-core
 // functionality.
 

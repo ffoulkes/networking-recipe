@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for Es2kPrepareTunnelTermTableEntry().
+// Unit test for PrepareTunnelTermTableEntry().
 
 #include <gtest/gtest.h>
 
@@ -37,8 +37,7 @@ TEST_F(Es2kPrepTunnelTermEntryTest, configV4TunnelTermEntry) {
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
 
-  Es2kPrepareTunnelTermTableEntry(&table_entry, tunnel_info, p4info,
-                                  INSERT_ENTRY);
+  PrepareTunnelTermTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
   AssertV4Tunnel(table_entry, p4info);
 }
@@ -53,8 +52,7 @@ TEST_F(Es2kPrepTunnelTermEntryTest, configV6TunnelTermEntry) {
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
 
-  Es2kPrepareTunnelTermTableEntry(&table_entry, tunnel_info, p4info,
-                                  INSERT_ENTRY);
+  PrepareTunnelTermTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
   AssertV6Tunnel(table_entry, p4info);
 }

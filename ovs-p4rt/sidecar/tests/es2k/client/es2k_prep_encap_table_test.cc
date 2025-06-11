@@ -65,7 +65,7 @@ TEST_F(Es2kPrepEncapTableTest, configEncapIpv4VxlanUntagged) {
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
 
-  Es2kPrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
+  PrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
   AssertV4VxlanUntagged(table_entry, p4info);
 }
@@ -80,7 +80,7 @@ TEST_F(Es2kPrepEncapTableTest, configEncapIpv4GeneveUntagged) {
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
 
-  Es2kPrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
+  PrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
   AssertV4GeneveUntagged(table_entry, p4info);
 }
@@ -97,7 +97,7 @@ TEST_F(Es2kPrepEncapTableTest, configEncapIpv4VxlanTagged) {
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
 
-  Es2kPrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
+  PrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
   AssertV4VxlanTagged(table_entry, p4info);
 }
@@ -112,7 +112,7 @@ TEST_F(Es2kPrepEncapTableTest, configEncapIpv4GeneveTagged) {
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
 
-  Es2kPrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
+  PrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
   AssertV4GeneveTagged(table_entry, p4info);
 }
@@ -129,7 +129,7 @@ TEST_F(Es2kPrepEncapTableTest, configEncapIpv6VxlanUntagged) {
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
 
-  Es2kPrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
+  PrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
   AssertV6VxlanUntagged(table_entry, p4info);
 }
@@ -144,7 +144,7 @@ TEST_F(Es2kPrepEncapTableTest, configEncapIpv6GeneveUntagged) {
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
 
-  Es2kPrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
+  PrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
   AssertV6GeneveUntagged(table_entry, p4info);
 }
@@ -161,7 +161,7 @@ TEST_F(Es2kPrepEncapTableTest, configEncapIpv6VxlanTagged) {
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
 
-  Es2kPrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
+  PrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
   AssertV6VxlanTagged(table_entry, p4info);
 }
@@ -176,7 +176,7 @@ TEST_F(Es2kPrepEncapTableTest, configEncapIpv6GeneveTagged) {
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
 
-  Es2kPrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
+  PrepareEncapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
   AssertV6GeneveTagged(table_entry, p4info);
 }

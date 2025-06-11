@@ -29,29 +29,30 @@ extern void PrepareL2TunnelTableEntry(
 
 #if defined(ES2K_TARGET)
 
-extern void Es2kPrepareDecapTableEntry(::p4::v1::TableEntry* table_entry,
-                                       const struct tunnel_info& tunnel_info,
-                                       const ::p4::config::v1::P4Info& p4info,
-                                       bool insert_entry);
+extern void PrepareDecapTableEntry(::p4::v1::TableEntry* table_entry,
+                                   const struct tunnel_info& tunnel_info,
+                                   const ::p4::config::v1::P4Info& p4info,
+                                   bool insert_entry);
 
-extern void Es2kPrepareEncapTableEntry(::p4::v1::TableEntry* table_entry,
-                                       const struct tunnel_info& tunnel_info,
-                                       const ::p4::config::v1::P4Info& p4info,
-                                       bool insert_entry);
+extern void PrepareEncapTableEntry(::p4::v1::TableEntry* table_entry,
+                                   const struct tunnel_info& tunnel_info,
+                                   const ::p4::config::v1::P4Info& p4info,
+                                   bool insert_entry);
 
 extern void PrepareFdbTableV4TunnelEntry(
     p4::v1::TableEntry* table_entry, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry,
     DiagDetail& detail, bool testing = false);
 
-extern void Es2kPrepareFdbTunnelTableEntry(
+extern void PrepareFdbTunnelTableEntry(
     p4::v1::TableEntry* table_entry, const struct mac_learning_info& learn_info,
     const ::p4::config::v1::P4Info& p4info, bool insert_entry,
     DiagDetail& detail);
 
-extern void Es2kPrepareTunnelTermTableEntry(
-    p4::v1::TableEntry* table_entry, const struct tunnel_info& tunnel_info,
-    const ::p4::config::v1::P4Info& p4info, bool insert_entry);
+extern void PrepareTunnelTermTableEntry(p4::v1::TableEntry* table_entry,
+                                        const struct tunnel_info& tunnel_info,
+                                        const ::p4::config::v1::P4Info& p4info,
+                                        bool insert_entry);
 
 extern void PrepareRxTunnelSrcPortTableEntry(
     p4::v1::TableEntry* table_entry, const struct tunnel_info& tunnel_info,
