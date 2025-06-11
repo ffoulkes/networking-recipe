@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "core/common/ovsp4rt_core_utils.h"
+#include "core/common/ovsp4rt_encode_utils.h"  // EncodeByteValue
 #include "ovsp4rt/ovs-p4rt.h"
 
 namespace ovsp4rt {
