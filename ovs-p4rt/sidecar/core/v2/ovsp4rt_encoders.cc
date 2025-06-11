@@ -10,7 +10,6 @@
 #include <string>
 
 #include "core/common/ovsp4rt_encode_utils.h"
-#include "core/common/ovsp4rt_encoders.h"
 #include "core/common/ovsp4rt_p4info_utils.h"
 #include "logging/ovsp4rt_diag_detail.h"
 #include "ovsp4rt/ovs-p4rt.h"
@@ -30,97 +29,6 @@ static const std::string tunnel_v6_param_name[] = {
     ACTION_SET_TUNNEL_V6_PARAM_IPV6_1, ACTION_SET_TUNNEL_V6_PARAM_IPV6_2,
     ACTION_SET_TUNNEL_V6_PARAM_IPV6_3, ACTION_SET_TUNNEL_V6_PARAM_IPV6_4};
 #endif
-
-std::string EncodeByteValue(int arg_count...) {
-  std::string byte_value;
-  va_list args;
-  va_start(args, arg_count);
-
-  for (int arg = 0; arg < arg_count; ++arg) {
-    uint8_t byte = va_arg(args, int);
-    byte_value.push_back(byte);
-  }
-
-  va_end(args);
-  return byte_value;
-}
-
-// Encodes tunnel_info.vni as a "tunnel_id" action parameter,
-// which is bit<20> in all cases except set_ipsec_tunnel.
-static inline std::string EncodeTunnelId(uint32_t vni) {
-  return EncodeByteValue(3, (vni >> 16) & 0x0F, (vni >> 8) & 0xFF, vni & 0xFF);
-}
-
-// Encodes tunnel_info.vni as a "vni" or "mod_blob_ptr" match
-// field or action parameter, which are bit<24> in all cases.
-static inline std::string EncodeVniValue(uint32_t vni) {
-  return EncodeByteValue(3, (vni >> 16) & 0xFF, (vni >> 8) & 0xFF, vni & 0xFF);
-}
-
-std::string CanonicalizeIp(const uint32_t ipv4addr) {
-  // note: low-to-high byte order
-  return EncodeByteValue(4, (ipv4addr & 0xff), ((ipv4addr >> 8) & 0xff),
-                         ((ipv4addr >> 16) & 0xff), ((ipv4addr >> 24) & 0xff));
-}
-
-#if !defined(DPDK_TARGET)
-std::string CanonicalizeIpv6(const struct in6_addr ipv6addr) {
-  return EncodeByteValue(
-      16, ipv6addr.__in6_u.__u6_addr8[0], ipv6addr.__in6_u.__u6_addr8[1],
-      ipv6addr.__in6_u.__u6_addr8[2], ipv6addr.__in6_u.__u6_addr8[3],
-      ipv6addr.__in6_u.__u6_addr8[4], ipv6addr.__in6_u.__u6_addr8[5],
-      ipv6addr.__in6_u.__u6_addr8[6], ipv6addr.__in6_u.__u6_addr8[7],
-      ipv6addr.__in6_u.__u6_addr8[8], ipv6addr.__in6_u.__u6_addr8[9],
-      ipv6addr.__in6_u.__u6_addr8[10], ipv6addr.__in6_u.__u6_addr8[11],
-      ipv6addr.__in6_u.__u6_addr8[12], ipv6addr.__in6_u.__u6_addr8[13],
-      ipv6addr.__in6_u.__u6_addr8[14], ipv6addr.__in6_u.__u6_addr8[15]);
-}
-#endif
-
-std::string CanonicalizeMac(const uint8_t mac[6]) {
-  return EncodeByteValue(6, (mac[0] & 0xff), (mac[1] & 0xff), (mac[2] & 0xff),
-                         (mac[3] & 0xff), (mac[4] & 0xff), (mac[5] & 0xff));
-}
-
-int GetTableId(const ::p4::config::v1::P4Info& p4info,
-               const std::string& t_name) {
-  for (const auto& table : p4info.tables()) {
-    const auto& pre = table.preamble();
-    if (pre.name() == t_name) return pre.id();
-  }
-  return -1;
-}
-
-int GetActionId(const ::p4::config::v1::P4Info& p4info,
-                const std::string& a_name) {
-  for (const auto& action : p4info.actions()) {
-    const auto& pre = action.preamble();
-    if (pre.name() == a_name) return pre.id();
-  }
-  return -1;
-}
-
-int GetParamId(const ::p4::config::v1::P4Info& p4info,
-               const std::string& a_name, const std::string& param_name) {
-  for (const auto& action : p4info.actions()) {
-    const auto& pre = action.preamble();
-    if (pre.name() != a_name) continue;
-    for (const auto& param : action.params())
-      if (param.name() == param_name) return param.id();
-  }
-  return -1;
-}
-
-int GetMatchFieldId(const ::p4::config::v1::P4Info& p4info,
-                    const std::string& t_name, const std::string& mf_name) {
-  for (const auto& table : p4info.tables()) {
-    const auto& pre = table.preamble();
-    if (pre.name() != t_name) continue;
-    for (const auto& mf : table.match_fields())
-      if (mf.name() == mf_name) return mf.id();
-  }
-  return -1;
-}
 
 #if defined(ES2K_TARGET)
 void EncodeFdbSmacTableEntry(p4::v1::TableEntry* table_entry,

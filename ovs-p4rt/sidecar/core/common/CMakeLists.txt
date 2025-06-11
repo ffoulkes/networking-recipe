@@ -11,3 +11,10 @@ target_sources(ovsp4rt_core_o PRIVATE
     ovsp4rt_entry_utils.h
     ovsp4rt_p4info_utils.h
 )
+
+if(BUILD_CLIENT)
+    target_sources(ovsp4rt_core_o PRIVATE
+        ovsp4rt_encode_utils.cc
+        ovsp4rt_p4info_utils.cc
+    )
+endif()
