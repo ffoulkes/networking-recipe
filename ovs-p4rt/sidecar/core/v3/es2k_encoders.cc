@@ -71,46 +71,6 @@ std::string CanonicalizeMac(const uint8_t mac[6]) {
                          (mac[3] & 0xff), (mac[4] & 0xff), (mac[5] & 0xff));
 }
 
-int GetTableId(const ::p4::config::v1::P4Info& p4info,
-               const std::string& t_name) {
-  for (const auto& table : p4info.tables()) {
-    const auto& pre = table.preamble();
-    if (pre.name() == t_name) return pre.id();
-  }
-  return -1;
-}
-
-int GetActionId(const ::p4::config::v1::P4Info& p4info,
-                const std::string& a_name) {
-  for (const auto& action : p4info.actions()) {
-    const auto& pre = action.preamble();
-    if (pre.name() == a_name) return pre.id();
-  }
-  return -1;
-}
-
-int GetParamId(const ::p4::config::v1::P4Info& p4info,
-               const std::string& a_name, const std::string& param_name) {
-  for (const auto& action : p4info.actions()) {
-    const auto& pre = action.preamble();
-    if (pre.name() != a_name) continue;
-    for (const auto& param : action.params())
-      if (param.name() == param_name) return param.id();
-  }
-  return -1;
-}
-
-int GetMatchFieldId(const ::p4::config::v1::P4Info& p4info,
-                    const std::string& t_name, const std::string& mf_name) {
-  for (const auto& table : p4info.tables()) {
-    const auto& pre = table.preamble();
-    if (pre.name() != t_name) continue;
-    for (const auto& mf : table.match_fields())
-      if (mf.name() == mf_name) return mf.id();
-  }
-  return -1;
-}
-
 void EncodeFdbSmacTableEntry(p4::v1::TableEntry* table_entry,
                              const struct mac_learning_info& learn_info,
                              const ::p4::config::v1::P4Info& p4info,

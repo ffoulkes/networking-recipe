@@ -9,6 +9,7 @@ if(DPDK_TARGET)
         dpdk_config_fdb_entry.cc
         dpdk_config_tunnel_entry.cc
         dpdk_encoders.cc
+        ovsp4rt_p4info_utils.cc
     )
 elseif(ES2K_TARGET)
     target_sources(ovsp4rt_core_o PRIVATE
@@ -20,6 +21,7 @@ elseif(ES2K_TARGET)
         es2k_config_fdb_entry.cc
         es2k_config_tunnel_entry.cc
         es2k_encoders.cc
+        ovsp4rt_p4info_utils.cc
         tx_acc_vsi_table_entry.cc
         tx_acc_vsi_table_entry.h
     )
