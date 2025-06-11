@@ -20,10 +20,10 @@ namespace ovsp4rt {
 //----------------------------------------------------------------------
 
 // Ipv4, Tagged
-void PrepareEncapTableEntry(p4::v1::TableEntry* table_entry,
-                            const struct tunnel_info& tunnel_info,
-                            const ::p4::config::v1::P4Info& p4info,
-                            bool insert_entry) {
+void PrepareV4EncapTableEntry(p4::v1::TableEntry* table_entry,
+                              const struct tunnel_info& tunnel_info,
+                              const ::p4::config::v1::P4Info& p4info,
+                              bool insert_entry) {
   EncodeVxlanEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
 }
 
@@ -36,7 +36,7 @@ absl::Status WriteEncapTableEntry(ClientInterface& client,
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  PrepareEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+  PrepareV4EncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
 
   return client.sendWriteRequest(write_request);
 }

@@ -20,10 +20,10 @@ namespace ovsp4rt {
 //----------------------------------------------------------------------
 
 // Ipv4, Tagged
-void PrepareEncapTableEntry(p4::v1::TableEntry* table_entry,
-                            const struct tunnel_info& tunnel_info,
-                            const ::p4::config::v1::P4Info& p4info,
-                            bool insert_entry) {
+void PrepareV4EncapTableEntry(p4::v1::TableEntry* table_entry,
+                              const struct tunnel_info& tunnel_info,
+                              const ::p4::config::v1::P4Info& p4info,
+                              bool insert_entry) {
   if (tunnel_info.tunnel_type == OVS_TUNNEL_VXLAN) {
     EncodeVxlanEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
   } else if (tunnel_info.tunnel_type == OVS_TUNNEL_GENEVE) {
@@ -50,10 +50,10 @@ void PrepareV6EncapTableEntry(p4::v1::TableEntry* table_entry,
 }
 
 // Ipv4, Untagged
-void PrepareEncapAndVlanPopTableEntry(p4::v1::TableEntry* table_entry,
-                                      const struct tunnel_info& tunnel_info,
-                                      const ::p4::config::v1::P4Info& p4info,
-                                      bool insert_entry) {
+void PrepareV4EncapAndVlanPopTableEntry(p4::v1::TableEntry* table_entry,
+                                        const struct tunnel_info& tunnel_info,
+                                        const ::p4::config::v1::P4Info& p4info,
+                                        bool insert_entry) {
   if (tunnel_info.tunnel_type == OVS_TUNNEL_VXLAN) {
     EncodeVxlanEncapAndVlanPopTableEntry(table_entry, tunnel_info, p4info,
                                          insert_entry);
@@ -81,17 +81,17 @@ void PrepareV6EncapAndVlanPopTableEntry(p4::v1::TableEntry* table_entry,
   }
 }
 
-void Es2kPrepareEncapTableEntry(::p4::v1::TableEntry* table_entry,
-                                const struct tunnel_info& tunnel_info,
-                                const ::p4::config::v1::P4Info& p4info,
-                                bool insert_entry) {
+void PrepareEncapTableEntry(::p4::v1::TableEntry* table_entry,
+                            const struct tunnel_info& tunnel_info,
+                            const ::p4::config::v1::P4Info& p4info,
+                            bool insert_entry) {
   if (tunnel_info.local_ip.family == AF_INET &&
       tunnel_info.remote_ip.family == AF_INET) {
     if (tunnel_info.vlan_info.port_vlan_mode == P4_PORT_VLAN_NATIVE_UNTAGGED) {
-      PrepareEncapAndVlanPopTableEntry(table_entry, tunnel_info, p4info,
-                                       insert_entry);
+      PrepareV4EncapAndVlanPopTableEntry(table_entry, tunnel_info, p4info,
+                                         insert_entry);
     } else {
-      PrepareEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+      PrepareV4EncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
     }
   } else if (tunnel_info.local_ip.family == AF_INET6 &&
              tunnel_info.remote_ip.family == AF_INET6) {
@@ -113,7 +113,7 @@ absl::Status WriteEncapTableEntry(ClientInterface& client,
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  Es2kPrepareEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+  PrepareEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
 
   return client.sendWriteRequest(write_request);
 }
@@ -153,10 +153,10 @@ void PrepareDecapModAndVlanPushTableEntry(
   }
 }
 
-void Es2kPrepareDecapTableEntry(::p4::v1::TableEntry* table_entry,
-                                const struct tunnel_info& tunnel_info,
-                                const ::p4::config::v1::P4Info& p4info,
-                                bool insert_entry) {
+void PrepareDecapTableEntry(::p4::v1::TableEntry* table_entry,
+                            const struct tunnel_info& tunnel_info,
+                            const ::p4::config::v1::P4Info& p4info,
+                            bool insert_entry) {
   if (tunnel_info.vlan_info.port_vlan_mode == P4_PORT_VLAN_NATIVE_TAGGED) {
     PrepareDecapModTableEntry(table_entry, tunnel_info, p4info, insert_entry);
   } else {
@@ -174,7 +174,7 @@ absl::Status WriteDecapTableEntry(ClientInterface& client,
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  Es2kPrepareDecapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+  PrepareDecapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
 
   return client.sendWriteRequest(write_request);
 }
@@ -183,10 +183,10 @@ absl::Status WriteDecapTableEntry(ClientInterface& client,
 // WriteTunnelTermTableEntry
 //----------------------------------------------------------------------
 
-void Es2kPrepareTunnelTermTableEntry(p4::v1::TableEntry* table_entry,
-                                     const struct tunnel_info& tunnel_info,
-                                     const ::p4::config::v1::P4Info& p4info,
-                                     bool insert_entry) {
+void PrepareTunnelTermTableEntry(p4::v1::TableEntry* table_entry,
+                                 const struct tunnel_info& tunnel_info,
+                                 const ::p4::config::v1::P4Info& p4info,
+                                 bool insert_entry) {
   if (tunnel_info.local_ip.family == AF_INET &&
       tunnel_info.remote_ip.family == AF_INET) {
     EncodeTunnelTermTableEntry(table_entry, tunnel_info, p4info, insert_entry);
@@ -206,8 +206,7 @@ absl::Status WriteTunnelTermTableEntry(ClientInterface& client,
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  Es2kPrepareTunnelTermTableEntry(table_entry, tunnel_info, p4info,
-                                  insert_entry);
+  PrepareTunnelTermTableEntry(table_entry, tunnel_info, p4info, insert_entry);
 
   return client.sendWriteRequest(write_request);
 }

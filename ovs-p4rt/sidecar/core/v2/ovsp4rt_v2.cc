@@ -133,10 +133,10 @@ absl::Status WriteFdbRxVlanTableEntry(
 
 #if defined(ES2K_TARGET)
 // extracted from WriteFdbTunnelTableEntry
-void Es2kPrepareFdbTunnelTableEntry(p4::v1::TableEntry* table_entry,
-                                    const struct mac_learning_info& learn_info,
-                                    const ::p4::config::v1::P4Info& p4info,
-                                    bool insert_entry, DiagDetail& detail) {
+void PrepareFdbTunnelTableEntry(p4::v1::TableEntry* table_entry,
+                                const struct mac_learning_info& learn_info,
+                                const ::p4::config::v1::P4Info& p4info,
+                                bool insert_entry, DiagDetail& detail) {
   if (learn_info.tnl_info.tunnel_type == OVS_TUNNEL_VXLAN) {
     EncodeFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info,
                                         insert_entry, detail);
@@ -163,8 +163,8 @@ absl::Status WriteFdbTunnelTableEntry(
   EncodeFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info,
                                       insert_entry, detail);
 #elif defined(ES2K_TARGET)
-  Es2kPrepareFdbTunnelTableEntry(table_entry, learn_info, p4info, insert_entry,
-                                 detail);
+  PrepareFdbTunnelTableEntry(table_entry, learn_info, p4info, insert_entry,
+                             detail);
 #else
 #error "ASSERT: Unknown TARGET type!"
 #endif
@@ -178,10 +178,10 @@ absl::Status WriteFdbTunnelTableEntry(
 }
 
 // Ipv4, Tagged
-void PrepareEncapTableEntry(p4::v1::TableEntry* table_entry,
-                            const struct tunnel_info& tunnel_info,
-                            const ::p4::config::v1::P4Info& p4info,
-                            bool insert_entry) {
+void PrepareV4EncapTableEntry(p4::v1::TableEntry* table_entry,
+                              const struct tunnel_info& tunnel_info,
+                              const ::p4::config::v1::P4Info& p4info,
+                              bool insert_entry) {
 #if defined(DPDK_TARGET)
   EncodeVxlanEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
 #elif defined(ES2K_TARGET)
@@ -214,10 +214,10 @@ void PrepareV6EncapTableEntry(p4::v1::TableEntry* table_entry,
 }
 
 // Ipv4, Untagged
-void PrepareEncapAndVlanPopTableEntry(p4::v1::TableEntry* table_entry,
-                                      const struct tunnel_info& tunnel_info,
-                                      const ::p4::config::v1::P4Info& p4info,
-                                      bool insert_entry) {
+void PrepareV4EncapAndVlanPopTableEntry(p4::v1::TableEntry* table_entry,
+                                        const struct tunnel_info& tunnel_info,
+                                        const ::p4::config::v1::P4Info& p4info,
+                                        bool insert_entry) {
   if (tunnel_info.tunnel_type == OVS_TUNNEL_VXLAN) {
     EncodeVxlanEncapAndVlanPopTableEntry(table_entry, tunnel_info, p4info,
                                          insert_entry);
@@ -249,17 +249,17 @@ void PrepareV6EncapAndVlanPopTableEntry(p4::v1::TableEntry* table_entry,
 
 #if defined(ES2K_TARGET)
 // called-by: WriteEncapTableEntry
-void Es2kPrepareEncapTableEntry(::p4::v1::TableEntry* table_entry,
-                                const struct tunnel_info& tunnel_info,
-                                const ::p4::config::v1::P4Info& p4info,
-                                bool insert_entry) {
+void PrepareEncapTableEntry(::p4::v1::TableEntry* table_entry,
+                            const struct tunnel_info& tunnel_info,
+                            const ::p4::config::v1::P4Info& p4info,
+                            bool insert_entry) {
   if (tunnel_info.local_ip.family == AF_INET &&
       tunnel_info.remote_ip.family == AF_INET) {
     if (tunnel_info.vlan_info.port_vlan_mode == P4_PORT_VLAN_NATIVE_UNTAGGED) {
-      PrepareEncapAndVlanPopTableEntry(table_entry, tunnel_info, p4info,
-                                       insert_entry);
+      PrepareV4EncapAndVlanPopTableEntry(table_entry, tunnel_info, p4info,
+                                         insert_entry);
     } else {
-      PrepareEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+      PrepareV4EncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
     }
   } else if (tunnel_info.local_ip.family == AF_INET6 &&
              tunnel_info.remote_ip.family == AF_INET6) {
@@ -284,9 +284,9 @@ absl::Status WriteEncapTableEntry(ClientInterface& client,
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
 #if defined(DPDK_TARGET)
-  PrepareEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+  PrepareV4EncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
 #elif defined(ES2K_TARGET)
-  Es2kPrepareEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+  PrepareEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
 #else
 #error "ASSERT: Unknown TARGET type!"
 #endif
@@ -296,7 +296,7 @@ absl::Status WriteEncapTableEntry(ClientInterface& client,
 
 #if defined(ES2K_TARGET)
 
-// called-by: Es2kPrepareDecapTableEntry
+// called-by: PrepareDecapTableEntry
 // port_vlan_mode == P4_PORT_VLAN_NATIVE_TAGGED
 void PrepareDecapModTableEntry(p4::v1::TableEntry* table_entry,
                                const struct tunnel_info& tunnel_info,
@@ -313,7 +313,7 @@ void PrepareDecapModTableEntry(p4::v1::TableEntry* table_entry,
   }
 }
 
-// called-by: Es2kPrepareDecapTableEntry
+// called-by: PrepareDecapTableEntry
 // port_vlan_mode == P4_PORT_VLAN_NATIVE_TAGGED
 void PrepareDecapModAndVlanPushTableEntry(
     p4::v1::TableEntry* table_entry, const struct tunnel_info& tunnel_info,
@@ -330,10 +330,10 @@ void PrepareDecapModAndVlanPushTableEntry(
 }
 
 // called-by: WriteDecapTableEntry
-void Es2kPrepareDecapTableEntry(::p4::v1::TableEntry* table_entry,
-                                const struct tunnel_info& tunnel_info,
-                                const ::p4::config::v1::P4Info& p4info,
-                                bool insert_entry) {
+void PrepareDecapTableEntry(::p4::v1::TableEntry* table_entry,
+                            const struct tunnel_info& tunnel_info,
+                            const ::p4::config::v1::P4Info& p4info,
+                            bool insert_entry) {
   if (tunnel_info.vlan_info.port_vlan_mode == P4_PORT_VLAN_NATIVE_TAGGED) {
     PrepareDecapModTableEntry(table_entry, tunnel_info, p4info, insert_entry);
   } else {
@@ -352,7 +352,7 @@ absl::Status WriteDecapTableEntry(ClientInterface& client,
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  Es2kPrepareDecapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+  PrepareDecapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
 
   return client.sendWriteRequest(write_request);
 }
@@ -592,10 +592,10 @@ absl::Status WriteRxTunnelSrcPortTableEntry(
 }
 
 // called-by: WriteTunnelTermTableEntry
-void Es2kPrepareTunnelTermTableEntry(p4::v1::TableEntry* table_entry,
-                                     const struct tunnel_info& tunnel_info,
-                                     const ::p4::config::v1::P4Info& p4info,
-                                     bool insert_entry) {
+void PrepareTunnelTermTableEntry(p4::v1::TableEntry* table_entry,
+                                 const struct tunnel_info& tunnel_info,
+                                 const ::p4::config::v1::P4Info& p4info,
+                                 bool insert_entry) {
   if (tunnel_info.local_ip.family == AF_INET &&
       tunnel_info.remote_ip.family == AF_INET) {
     EncodeTunnelTermTableEntry(table_entry, tunnel_info, p4info, insert_entry);
@@ -621,8 +621,7 @@ absl::Status WriteTunnelTermTableEntry(ClientInterface& client,
 #if defined(DPDK_TARGET)
   EncodeTunnelTermTableEntry(table_entry, tunnel_info, p4info, insert_entry);
 #elif defined(ES2K_TARGET)
-  Es2kPrepareTunnelTermTableEntry(table_entry, tunnel_info, p4info,
-                                  insert_entry);
+  PrepareTunnelTermTableEntry(table_entry, tunnel_info, p4info, insert_entry);
 #else
 #error "ASSERT: Unknown TARGET type!"
 #endif

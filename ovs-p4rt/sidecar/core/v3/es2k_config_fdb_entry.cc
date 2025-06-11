@@ -111,10 +111,10 @@ absl::Status WriteFdbRxVlanTableEntry(
   return status;
 }
 
-void Es2kPrepareFdbTunnelTableEntry(p4::v1::TableEntry* table_entry,
-                                    const struct mac_learning_info& learn_info,
-                                    const ::p4::config::v1::P4Info& p4info,
-                                    bool insert_entry, DiagDetail& detail) {
+void PrepareFdbTunnelTableEntry(p4::v1::TableEntry* table_entry,
+                                const struct mac_learning_info& learn_info,
+                                const ::p4::config::v1::P4Info& p4info,
+                                bool insert_entry, DiagDetail& detail) {
   if (learn_info.tnl_info.tunnel_type == OVS_TUNNEL_VXLAN) {
     EncodeFdbTableEntryforV4VxlanTunnel(table_entry, learn_info, p4info,
                                         insert_entry, detail);
@@ -136,8 +136,8 @@ absl::Status WriteFdbTunnelTableEntry(
 
   table_entry = client.initWriteRequest(&write_request, insert_entry);
 
-  Es2kPrepareFdbTunnelTableEntry(table_entry, learn_info, p4info, insert_entry,
-                                 detail);
+  PrepareFdbTunnelTableEntry(table_entry, learn_info, p4info, insert_entry,
+                             detail);
 
   auto status = client.sendWriteRequest(write_request);
   if (!status.ok()) {

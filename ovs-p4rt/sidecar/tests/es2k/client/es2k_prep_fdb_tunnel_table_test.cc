@@ -1,7 +1,7 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for Es2kPrepareFdbTunnelTableEntry().
+// Unit test for PrepareFdbTunnelTableEntry().
 
 #include <absl/status/status.h>
 #include <gtest/gtest.h>
@@ -69,8 +69,8 @@ TEST_F(Es2kPrepFdbTunnelTableTest, insertV4VxlanTunnelEntry) {
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
 
-  Es2kPrepareFdbTunnelTableEntry(&table_entry, learn_info, p4info, INSERT_ENTRY,
-                                 detail);
+  PrepareFdbTunnelTableEntry(&table_entry, learn_info, p4info, INSERT_ENTRY,
+                             detail);
 
   CheckActionId(table_entry, p4info, OVS_TUNNEL_VXLAN);
 }
@@ -86,8 +86,8 @@ TEST_F(Es2kPrepFdbTunnelTableTest, insertV4GeneveTunnelEntry) {
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
 
-  Es2kPrepareFdbTunnelTableEntry(&table_entry, learn_info, p4info, INSERT_ENTRY,
-                                 detail);
+  PrepareFdbTunnelTableEntry(&table_entry, learn_info, p4info, INSERT_ENTRY,
+                             detail);
 
   CheckActionId(table_entry, p4info, OVS_TUNNEL_GENEVE);
 }
@@ -102,8 +102,8 @@ TEST_F(Es2kPrepFdbTunnelTableTest, removeV4TunnelEntry) {
   ::p4::config::v1::P4Info p4info;
   InitP4Info(&p4info);
 
-  Es2kPrepareFdbTunnelTableEntry(&table_entry, learn_info, p4info, REMOVE_ENTRY,
-                                 detail);
+  PrepareFdbTunnelTableEntry(&table_entry, learn_info, p4info, REMOVE_ENTRY,
+                             detail);
 
   CheckRemoveAction(table_entry);
 }

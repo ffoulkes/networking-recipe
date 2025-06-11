@@ -3,7 +3,7 @@
 
 // Unit test for WriteEncapTableEntry().
 
-// Core functionality is handled by Es2kPrepareEncapTableEntry(),
+// Core functionality is handled by PrepareEncapTableEntry(),
 // which is tested separately. This is a test of the non-core
 // functionality.
 

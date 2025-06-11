@@ -858,10 +858,10 @@ void EncodeGeneveEncapTableEntry(p4::v1::TableEntry* table_entry,
 }
 #endif  // ES2K_TARGET
 
-void PrepareEncapTableEntry(p4::v1::TableEntry* table_entry,
-                            const struct tunnel_info& tunnel_info,
-                            const ::p4::config::v1::P4Info& p4info,
-                            bool insert_entry) {
+void PrepareV4EncapTableEntry(p4::v1::TableEntry* table_entry,
+                              const struct tunnel_info& tunnel_info,
+                              const ::p4::config::v1::P4Info& p4info,
+                              bool insert_entry) {
 #if defined(DPDK_TARGET)
   EncodeVxlanEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
 #elif defined(ES2K_TARGET)
@@ -1135,10 +1135,10 @@ void EncodeGeneveEncapAndVlanPopTableEntry(
   }
 }
 
-void PrepareEncapAndVlanPopTableEntry(p4::v1::TableEntry* table_entry,
-                                      const struct tunnel_info& tunnel_info,
-                                      const ::p4::config::v1::P4Info& p4info,
-                                      bool insert_entry) {
+void PrepareV4EncapAndVlanPopTableEntry(p4::v1::TableEntry* table_entry,
+                                        const struct tunnel_info& tunnel_info,
+                                        const ::p4::config::v1::P4Info& p4info,
+                                        bool insert_entry) {
   if (tunnel_info.tunnel_type == OVS_TUNNEL_VXLAN) {
     EncodeVxlanEncapAndVlanPopTableEntry(table_entry, tunnel_info, p4info,
                                          insert_entry);
@@ -1567,16 +1567,16 @@ absl::Status WriteEncapTableEntry(ovsp4rt::OvsP4rtSession* session,
   }
 
 #if defined(DPDK_TARGET)
-  PrepareEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+  PrepareV4EncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
 
 #elif defined(ES2K_TARGET)
   if (tunnel_info.local_ip.family == AF_INET &&
       tunnel_info.remote_ip.family == AF_INET) {
     if (tunnel_info.vlan_info.port_vlan_mode == P4_PORT_VLAN_NATIVE_UNTAGGED) {
-      PrepareEncapAndVlanPopTableEntry(table_entry, tunnel_info, p4info,
-                                       insert_entry);
+      PrepareV4EncapAndVlanPopTableEntry(table_entry, tunnel_info, p4info,
+                                         insert_entry);
     } else {
-      PrepareEncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
+      PrepareV4EncapTableEntry(table_entry, tunnel_info, p4info, insert_entry);
     }
   } else if (tunnel_info.local_ip.family == AF_INET6 &&
              tunnel_info.remote_ip.family == AF_INET6) {

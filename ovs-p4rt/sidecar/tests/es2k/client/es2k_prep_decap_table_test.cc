@@ -33,7 +33,7 @@ class Es2kPrepDecapTableTest : public TunnelInfoTest {
   }
 };
 
-// Es2kPrepareDecapTableEntry switches on port_vlan_mode.
+// PrepareDecapTableEntry switches on port_vlan_mode.
 // IP version and tunnel type are irrelevant.
 
 TEST_F(Es2kPrepDecapTableTest, prepareDecapIpv4VxlanTagged) {
@@ -48,7 +48,7 @@ TEST_F(Es2kPrepDecapTableTest, prepareDecapIpv4VxlanTagged) {
 
   // tunnel_type == OVS_TUNNEL_VXLAN
   // port_vlan_mode == P4_PORT_VLAN_NATIVE_TAGGED
-  Es2kPrepareDecapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
+  PrepareDecapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
   AssertV4VxlanTagged(table_entry, p4info);
 }
@@ -65,7 +65,7 @@ TEST_F(Es2kPrepDecapTableTest, prepareDecapIpv4VxlanUntagged) {
 
   // tunnel_type == OVS_TUNNEL_VXLAN
   // port_vlan_mode == P4_PORT_VLAN_NATIVE_UNTAGGED
-  Es2kPrepareDecapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
+  PrepareDecapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
   AssertV4VxlanUntagged(table_entry, p4info);
 }
@@ -82,7 +82,7 @@ TEST_F(Es2kPrepDecapTableTest, prepareDecapGeneveTagged) {
 
   // tunnel_type == OVS_TUNNEL_GENEVE
   // port_vlan_mode == P4_PORT_VLAN_NATIVE_TAGGED
-  Es2kPrepareDecapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
+  PrepareDecapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
   AssertV4GeneveTagged(table_entry, p4info);
 }
@@ -99,7 +99,7 @@ TEST_F(Es2kPrepDecapTableTest, prepareDecapGeneveUntagged) {
 
   // tunnel_type == OVS_TUNNEL_GENEVE
   // port_vlan_mode == P4_PORT_VLAN_NATIVE_UNTAGGED
-  Es2kPrepareDecapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
+  PrepareDecapTableEntry(&table_entry, tunnel_info, p4info, INSERT_ENTRY);
 
   AssertV4GeneveUntagged(table_entry, p4info);
 }
