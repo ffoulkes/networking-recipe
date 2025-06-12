@@ -1,16 +1,18 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
+// Unit test for PrepareEncapTableEntry().
+
 #include "core/common/ovsp4rt_entry_utils.h"
 #include "core/es2k/p4_name_mapping.h"
 #include "tunnel_info_test.h"
 
 namespace ovsp4rt {
 
-class Es2kPrepEncapTableTest : public TunnelInfoTest {
+class PrepEncapTableEntryTest : public TunnelInfoTest {
  public:
-  Es2kPrepEncapTableTest() {}
-  virtual ~Es2kPrepEncapTableTest() = default;
+  PrepEncapTableEntryTest() {}
+  virtual ~PrepEncapTableEntryTest() = default;
 
   static void AssertV4VxlanUntagged(const p4::v1::TableEntry& table_entry,
                                     const ::p4::config::v1::P4Info& p4info) {
@@ -55,7 +57,7 @@ class Es2kPrepEncapTableTest : public TunnelInfoTest {
 
 //----------------------------------------------------------------------
 
-TEST_F(Es2kPrepEncapTableTest, configEncapIpv4VxlanUntagged) {
+TEST_F(PrepEncapTableEntryTest, configEncapIpv4VxlanUntagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -70,7 +72,7 @@ TEST_F(Es2kPrepEncapTableTest, configEncapIpv4VxlanUntagged) {
   AssertV4VxlanUntagged(table_entry, p4info);
 }
 
-TEST_F(Es2kPrepEncapTableTest, configEncapIpv4GeneveUntagged) {
+TEST_F(PrepEncapTableEntryTest, configEncapIpv4GeneveUntagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -87,7 +89,7 @@ TEST_F(Es2kPrepEncapTableTest, configEncapIpv4GeneveUntagged) {
 
 //----------------------------------------------------------------------
 
-TEST_F(Es2kPrepEncapTableTest, configEncapIpv4VxlanTagged) {
+TEST_F(PrepEncapTableEntryTest, configEncapIpv4VxlanTagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -102,7 +104,7 @@ TEST_F(Es2kPrepEncapTableTest, configEncapIpv4VxlanTagged) {
   AssertV4VxlanTagged(table_entry, p4info);
 }
 
-TEST_F(Es2kPrepEncapTableTest, configEncapIpv4GeneveTagged) {
+TEST_F(PrepEncapTableEntryTest, configEncapIpv4GeneveTagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -119,7 +121,7 @@ TEST_F(Es2kPrepEncapTableTest, configEncapIpv4GeneveTagged) {
 
 //----------------------------------------------------------------------
 
-TEST_F(Es2kPrepEncapTableTest, configEncapIpv6VxlanUntagged) {
+TEST_F(PrepEncapTableEntryTest, configEncapIpv6VxlanUntagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -134,7 +136,7 @@ TEST_F(Es2kPrepEncapTableTest, configEncapIpv6VxlanUntagged) {
   AssertV6VxlanUntagged(table_entry, p4info);
 }
 
-TEST_F(Es2kPrepEncapTableTest, configEncapIpv6GeneveUntagged) {
+TEST_F(PrepEncapTableEntryTest, configEncapIpv6GeneveUntagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -151,7 +153,7 @@ TEST_F(Es2kPrepEncapTableTest, configEncapIpv6GeneveUntagged) {
 
 //----------------------------------------------------------------------
 
-TEST_F(Es2kPrepEncapTableTest, configEncapIpv6VxlanTagged) {
+TEST_F(PrepEncapTableEntryTest, configEncapIpv6VxlanTagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};
@@ -166,7 +168,7 @@ TEST_F(Es2kPrepEncapTableTest, configEncapIpv6VxlanTagged) {
   AssertV6VxlanTagged(table_entry, p4info);
 }
 
-TEST_F(Es2kPrepEncapTableTest, configEncapIpv6GeneveTagged) {
+TEST_F(PrepEncapTableEntryTest, configEncapIpv6GeneveTagged) {
   p4::v1::TableEntry table_entry;
 
   struct tunnel_info tunnel_info = {0};

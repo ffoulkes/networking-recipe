@@ -1,6 +1,8 @@
 // Copyright 2025 Derek Foster
 // SPDX-License-Identifier: Apache-2.0
 
+// Unit test for PrepareL2TunnelTableEntry()
+
 #include "core/common/ovsp4rt_entry_utils.h"
 #include "core/es2k/p4_name_mapping.h"
 #include "mac_learn_info_test.h"
@@ -10,10 +12,10 @@
 
 namespace ovsp4rt {
 
-class Es2kPrepL2TunnelEntryTest : public MacLearnInfoTest {
+class PrepL2TunnelEntryTest : public MacLearnInfoTest {
  public:
-  Es2kPrepL2TunnelEntryTest() {}
-  virtual ~Es2kPrepL2TunnelEntryTest() = default;
+  PrepL2TunnelEntryTest() {}
+  virtual ~PrepL2TunnelEntryTest() = default;
 
   static void InitFdbInfo(struct mac_learning_info& fdb_info) {
     constexpr uint8_t MAC_ADDR[] = {0xde, 0xad, 0xbe, 0xef, 0x00, 0xe};
@@ -33,7 +35,7 @@ class Es2kPrepL2TunnelEntryTest : public MacLearnInfoTest {
 
 //----------------------------------------------------------------------
 
-TEST_F(Es2kPrepL2TunnelEntryTest, prepareL2TunnelV4TableEntry) {
+TEST_F(PrepL2TunnelEntryTest, prepareL2TunnelV4TableEntry) {
   ::p4::v1::TableEntry table_entry;
   DiagDetail detail;
 
@@ -50,7 +52,7 @@ TEST_F(Es2kPrepL2TunnelEntryTest, prepareL2TunnelV4TableEntry) {
   AssertV4TunnelTable(table_entry, p4info);
 }
 
-TEST_F(Es2kPrepL2TunnelEntryTest, prepareL2TunnelTableV6Entry) {
+TEST_F(PrepL2TunnelEntryTest, prepareL2TunnelTableV6Entry) {
   ::p4::v1::TableEntry table_entry;
   DiagDetail detail;
 

@@ -18,10 +18,10 @@ namespace ovsp4rt {
 
 constexpr char GRPC_ADDR[] = "1.2.3.4:5678";
 
-class Es2kPrepFdbTunnelTableTest : public MacLearnInfoTest {
+class PrepFdbTunnelTableEntryTest : public MacLearnInfoTest {
  protected:
-  Es2kPrepFdbTunnelTableTest() {}
-  virtual ~Es2kPrepFdbTunnelTableTest() = default;
+  PrepFdbTunnelTableEntryTest() {}
+  virtual ~PrepFdbTunnelTableEntryTest() = default;
 
   static void InitTunnelLearnInfo(struct mac_learning_info& fdb_info,
                                   uint8_t tunnel_type) {
@@ -58,7 +58,7 @@ class Es2kPrepFdbTunnelTableTest : public MacLearnInfoTest {
   }
 };
 
-TEST_F(Es2kPrepFdbTunnelTableTest, insertV4VxlanTunnelEntry) {
+TEST_F(PrepFdbTunnelTableEntryTest, insertV4VxlanTunnelEntry) {
   ::p4::v1::TableEntry table_entry;
   DiagDetail detail;
 
@@ -75,7 +75,7 @@ TEST_F(Es2kPrepFdbTunnelTableTest, insertV4VxlanTunnelEntry) {
   CheckActionId(table_entry, p4info, OVS_TUNNEL_VXLAN);
 }
 
-TEST_F(Es2kPrepFdbTunnelTableTest, insertV4GeneveTunnelEntry) {
+TEST_F(PrepFdbTunnelTableEntryTest, insertV4GeneveTunnelEntry) {
   ::p4::v1::TableEntry table_entry;
   DiagDetail detail;
 
@@ -92,7 +92,7 @@ TEST_F(Es2kPrepFdbTunnelTableTest, insertV4GeneveTunnelEntry) {
   CheckActionId(table_entry, p4info, OVS_TUNNEL_GENEVE);
 }
 
-TEST_F(Es2kPrepFdbTunnelTableTest, removeV4TunnelEntry) {
+TEST_F(PrepFdbTunnelTableEntryTest, removeV4TunnelEntry) {
   ::p4::v1::TableEntry table_entry;
   DiagDetail detail;
 

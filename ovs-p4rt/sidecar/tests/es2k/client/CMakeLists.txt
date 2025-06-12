@@ -28,9 +28,9 @@ define_basic_test(update_fdb_tunnel_info_test)
 #-----------------------------------------------------------------------
 # mac_learn_info tests
 #-----------------------------------------------------------------------
-define_mac_learn_info_test(es2k_prep_fdb_table_v4_tunnel_test)
-define_mac_learn_info_test(es2k_prep_fdb_tunnel_table_test)
-define_mac_learn_info_test(es2k_prep_l2_tunnel_table_entry)
+define_mac_learn_info_test(prep_fdb_table_v4_tunnel_entry_test)
+define_mac_learn_info_test(prep_fdb_tunnel_entry_test)
+define_mac_learn_info_test(prep_l2_tunnel_entry_test)
 define_mac_learn_info_test(read_fdb_tunnel_entry_test)
 define_mac_learn_info_test(read_fdb_vlan_entry_test)
 define_mac_learn_info_test(read_l2_to_tunnel_v6_entry_test)
@@ -47,10 +47,10 @@ define_mac_map_info_test(write_src_ip_mac_map_entry_test)
 #-----------------------------------------------------------------------
 # tunnel_info tests
 #-----------------------------------------------------------------------
-define_tunnel_info_test(es2k_prep_decap_table_test)
-define_tunnel_info_test(es2k_prep_encap_table_test)
-define_tunnel_info_test(es2k_prep_rx_tunnel_src_port_test)
-define_tunnel_info_test(es2k_prep_tunnel_term_entry_test)
+define_tunnel_info_test(prep_decap_table_entry_test)
+define_tunnel_info_test(prep_encap_table_entry_test)
+define_tunnel_info_test(prep_rx_tunnel_src_port_entry_test)
+define_tunnel_info_test(prep_tunnel_term_entry_test)
 define_tunnel_info_test(write_decap_table_entry_test)
 define_tunnel_info_test(write_rx_tunnel_port_entry_test)
 
