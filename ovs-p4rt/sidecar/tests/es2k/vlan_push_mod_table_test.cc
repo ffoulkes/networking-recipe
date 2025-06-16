@@ -1,7 +1,7 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
-// Unit test for EncodeVlanPushTableEntry().
+// Unit test for EncodeVlanPushTableEntry().
 
 #include <gtest/gtest.h>
 #include <stdint.h>
