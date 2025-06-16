@@ -1,6 +1,8 @@
 // Copyright 2024 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 
+// Unit test for EncodeFdbTableEntryforV4VxlanTunnel().
+
 #include <gtest/gtest.h>
 #include <stdint.h>
 
