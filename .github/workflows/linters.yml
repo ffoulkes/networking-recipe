@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: Clone networking-recipe
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -54,7 +54,7 @@ jobs:
 
     steps:
       - name: Clone networking-recipe
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -83,7 +83,7 @@ jobs:
 
     steps:
       - name: Clone networking-recipe
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -111,7 +111,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Clone networking-recipe
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Check Python files
         uses: tj-actions/bandit@v5.5
@@ -130,7 +130,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -157,7 +157,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
